@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="6dp">
+
+
+    <TextView
+        android:id="@+id/comment_tv_username"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:layout_marginStart="4dp"
+        android:text="@string/username"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_text_normal"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_iv_user"
+        app:layout_constraintStart_toEndOf="@+id/comment_iv_user"
+        app:layout_constraintTop_toTopOf="@+id/comment_iv_user"
+        app:layout_constraintVertical_bias="0.0"/>
+
+    <TextView
+        android:id="@+id/comment_tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/date_time"
+        android:textColor="@color/black"
+        android:textSize="@dimen/size_text_small"
+        android:layout_marginStart="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/comment_tv_username"
+        app:layout_constraintStart_toEndOf="@+id/comment_tv_username"
+        app:layout_constraintTop_toTopOf="@+id/comment_tv_username"
+        app:layout_constraintVertical_bias="0.5" />
+
+    <TextView
+        android:id="@+id/comment_tv_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="4"
+        android:text="@string/post_content"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/comment_tv_username"
+        app:layout_constraintTop_toBottomOf="@+id/comment_tv_username" />
+
+    <ImageView
+        android:id="@+id/comment_iv_user"
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:foreground="@drawable/border_round_image"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
