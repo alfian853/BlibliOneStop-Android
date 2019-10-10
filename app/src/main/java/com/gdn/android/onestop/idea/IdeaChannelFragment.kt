@@ -13,12 +13,13 @@ import androidx.paging.PagedList
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFragment
-import com.gdn.android.onestop.base.ItemClickCallback
-import com.gdn.android.onestop.base.VoteClickCallback
+import com.gdn.android.onestop.util.DefaultContextWrapper
+import com.gdn.android.onestop.util.ItemClickCallback
+import com.gdn.android.onestop.util.VoteClickCallback
 import com.gdn.android.onestop.databinding.FragmentIdeaChannelBinding
 import com.gdn.android.onestop.idea.data.IdeaPost
 import com.gdn.android.onestop.util.NetworkUtil
-import io.reactivex.schedulers.Schedulers
+import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
 
 class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
@@ -31,25 +32,50 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
     lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
     @Inject
-    lateinit var ideaRecyclerViewAdapter: IdeaRecyclerViewAdapter
+    lateinit var ideaRecyclerAdapter: IdeaRecyclerAdapter
 
-    lateinit var ideaViewModel: IdeaViewModel
+    @Inject
+    lateinit var voteHelper: VoteHelper
+
+    lateinit var viewmodel: IdeaChannelViewModel
+
+    private val contextWrapper : DefaultContextWrapper by lazy {
+        DefaultContextWrapper(
+            this.context
+        )
+    }
+
+    private val observer = Observer<PagedList<IdeaPost>> {
+        this.ideaRecyclerAdapter.submitList(it)
+        databinding.swipeLayout.isRefreshing = false
+        context?.let {context ->
+            if(it.isEmpty() && !NetworkUtil.isConnectedToNetwork(context)){
+                Toast.makeText(context, NO_CONNECTION, Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private val liveData : LiveData<PagedList<IdeaPost>> by lazy { viewmodel.getIdeaLiveData() }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewmodel = ViewModelProvider(this, viewModelProviderFactory)
+            .get(IdeaChannelViewModel::class.java)
+        viewmodel.context = context!!
+        liveData.observe(this, observer)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-
-        activity?.let {
-            this.ideaViewModel = ViewModelProvider(it, viewModelProviderFactory)
-                .get(IdeaViewModel::class.java)
-        }
         this.databinding = FragmentIdeaChannelBinding.inflate(inflater,container,false)
-        this.databinding.rvIdeapost.adapter = this.ideaRecyclerViewAdapter
+        this.databinding.rvIdeapost.adapter = this.ideaRecyclerAdapter
         this.databinding.swipeLayout.isRefreshing = true
         this.databinding.swipeLayout.setOnRefreshListener {
-            ideaViewModel.reloadData().subscribeOn(Schedulers.newThread()).subscribe{isSuccess ->
+            viewmodel.refreshIdeaChannelData().subscribeOn(Schedulers.io()).subscribe{ isSuccess ->
                 this.databinding.swipeLayout.isRefreshing = false
                 if(!isSuccess){
                     this@IdeaChannelFragment.activity?.runOnUiThread{
@@ -58,41 +84,40 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
                 }
             }
         }
-        val liveData : LiveData<PagedList<IdeaPost>> = ideaViewModel.getIdeaLiveData()
 
 
-        liveData.observe(this, Observer<PagedList<IdeaPost>> {
-            this.ideaRecyclerViewAdapter.submitList(it)
-            databinding.swipeLayout.isRefreshing = false
-            context?.let {context ->
-                if(it.isEmpty() && !NetworkUtil.isConnectedToNetwork(context)){
-                    Toast.makeText(context, NO_CONNECTION, Toast.LENGTH_SHORT).show()
-                }
-            }
-        })
-
-
-        ideaRecyclerViewAdapter.itemContentClickCallback = object : ItemClickCallback<IdeaPost> {
+        ideaRecyclerAdapter.itemContentClickCallback = object :
+            ItemClickCallback<IdeaPost> {
             override fun onItemClick(item: IdeaPost, position: Int) {
-                val args = IdeaDetailFragmentArgs(position)
+                val args = IdeaDetailFragmentArgs(item)
                 findNavController().navigate(R.id.to_detail, args.toBundle())
             }
         }
 
-        ideaRecyclerViewAdapter.voteClickCallback = object : VoteClickCallback {
+        ideaRecyclerAdapter.voteClickCallback = object :
+            VoteClickCallback {
             override fun onVote(
                 ideaPost: IdeaPost,
-                itemView: IdeaRecyclerViewAdapter.IdeaViewHolder,
+                item: IdeaRecyclerAdapter.IdeaViewHolder,
                 isVoteUp: Boolean)
             {
-                clickVote(ideaPost, itemView, isVoteUp)
-
+                clickVote(ideaPost, item, isVoteUp)
             }
         }
 
         return databinding.root
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        liveData.removeObserver(observer)
+    }
+
+    private fun clickVote(ideaPost: IdeaPost,
+                  item: IdeaRecyclerAdapter.IdeaViewHolder,
+                  isVoteUp: Boolean){
+        voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
+    }
 
 
 }

@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.gdn.android.onestop.idea.IdeaDetailFragment">
     <data>
         <variable
             name="viewmodel"
-            type="com.gdn.android.onestop.idea.IdeaViewModel" />
+            type="com.gdn.android.onestop.idea.IdeaDetailViewModel" />
     </data>
     <LinearLayout
         android:orientation="vertical"
@@ -16,8 +15,11 @@
         android:weightSum="100">
 
         <ScrollView
+            android:id="@+id/scrollView"
+            android:padding="10dp"
             android:layout_weight="85"
             android:layout_width="match_parent"
+            android:scrollbars="none"
             android:layout_height="0dp">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -27,9 +29,6 @@
                     android:id="@+id/iv_user"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:layout_marginStart="8dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     tools:srcCompat="@tools:sample/avatars" />
@@ -103,11 +102,24 @@
                     app:layout_constraintStart_toEndOf="@+id/tv_downVote"
                     app:layout_constraintTop_toTopOf="@+id/tv_downVote" />
 
+                <TextView
+                    android:id="@+id/tv_load_more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{()->viewmodel.loadMoreComment()}"
+                    android:layout_marginTop="8dp"
+                    android:text="@string/load_previous_comment"
+                    app:layout_constraintStart_toStartOf="@+id/tv_upVote"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_upVote" />
+
                 <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_comment"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:listitem="@layout/item_comment"
-                    app:layout_constraintTop_toBottomOf="@id/tv_downVote">
+                    android:layout_marginTop="10dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@id/tv_load_more">
 
                 </androidx.recyclerview.widget.RecyclerView>
             </androidx.constraintlayout.widget.ConstraintLayout>
@@ -123,12 +135,14 @@
                 android:id="@+id/et_commentInput"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
+                android:maxLines="4"
+                android:text="@={viewmodel.commentInput}"
                 android:layout_gravity="center_horizontal|center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/comment_input_border"
                 android:hint="@string/comment_hint"
-                android:inputType="textPersonName"
+                android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
@@ -139,7 +153,7 @@
                 android:layout_gravity="center_horizontal|end"
                 android:background="@null"
                 android:text="@string/post"
-                android:textColor="@color/blue"
+                android:textColor="@color/faded_blue"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>

@@ -2,9 +2,10 @@ package com.gdn.android.onestop.idea.data
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.io.Serializable
 
 @Entity
-class IdeaPost {
+class IdeaPost : Serializable {
     @PrimaryKey
     lateinit var id: String
     lateinit var username: String

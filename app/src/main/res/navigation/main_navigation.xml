@@ -22,8 +22,7 @@
         tools:layout="@layout/fragment_idea_detail"
         android:label="Idea Detail" >
         <argument
-            android:name="itemPosition"
-            app:argType="integer"
-            android:defaultValue="0" />
+            android:name="ideaPost"
+            app:argType="com.gdn.android.onestop.idea.data.IdeaPost" />
     </fragment>
 </navigation>

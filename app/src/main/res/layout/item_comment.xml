@@ -4,11 +4,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:paddingBottom="15dp">
 
 
     <TextView
-        android:id="@+id/comment_tv_username"
+        android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
@@ -18,38 +19,39 @@
         android:textColor="@color/black"
         android:textSize="@dimen/size_text_normal"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_iv_user"
-        app:layout_constraintStart_toEndOf="@+id/comment_iv_user"
-        app:layout_constraintTop_toTopOf="@+id/comment_iv_user"
+        app:layout_constraintBottom_toBottomOf="@+id/iv_user"
+        app:layout_constraintStart_toEndOf="@+id/iv_user"
+        app:layout_constraintTop_toTopOf="@+id/iv_user"
         app:layout_constraintVertical_bias="0.0"/>
 
     <TextView
-        android:id="@+id/comment_tv_date"
+        android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/date_time"
         android:textColor="@color/black"
         android:textSize="@dimen/size_text_small"
         android:layout_marginLeft="10dp"
-        app:layout_constraintBottom_toBottomOf="@+id/comment_tv_username"
-        app:layout_constraintStart_toEndOf="@+id/comment_tv_username"
-        app:layout_constraintTop_toTopOf="@+id/comment_tv_username"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintBottom_toBottomOf="@+id/tv_username"
+        app:layout_constraintStart_toEndOf="@+id/tv_username"
+        app:layout_constraintTop_toTopOf="@+id/tv_username"
+        app:layout_constraintVertical_bias="0.5"
+        android:layout_marginStart="10dp" />
 
     <TextView
-        android:id="@+id/comment_tv_content"
+        android:id="@+id/tv_comment"
         android:layout_width="344dp"
-        android:layout_height="67dp"
+        android:layout_height="wrap_content"
         android:maxLines="4"
         android:text="@string/post_content"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/comment_tv_username"
-        app:layout_constraintTop_toBottomOf="@+id/comment_tv_username" />
+        app:layout_constraintStart_toStartOf="@+id/tv_username"
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
     <ImageView
-        android:id="@+id/comment_iv_user"
+        android:id="@+id/iv_user"
         android:layout_width="24dp"
         android:layout_height="24dp"
         app:layout_constraintStart_toStartOf="parent"

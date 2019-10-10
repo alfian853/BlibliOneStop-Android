@@ -1,31 +1,71 @@
 package com.gdn.android.onestop.idea
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.widget.doOnTextChanged
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.paging.PagedList
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFragment
+import com.gdn.android.onestop.util.DefaultContextWrapper
 import com.gdn.android.onestop.databinding.FragmentIdeaDetailBinding
+import com.gdn.android.onestop.idea.data.IdeaComment
 import com.gdn.android.onestop.idea.data.IdeaPost
 import javax.inject.Inject
 
-class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>(){
+
+class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>{
+
+    constructor() : super(){
+        Log.d(TAG,"create new fragment")
+    }
+
+    companion object{
+        private const val TAG = "ideaDetailFragment"
+    }
 
     @Inject
     lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
-    lateinit var ideaViewModel : IdeaViewModel
+    @Inject
+    lateinit var ideaCommentRecyclerAdapter: IdeaCommentRecyclerAdapter
 
-    val ideaPost : IdeaPost by lazy {
-        val args : IdeaDetailFragmentArgs by navArgs()
-        val ideaIndex = args.itemPosition
+    @Inject
+    lateinit var voteHelper: VoteHelper
 
-        return@lazy ideaViewModel.getPostAt(ideaIndex)!!
+    lateinit var viewmodel: IdeaDetailViewModel
+
+    lateinit var ideaPost : IdeaPost
+
+    lateinit var commentLiveData: LiveData<PagedList<IdeaComment>>
+
+    private val commentObserver: Observer<PagedList<IdeaComment>> = Observer {
+        ideaCommentRecyclerAdapter.submitList(it)
+    }
+
+    private val contextWrapper : DefaultContextWrapper by lazy {
+        DefaultContextWrapper(
+            this.context
+        )
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewmodel = ViewModelProvider(this, viewModelProviderFactory).get(IdeaDetailViewModel::class.java)
+        viewmodel.contextWrapper = contextWrapper
+
+        viewmodel.reportLiveData.observe(this,Observer<String> {
+            contextWrapper.toast(it)
+        })
     }
 
     override fun onCreateView(
@@ -34,15 +74,49 @@ class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>(){
         savedInstanceState: Bundle?
     ): View? {
 
-        this.databinding = FragmentIdeaDetailBinding.inflate(inflater,container, false)
-        activity?.let {
-            ideaViewModel = ViewModelProvider(it, viewModelProviderFactory).get(IdeaViewModel::class.java)
-            this.databinding.viewmodel = ideaViewModel
-        }
+        ideaCommentRecyclerAdapter.currentList?.clear()
+
+        val args : IdeaDetailFragmentArgs by navArgs()
+        ideaPost = args.ideaPost
+
+        databinding = FragmentIdeaDetailBinding.inflate(inflater,container, false)
+        databinding.viewmodel = viewmodel
+
+        viewmodel.setIdeaPostId(ideaPost.id)
+        databinding.rvComment.adapter = ideaCommentRecyclerAdapter
+
+        commentLiveData = viewmodel.getPagedCommentLiveData()
+        commentLiveData.observe(this, commentObserver)
+        viewmodel.loadMoreComment()
 
         databinding.tvUsername.text = ideaPost.username
         databinding.tvContent.text = ideaPost.content
         databinding.tvDate.text = ideaPost.createdAt
+        databinding.tvComment.text = ("${resources.getString(R.string.fa_comment)} ${ideaPost.commentCount}")
+
+        databinding.etCommentInput.doOnTextChanged { text, _, _, _ ->
+
+            if(text == null || text.isEmpty()){
+                databinding.btnCommentSubmit.setTextColor(
+                    ResourcesCompat.getColor(resources, R.color.faded_blue, null)
+                )
+            }
+            else{
+                databinding.btnCommentSubmit.setTextColor(
+                    ResourcesCompat.getColor(resources, R.color.blue, null)
+                )
+            }
+        }
+
+        databinding.btnCommentSubmit.setOnClickListener {
+            viewmodel.submitComment {
+                ideaPost.commentCount++
+                databinding.tvComment.text =
+                    ("${resources.getString(R.string.fa_comment)} ${ideaPost.commentCount}")
+                databinding.scrollView.fullScroll(View.FOCUS_DOWN)
+            }
+        }
+
         Glide.with(this@IdeaDetailFragment)
             .load(R.drawable.ic_iconfinder_male_628288)
             .into(databinding.ivUser)
@@ -61,4 +135,19 @@ class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>(){
 
         return this.databinding.root
     }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        viewmodel.getPagedCommentLiveData().removeObserver(commentObserver)
+    }
+
+    private fun setVoteText(){
+        voteHelper.setVoteText(databinding.tvUpVote, resources, true, ideaPost.upVoteCount, ideaPost.isMeVoteUp)
+        voteHelper.setVoteText(databinding.tvDownVote, resources, false, ideaPost.downVoteCount, ideaPost.isMeVoteDown)
+    }
+
+    private fun clickVote(ideaPost: IdeaPost, isVoteUp: Boolean){
+        voteHelper.clickVote(databinding.tvUpVote, databinding.tvDownVote, contextWrapper, ideaPost, isVoteUp)
+    }
+
 }

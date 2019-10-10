@@ -26,8 +26,8 @@ class IdeaActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        ViewModelProvider(this, viewModelProviderFactory).get(IdeaViewModel::class.java)
-            .context = this
+//        ViewModelProvider(this, viewModelProviderFactory).get(IdeaChannelViewModel::class.java)
+//            .context = this
         setActionBar()
     }
 

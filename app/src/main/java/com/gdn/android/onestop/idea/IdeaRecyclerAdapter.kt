@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.base.AwesomeTextView
-import com.gdn.android.onestop.base.ItemClickCallback
-import com.gdn.android.onestop.base.VoteClickCallback
+import com.gdn.android.onestop.util.ItemClickCallback
+import com.gdn.android.onestop.util.VoteClickCallback
 import com.gdn.android.onestop.idea.data.IdeaPost
 
 
-class IdeaRecyclerViewAdapter :
-    PagedListAdapter<IdeaPost,IdeaRecyclerViewAdapter.IdeaViewHolder>(IDEA_COMPARATOR) {
+class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
+    PagedListAdapter<IdeaPost,IdeaRecyclerAdapter.IdeaViewHolder>(IDEA_COMPARATOR) {
 
     lateinit var itemContentClickCallback : ItemClickCallback<IdeaPost>
     lateinit var voteClickCallback : VoteClickCallback
@@ -28,17 +28,31 @@ class IdeaRecyclerViewAdapter :
         return IdeaViewHolder(view)
     }
 
+    private fun setVoteText(ideaPost: IdeaPost, holder: IdeaViewHolder){
+        voteHelper.setVoteText(
+            holder.tvUpVote, holder.itemView.resources, true, ideaPost.upVoteCount, ideaPost.isMeVoteUp
+        )
+
+        voteHelper.setVoteText(
+            holder.tvDownVote, holder.itemView.resources, false, ideaPost.downVoteCount, ideaPost.isMeVoteDown
+        )
+    }
+
     override fun onBindViewHolder(holder: IdeaViewHolder, position: Int) {
         val ideaPost = getItem(position)
 
         ideaPost?.let {
-            holder.setVoteText(ideaPost)
+
+            setVoteText(ideaPost, holder)
+
             holder.tvUsername.text = ideaPost.username
             holder.tvDate.text = ideaPost.createdAt
             holder.tvContent.text = ideaPost.content
             Glide.with(holder.ivUserPict.context)
                 .load(R.drawable.ic_iconfinder_male_628288)
                 .into(holder.ivUserPict)
+
+            holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
 
             this.itemContentClickCallback.let { itemClickCallback ->
                 holder.tvContent.setOnClickListener {
@@ -66,13 +80,13 @@ class IdeaRecyclerViewAdapter :
 
 
     inner class IdeaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvUsername = itemView.findViewById<TextView>(R.id.tv_username)
-        val tvDate = itemView.findViewById<TextView>(R.id.tv_date)
-        val tvContent = itemView.findViewById<TextView>(R.id.tv_content)
-        val ivUserPict = itemView.findViewById<ImageView>(R.id.iv_user)
-        val tvUpVote = itemView.findViewById<AwesomeTextView>(R.id.tv_upVote)
-        val tvDownVote = itemView.findViewById<AwesomeTextView>(R.id.tv_downVote)
-        val tvComment = itemView.findViewById<AwesomeTextView>(R.id.tv_comment)
+        val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
+        val tvDate: TextView = itemView.findViewById(R.id.tv_date)
+        val tvContent: TextView = itemView.findViewById(R.id.tv_content)
+        val ivUserPict: ImageView = itemView.findViewById(R.id.iv_user)
+        val tvUpVote: AwesomeTextView = itemView.findViewById(R.id.tv_upVote)
+        val tvDownVote: AwesomeTextView = itemView.findViewById(R.id.tv_downVote)
+        val tvComment: AwesomeTextView = itemView.findViewById(R.id.tv_comment)
     }
 
 

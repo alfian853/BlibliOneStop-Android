@@ -9,4 +9,5 @@
     <string name="fa_vote_up">&#xf164;</string>
     <string name="fa_vote_down">&#xf165;</string>
     <string name="fa_comment">&#xf27a;</string>
+    <string name="load_previous_comment">Load previous comment</string>
 </resources>
