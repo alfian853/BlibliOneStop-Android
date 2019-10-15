@@ -85,7 +85,7 @@ class IdeaCommentRepository @Inject constructor(
             return false
         }
         val ideaComment = response.body()?.data ?: return false
-        ideaComment.username = sessionManager.getUsername()
+        ideaComment.username = sessionManager.user!!.username
         ideaComment.id = ideaComment.hashCode().toString()
         val calender = Calendar.getInstance()
         calender.timeInMillis = ideaComment.date.toLong()

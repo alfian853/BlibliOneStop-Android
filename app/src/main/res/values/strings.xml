@@ -7,7 +7,19 @@
     <string name="comment_hint">Leave you thoughs here…</string>
     <string name="post">post</string>
     <string name="fa_vote_up">&#xf164;</string>
+    <string name="fa_chevron_right">&#xf054;</string>
+    <string name="fa_plus">&#xf067;</string>
+    <string name="fa_option">&#xf142;</string>
     <string name="fa_vote_down">&#xf165;</string>
     <string name="fa_comment">&#xf27a;</string>
     <string name="load_previous_comment">Load previous comment</string>
+    <string name="tribe">Tribes</string>
+    <string name="group_name">anti group-group club</string>
+    <string name="squad">Squads</string>
+    <string name="groups">Groups</string>
+    <string name="label_idea_channel">Idea Channel</string>
+    <string name="label_idea_detail">Idea Detail</string>
+    <string name="login">Login Now</string>
+    <string name="app_name_login">𝓑𝓵𝓲𝓫𝓵𝓲\n𝓞𝓷𝓮𝓢𝓽𝓸𝓹</string>
+    <string name="password">password</string>
 </resources>

@@ -17,14 +17,14 @@
         android:theme="@style/AppTheme"
         tools:targetApi="m"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".idea.IdeaActivity">
+        <activity android:name=".app.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
             <nav-graph android:value="@navigation/main_navigation" />
-
         </activity>
+        <activity android:name=".login.LoginActivity" />
     </application>
 
 </manifest>

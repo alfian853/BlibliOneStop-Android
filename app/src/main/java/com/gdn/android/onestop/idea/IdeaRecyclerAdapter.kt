@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
-import com.gdn.android.onestop.base.AwesomeTextView
+import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.util.ItemClickCallback
 import com.gdn.android.onestop.util.VoteClickCallback
 import com.gdn.android.onestop.idea.data.IdeaPost
@@ -49,7 +49,7 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
             holder.tvDate.text = ideaPost.createdAt
             holder.tvContent.text = ideaPost.content
             Glide.with(holder.ivUserPict.context)
-                .load(R.drawable.ic_iconfinder_male_628288)
+                .load(R.drawable.ic_default_user)
                 .into(holder.ivUserPict)
 
             holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
@@ -84,9 +84,9 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         val tvDate: TextView = itemView.findViewById(R.id.tv_date)
         val tvContent: TextView = itemView.findViewById(R.id.tv_content)
         val ivUserPict: ImageView = itemView.findViewById(R.id.iv_user)
-        val tvUpVote: AwesomeTextView = itemView.findViewById(R.id.tv_upVote)
-        val tvDownVote: AwesomeTextView = itemView.findViewById(R.id.tv_downVote)
-        val tvComment: AwesomeTextView = itemView.findViewById(R.id.tv_comment)
+        val tvUpVote: FaSolidTextView = itemView.findViewById(R.id.tv_upVote)
+        val tvDownVote: FaSolidTextView = itemView.findViewById(R.id.tv_downVote)
+        val tvComment: FaSolidTextView = itemView.findViewById(R.id.tv_comment)
     }
 
 

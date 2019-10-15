@@ -1,14 +1,13 @@
 package com.gdn.android.onestop.idea.injection
 
-import com.gdn.android.onestop.idea.IdeaActivity
+import com.gdn.android.onestop.app.MainActivity
 import dagger.Subcomponent
 import dagger.android.AndroidInjector
 
-@IdeaScope
-@Subcomponent(modules = [IdeaBindModule::class, IdeaProvideModule::class])
-interface IdeaSubcomponent : AndroidInjector<IdeaActivity> {
+@Subcomponent
+interface IdeaSubcomponent : AndroidInjector<MainActivity> {
 
     @Subcomponent.Factory
-    interface Factory : AndroidInjector.Factory<IdeaActivity>
+    interface Factory : AndroidInjector.Factory<MainActivity>
 
 }

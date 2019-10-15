@@ -3,7 +3,7 @@ package com.gdn.android.onestop.idea
 import android.content.res.Resources
 import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.R
-import com.gdn.android.onestop.base.AwesomeTextView
+import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.base.BaseResponse
 import com.gdn.android.onestop.util.DefaultContextWrapper
 import com.gdn.android.onestop.idea.data.IdeaChannelRepository
@@ -76,7 +76,7 @@ class VoteHelper(
         }
     }
 
-    fun clickVote(tvUpVote : AwesomeTextView, tvDownVote : AwesomeTextView,
+    fun clickVote(tvUpVote : FaSolidTextView, tvDownVote : FaSolidTextView,
                   contextWrapper: DefaultContextWrapper, ideaPost: IdeaPost, isVoteUp: Boolean){
 
         val resources = contextWrapper.resources
@@ -112,7 +112,7 @@ class VoteHelper(
     }
 
 
-    private fun clickVoteUtil(textView : AwesomeTextView, resources: Resources, isUpVote : Boolean, voteCount : Int, isVotedBefore : Boolean){
+    private fun clickVoteUtil(textView : FaSolidTextView, resources: Resources, isUpVote : Boolean, voteCount : Int, isVotedBefore : Boolean){
 
         val currentVoteCount = if(isVotedBefore) voteCount - 1
         else voteCount + 1
@@ -122,9 +122,9 @@ class VoteHelper(
     }
 
 
-    fun setVoteText(textView : AwesomeTextView, resources: Resources, isUpVote : Boolean, voteCount : Int, isVoted : Boolean){
+    fun setVoteText(textView : FaSolidTextView, resources: Resources, isUpVote : Boolean, voteCount : Int, isVoted : Boolean){
         if(isVoted){
-            textView.setTextColor(ResourcesCompat.getColor(resources, R.color.blue, null))
+            textView.setTextColor(ResourcesCompat.getColor(resources, R.color.colorPrimaryDark, null))
         }
         else{
             textView.setTextColor(ResourcesCompat.getColor(resources, R.color.grey, null))

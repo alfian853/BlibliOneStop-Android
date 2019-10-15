@@ -23,7 +23,7 @@
             android:layout_marginLeft="8dp"
             android:text="@string/username"
             android:textColor="@color/black"
-            android:textSize="@dimen/size_text_normal"
+            android:textSize="@dimen/size_text_h4"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@+id/iv_user"
             app:layout_constraintStart_toEndOf="@+id/iv_user"
@@ -37,7 +37,7 @@
             android:layout_marginTop="4dp"
             android:text="@string/date_time"
             android:textColor="@color/black"
-            android:textSize="@dimen/size_text_small"
+            android:textSize="@dimen/size_text_h6"
             app:layout_constraintStart_toStartOf="@+id/iv_user"
             app:layout_constraintTop_toBottomOf="@+id/iv_user" />
 
@@ -62,7 +62,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_content" />
 
-        <com.gdn.android.onestop.base.AwesomeTextView
+        <com.gdn.android.onestop.base.FaSolidTextView
             android:id="@+id/tv_upVote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             app:layout_constraintStart_toStartOf="@+id/tv_content"
             app:layout_constraintTop_toBottomOf="@+id/idea_tv_seemore" />
 
-        <com.gdn.android.onestop.base.AwesomeTextView
+        <com.gdn.android.onestop.base.FaSolidTextView
             android:id="@+id/tv_downVote"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
             app:layout_constraintStart_toEndOf="@+id/tv_upVote"
             app:layout_constraintTop_toTopOf="@+id/tv_upVote" />
 
-        <com.gdn.android.onestop.base.AwesomeTextView
+        <com.gdn.android.onestop.base.FaSolidTextView
             android:id="@+id/tv_comment"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

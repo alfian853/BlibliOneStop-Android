@@ -1,6 +1,8 @@
 package com.gdn.android.onestop.idea
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +20,7 @@ import com.gdn.android.onestop.util.ItemClickCallback
 import com.gdn.android.onestop.util.VoteClickCallback
 import com.gdn.android.onestop.databinding.FragmentIdeaChannelBinding
 import com.gdn.android.onestop.idea.data.IdeaPost
+import com.gdn.android.onestop.login.LoginActivity
 import com.gdn.android.onestop.util.NetworkUtil
 import io.reactivex.rxjava3.schedulers.Schedulers
 import javax.inject.Inject
@@ -59,7 +62,6 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         viewmodel = ViewModelProvider(this, viewModelProviderFactory)
             .get(IdeaChannelViewModel::class.java)
         viewmodel.context = context!!

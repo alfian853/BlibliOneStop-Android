@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.widget.TextView
 
 
-class AwesomeTextView : TextView{
+class FaTextView : TextView{
 
 
     constructor(context: Context) : super(context){
@@ -19,7 +19,7 @@ class AwesomeTextView : TextView{
     }
 
     private fun createView(){
-        typeface = Typeface.createFromAsset(context.assets,"Font Awesome 5 Free-Solid-900.otf")
+        typeface = Typeface.createFromAsset(context.assets,"Font Awesome 5 Free-Regular-400.otf")
 
     }
 }

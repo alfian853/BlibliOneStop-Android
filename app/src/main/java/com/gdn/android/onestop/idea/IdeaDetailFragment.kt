@@ -10,7 +10,9 @@ import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import androidx.navigation.ui.navigateUp
 import androidx.paging.PagedList
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
@@ -20,6 +22,8 @@ import com.gdn.android.onestop.util.DefaultContextWrapper
 import com.gdn.android.onestop.databinding.FragmentIdeaDetailBinding
 import com.gdn.android.onestop.idea.data.IdeaComment
 import com.gdn.android.onestop.idea.data.IdeaPost
+import com.google.android.material.bottomnavigation.BottomNavigationMenu
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import javax.inject.Inject
 
 
@@ -66,6 +70,7 @@ class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>{
         viewmodel.reportLiveData.observe(this,Observer<String> {
             contextWrapper.toast(it)
         })
+
     }
 
     override fun onCreateView(
@@ -118,7 +123,7 @@ class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>{
         }
 
         Glide.with(this@IdeaDetailFragment)
-            .load(R.drawable.ic_iconfinder_male_628288)
+            .load(R.drawable.ic_default_user)
             .into(databinding.ivUser)
 
 

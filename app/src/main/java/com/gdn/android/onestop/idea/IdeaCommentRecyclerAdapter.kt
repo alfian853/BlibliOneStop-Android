@@ -29,7 +29,7 @@ class IdeaCommentRecyclerAdapter :
             holder.tvComment.text = it.text
             holder.tvDate.text = it.date
             Glide.with(holder.itemView)
-                .load(R.drawable.ic_iconfinder_male_628288)
+                .load(R.drawable.ic_default_user)
                 .into(holder.ivUser)
         }
     }
