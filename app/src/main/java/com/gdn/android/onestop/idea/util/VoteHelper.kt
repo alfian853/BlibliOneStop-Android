@@ -1,16 +1,19 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.util
 
 import android.content.res.Resources
 import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.R
-import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.base.BaseResponse
-import com.gdn.android.onestop.util.DefaultContextWrapper
+import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.idea.data.IdeaChannelRepository
 import com.gdn.android.onestop.idea.data.IdeaClient
 import com.gdn.android.onestop.idea.data.IdeaPost
+import com.gdn.android.onestop.util.DefaultContextWrapper
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -67,7 +70,9 @@ class VoteHelper(
 
                         }
 
-                        ideaChannelRepository.save(ideaPost)
+                        CoroutineScope(Dispatchers.IO).launch {
+                            ideaChannelRepository.update(ideaPost)
+                        }
 
                         it.onSuccess(true)
                     }
@@ -124,7 +129,7 @@ class VoteHelper(
 
     fun setVoteText(textView : FaSolidTextView, resources: Resources, isUpVote : Boolean, voteCount : Int, isVoted : Boolean){
         if(isVoted){
-            textView.setTextColor(ResourcesCompat.getColor(resources, R.color.colorPrimaryDark, null))
+            textView.setTextColor(ResourcesCompat.getColor(resources, R.color.colorPrimary, null))
         }
         else{
             textView.setTextColor(ResourcesCompat.getColor(resources, R.color.grey, null))

@@ -8,12 +8,11 @@
     android:paddingBottom="15dp">
 
 
-    <TextView
+<TextView
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:includeFontPadding="false"
-        android:layout_marginLeft="4dp"
         android:layout_marginStart="4dp"
         android:text="@string/username"
         android:textColor="@color/black"
@@ -31,12 +30,12 @@
         android:text="@string/date_time"
         android:textColor="@color/black"
         android:textSize="@dimen/size_text_h6"
-        android:layout_marginLeft="10dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_username"
         app:layout_constraintStart_toEndOf="@+id/tv_username"
         app:layout_constraintTop_toTopOf="@+id/tv_username"
         app:layout_constraintVertical_bias="0.5"
-        android:layout_marginStart="10dp" />
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"/>
 
     <TextView
         android:id="@+id/tv_comment"
@@ -54,6 +53,7 @@
         android:id="@+id/iv_user"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:foreground="@drawable/border_round_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:srcCompat="@tools:sample/avatars" />

@@ -1,4 +1,4 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.util
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,9 @@ import com.gdn.android.onestop.R
 import com.gdn.android.onestop.idea.data.IdeaComment
 
 class IdeaCommentRecyclerAdapter :
-    PagedListAdapter<IdeaComment, IdeaCommentRecyclerAdapter.CommentViewHolder>(COMMENT_COMPARATOR){
+    PagedListAdapter<IdeaComment, IdeaCommentRecyclerAdapter.CommentViewHolder>(
+        COMMENT_COMPARATOR
+    ){
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {

@@ -1,33 +1,36 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.fragment
 
+import android.app.Dialog
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.Window
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
-import androidx.navigation.ui.navigateUp
 import androidx.paging.PagedList
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseFragment
-import com.gdn.android.onestop.util.DefaultContextWrapper
+import com.gdn.android.onestop.base.BaseDialogFragment
 import com.gdn.android.onestop.databinding.FragmentIdeaDetailBinding
+import com.gdn.android.onestop.idea.util.IdeaCommentRecyclerAdapter
+import com.gdn.android.onestop.idea.viewmodel.IdeaDetailViewModel
+import com.gdn.android.onestop.idea.util.VoteHelper
 import com.gdn.android.onestop.idea.data.IdeaComment
 import com.gdn.android.onestop.idea.data.IdeaPost
-import com.google.android.material.bottomnavigation.BottomNavigationMenu
-import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.gdn.android.onestop.util.DefaultContextWrapper
 import javax.inject.Inject
 
 
-class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>{
+class IdeaDetailFragment : BaseDialogFragment<FragmentIdeaDetailBinding>{
 
     constructor() : super(){
         Log.d(TAG,"create new fragment")
@@ -60,6 +63,22 @@ class IdeaDetailFragment : BaseFragment<FragmentIdeaDetailBinding>{
         DefaultContextWrapper(
             this.context
         )
+    }
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
+        return dialog
+    }
+
+    override fun onStart() {
+        super.onStart()
+        val dialog: Dialog? = dialog
+        if (dialog != null) {
+            val width = ViewGroup.LayoutParams.MATCH_PARENT
+            val height = ViewGroup.LayoutParams.MATCH_PARENT
+            dialog.window!!.setLayout(width, height)
+            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {

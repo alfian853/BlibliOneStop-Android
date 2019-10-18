@@ -34,12 +34,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setupBottomNavMenu(navController)
 
         navController.addOnDestinationChangedListener{ _, destination, _ ->
-            if(destination.id == R.id.ideaDetailFragment){
-                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.GONE
+
+            when(destination.id){
+                R.id.ideaDetailFragment, R.id.ideaCreateFragment
+                -> findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.GONE
+                else -> findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.VISIBLE
+
             }
-            else{
-                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.VISIBLE
-            }
+//            if(destination.id == R.id.ideaDetailFragment){
+//                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.GONE
+//            }
+//            else{
+//                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.VISIBLE
+//            }
         }
     }
 

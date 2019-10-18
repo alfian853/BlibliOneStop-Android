@@ -1,14 +1,14 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.viewmodel
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.gdn.android.onestop.idea.data.IdeaChannelRepository
 import com.gdn.android.onestop.idea.data.IdeaPost
 import com.gdn.android.onestop.util.NetworkUtil
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class IdeaChannelViewModel @Inject constructor(
@@ -28,17 +28,26 @@ class IdeaChannelViewModel @Inject constructor(
     }
 
     fun getIdeaLiveData(): LiveData<PagedList<IdeaPost>> {
-        if(::context.isInitialized && hasConnectivity()){
-            ideaRepository.reloadIdeaChannelData().subscribeOn(Schedulers.io()).subscribe()
+        viewModelScope.launch {
+            if(::context.isInitialized && hasConnectivity()){
+                ideaRepository.reloadIdeaChannelData()
+            }
         }
         return this.ideaLiveData
     }
 
-    fun refreshIdeaChannelData() : Single<Boolean> {
-        if(::context.isInitialized && hasConnectivity()){
-            return ideaRepository.reloadIdeaChannelData()
+    fun refreshIdeaChannelData() {
+        viewModelScope.launch {
+            if(::context.isInitialized && hasConnectivity()){
+                ideaRepository.reloadIdeaChannelData()
+            }
         }
-        return Single.create { it.onSuccess(false) }
+    }
+
+    fun loadMoreData(){
+        viewModelScope.launch {
+            ideaRepository.loadMoreData()
+        }
     }
 
 }

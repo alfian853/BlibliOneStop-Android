@@ -1,4 +1,4 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.util
 
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +17,9 @@ import com.gdn.android.onestop.idea.data.IdeaPost
 
 
 class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
-    PagedListAdapter<IdeaPost,IdeaRecyclerAdapter.IdeaViewHolder>(IDEA_COMPARATOR) {
+    PagedListAdapter<IdeaPost, IdeaRecyclerAdapter.IdeaViewHolder>(
+        IDEA_COMPARATOR
+    ) {
 
     lateinit var itemContentClickCallback : ItemClickCallback<IdeaPost>
     lateinit var voteClickCallback : VoteClickCallback

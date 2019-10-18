@@ -1,4 +1,4 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.viewmodel
 
 import android.util.Log
 import androidx.databinding.Bindable

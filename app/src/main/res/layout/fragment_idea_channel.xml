@@ -3,30 +3,89 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.gdn.android.onestop.idea.IdeaChannelFragment">
+    tools:context="com.gdn.android.onestop.idea.fragment.IdeaChannelFragment">
     <data>
         <variable
             name="viewmodel"
-            type="com.gdn.android.onestop.idea.IdeaChannelViewModel" />
+            type="com.gdn.android.onestop.idea.viewmodel.IdeaChannelViewModel" />
     </data>
-    <LinearLayout
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-            android:id="@+id/swipeLayout"
-            android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_ideapost"
+
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                app:layoutManager="LinearLayoutManager"
-                tools:listitem="@layout/item_ideapost">
+                android:layout_height="match_parent">
 
-            </androidx.recyclerview.widget.RecyclerView>
 
-        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+                <ImageView
+                    android:id="@+id/iv_user"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_default_user"
+                    android:foreground="@drawable/border_round_image"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/et_idea"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginLeft="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/comment_input_border"
+                    android:cursorVisible="false"
+                    android:focusable="false"
+                    android:hint="@string/what_do_you_think"
+                    android:textSize="@dimen/size_text_h5"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_user"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@+id/iv_user"
+                    app:layout_constraintTop_toTopOf="@+id/iv_user" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_ideapost"
+                    android:layout_marginTop="6dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layoutManager="LinearLayoutManager"
+                    app:layout_constraintTop_toBottomOf="@+id/et_idea"
+                    tools:itemCount="4"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:listitem="@layout/item_ideapost" />
+
+                <ProgressBar
+                    android:id="@+id/pb_loadmore"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:indeterminate="true"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_ideapost" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
 </layout>

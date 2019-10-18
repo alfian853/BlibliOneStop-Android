@@ -3,13 +3,13 @@ package com.gdn.android.onestop.app
 import android.content.Context
 import android.content.Intent
 import androidx.fragment.app.Fragment
-import com.gdn.android.onestop.OneStopApplication
-import com.gdn.android.onestop.util.SessionManager
 import com.gdn.android.onestop.base.UrlConstant
 import com.gdn.android.onestop.login.LoginActivity
+import com.gdn.android.onestop.util.SessionManager
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
@@ -31,18 +31,23 @@ class AppModule{
 
         clientBuilder.addInterceptor { chain ->
 
-            val request = chain.request().newBuilder().apply {
-                sessionManager.user?.let {
-                    addHeader("Authorization", "Bearer "+sessionManager.user!!.token)
-                }
-            }.build()
+            var request = chain.request()
+            if(sessionManager.isLoggedIn){
+                request = request.newBuilder()
+                    .addHeader("Authorization", "Bearer "+sessionManager.user!!.token).build()
+            }
+            println(request)
+
             val response = try{
                 chain.proceed(request)
             }
             catch (e : Exception){
-                okhttp3.Response.Builder().code(503).message("Service unavailable!").build()
+                okhttp3.Response.Builder().request(request)
+                    .protocol(Protocol.H2_PRIOR_KNOWLEDGE)
+                    .code(503).message("Service unavailable!").build()
             }
-            if(response.code == 403){
+            if(response.code == 403 || response.code == 401){
+                sessionManager.logout()
                 val intent = Intent(context, LoginActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                 context.startActivity(intent)
@@ -52,7 +57,6 @@ class AppModule{
         }
 
         clientBuilder.addInterceptor(logger)
-//        clientBuilder
 
         return Retrofit.Builder().baseUrl(UrlConstant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())

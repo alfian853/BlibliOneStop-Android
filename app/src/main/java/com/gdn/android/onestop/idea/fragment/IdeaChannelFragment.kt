@@ -1,7 +1,7 @@
-package com.gdn.android.onestop.idea
+package com.gdn.android.onestop.idea.fragment
 
-import android.content.Intent
 import android.os.Bundle
+import android.text.Layout
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -10,20 +10,25 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.paging.PagedList
+import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFragment
+import com.gdn.android.onestop.databinding.FragmentIdeaChannelBinding
+import com.gdn.android.onestop.idea.viewmodel.IdeaChannelViewModel
+import com.gdn.android.onestop.idea.util.IdeaRecyclerAdapter
+import com.gdn.android.onestop.idea.util.VoteHelper
+import com.gdn.android.onestop.idea.data.IdeaPost
 import com.gdn.android.onestop.util.DefaultContextWrapper
 import com.gdn.android.onestop.util.ItemClickCallback
-import com.gdn.android.onestop.util.VoteClickCallback
-import com.gdn.android.onestop.databinding.FragmentIdeaChannelBinding
-import com.gdn.android.onestop.idea.data.IdeaPost
-import com.gdn.android.onestop.login.LoginActivity
 import com.gdn.android.onestop.util.NetworkUtil
-import io.reactivex.rxjava3.schedulers.Schedulers
+import com.gdn.android.onestop.util.VoteClickCallback
+import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
@@ -49,11 +54,13 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
     }
 
     private val observer = Observer<PagedList<IdeaPost>> {
+        Log.d("idea","on submit list")
         this.ideaRecyclerAdapter.submitList(it)
         databinding.swipeLayout.isRefreshing = false
         context?.let {context ->
             if(it.isEmpty() && !NetworkUtil.isConnectedToNetwork(context)){
-                Toast.makeText(context, NO_CONNECTION, Toast.LENGTH_SHORT).show()
+                Toast.makeText(context,
+                    NO_CONNECTION, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -76,14 +83,12 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         this.databinding = FragmentIdeaChannelBinding.inflate(inflater,container,false)
         this.databinding.rvIdeapost.adapter = this.ideaRecyclerAdapter
         this.databinding.swipeLayout.isRefreshing = true
+
+        this.databinding.swipeLayout.isRefreshing = false
         this.databinding.swipeLayout.setOnRefreshListener {
-            viewmodel.refreshIdeaChannelData().subscribeOn(Schedulers.io()).subscribe{ isSuccess ->
-                this.databinding.swipeLayout.isRefreshing = false
-                if(!isSuccess){
-                    this@IdeaChannelFragment.activity?.runOnUiThread{
-                        Toast.makeText(context, NO_CONNECTION,Toast.LENGTH_SHORT).show()
-                    }
-                }
+            viewmodel.viewModelScope.launch {
+                viewmodel.refreshIdeaChannelData()
+                databinding.swipeLayout.isRefreshing = false
             }
         }
 
@@ -107,6 +112,25 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
             }
         }
 
+        databinding.rvIdeapost.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if(!recyclerView.canScrollVertically(1)){
+                    viewmodel.viewModelScope.launch {
+                        databinding.pbLoadmore.visibility = View.VISIBLE
+                        viewmodel.loadMoreData()
+                        databinding.pbLoadmore.visibility = View.GONE
+                    }
+                }
+            }
+        })
+
+        databinding.etIdea.setOnClickListener {
+            findNavController().navigate(R.id.to_idea_create)
+        }
+
         return databinding.root
     }
 
@@ -116,8 +140,8 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
     }
 
     private fun clickVote(ideaPost: IdeaPost,
-                  item: IdeaRecyclerAdapter.IdeaViewHolder,
-                  isVoteUp: Boolean){
+                          item: IdeaRecyclerAdapter.IdeaViewHolder,
+                          isVoteUp: Boolean){
         voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
     }
 

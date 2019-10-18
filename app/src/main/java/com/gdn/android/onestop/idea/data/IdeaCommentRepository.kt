@@ -37,7 +37,7 @@ class IdeaCommentRepository @Inject constructor(
             ideaDao.getCommentsByPostId(ideaId), ITEM_PER_PAGE
         ).build()
         getMoreDataByPost().apply {
-            ideaDao.saveComment(this)
+            ideaDao.insertComment(this)
         }
     }
 
@@ -45,7 +45,7 @@ class IdeaCommentRepository @Inject constructor(
 
     suspend fun loadMoreComment() : Boolean {
         return getMoreDataByPost().apply {
-            ideaDao.saveComment(this)
+            ideaDao.insertComment(this)
         }.isNotEmpty()
     }
 
@@ -90,7 +90,7 @@ class IdeaCommentRepository @Inject constructor(
         val calender = Calendar.getInstance()
         calender.timeInMillis = ideaComment.date.toLong()
         ideaComment.date = simple.format(calender.time)
-        ideaDao.saveComment(ideaComment)
+        ideaDao.insertComment(ideaComment)
         ideaDao.getPostById(ideaId).apply {
             this.commentCount++
         }

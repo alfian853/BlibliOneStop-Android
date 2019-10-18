@@ -7,16 +7,19 @@ import androidx.room.*
 @Dao
 interface IdeaDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun savePost(vararg ideaPost : IdeaPost)
+    suspend fun insertIdea(vararg ideaPost : IdeaPost)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun savePost(ideaPosts: List<IdeaPost>)
+    suspend fun insertIdea(ideaPosts: List<IdeaPost>)
+
+    @Update
+    suspend fun updateIdea(ideaPost: IdeaPost)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveComment(comment: IdeaComment)
+    suspend fun insertComment(comment: IdeaComment)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun saveComment(comments: List<IdeaComment>)
+    suspend fun insertComment(comments: List<IdeaComment>)
 
     @Query("select * from IdeaPost where id = :ideaId limit 1")
     suspend fun getPostById(ideaId : String) : IdeaPost
@@ -25,7 +28,7 @@ interface IdeaDao {
     fun getIdeaDataSourceFactory() : DataSource.Factory<Int,IdeaPost>
 
     @Query("delete from IdeaPost")
-    fun deleteAllIdeaPost()
+    suspend fun deleteAllIdeaPost()
 
     @Query("select * from IdeaComment where postId = :postId order by date ASC")
     fun getCommentsByPostId(postId : String) : DataSource.Factory<Int, IdeaComment>

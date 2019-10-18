@@ -1,6 +1,6 @@
 package com.gdn.android.onestop.util
 
-import com.gdn.android.onestop.idea.IdeaRecyclerAdapter
+import com.gdn.android.onestop.idea.util.IdeaRecyclerAdapter
 import com.gdn.android.onestop.idea.data.IdeaPost
 
 interface ItemClickCallback<T> {
