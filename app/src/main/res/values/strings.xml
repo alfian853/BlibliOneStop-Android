@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">BlibliOneStop</string>
+    <string name="username">username</string>
+    <string name="date_time">10:10 PM, 22–09–2019</string>
+    <string name="post_content">Yuk nonton IG LIVE ngobrol santai bareng David Carlous Pintubatu dan Nova Permatasari \nNanti bakal bahas tentang JNE Cashless &amp; COD. Sekarang merchant gak perlu repot lagi untuk bayar ongkir saat mengirimkan pesanan, karena sudah ada fasilitas JNE cashless. Selain itu juga ada fitur COD yang bisa meningkatkan penjualan karena customer sekarang bisa mengecek dulu produknya sebelum membayar, yang juga akan meningkatkan kepercayaan (trust) ke toko.\nNah mau tau informasi lengkapnya?\nYuk belajar bersama Blibli University melalui episode Fitur Pengiriman JNE Cashless dan Cash on Delivery pada hari Rabu 11, September 2019 pk 15.00.\nBuat yang mau voucher belanja Blibli.com, komen PILIH AKU DONG pada saat live berlangsung. Sampai jumpa!</string>
+    <string name="see_more">See More…</string>
+    <string name="comment_hint">Leave you thoughs here…</string>
+    <string name="post">post</string>
+    <string name="fa_vote_up">&#xf164;</string>
+    <string name="fa_chevron_right">&#xf054;</string>
+    <string name="fa_plus">&#xf067;</string>
+    <string name="fa_option">&#xf142;</string>
+    <string name="fa_vote_down">&#xf165;</string>
+    <string name="fa_comment">&#xf27a;</string>
+    <string name="load_previous_comment">Load previous comment</string>
+    <string name="tribe">Tribes</string>
+    <string name="group_name">anti group-group club</string>
+    <string name="squad">Squads</string>
+    <string name="groups">Groups</string>
+    <string name="label_idea_channel">Idea Channel</string>
+    <string name="label_idea_detail">Idea Detail</string>
+    <string name="login">Login Now</string>
+    <string name="app_name_login">𝓑𝓵𝓲𝓫𝓵𝓲\n𝓞𝓷𝓮𝓢𝓽𝓸𝓹</string>
+    <string name="password">password</string>
+</resources>

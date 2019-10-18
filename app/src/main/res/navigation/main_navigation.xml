@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/ideaChannelFragment">
+    <fragment
+        android:id="@+id/ideaChannelFragment"
+        android:name="com.gdn.android.onestop.idea.IdeaChannelFragment"
+        android:label="@string/label_idea_channel"
+        tools:layout="@layout/fragment_idea_channel" >
+        <action
+            android:id="@+id/to_detail"
+            app:destination="@id/ideaDetailFragment"
+            app:enterAnim="@anim/fade_in"
+            app:exitAnim="@anim/fade_out"
+            app:popExitAnim="@anim/fade_out" />
+    </fragment>
+    <fragment
+        android:id="@+id/ideaDetailFragment"
+        android:name="com.gdn.android.onestop.idea.IdeaDetailFragment"
+        tools:layout="@layout/fragment_idea_detail"
+        android:label="@string/label_idea_detail" >
+        <argument
+            android:name="ideaPost"
+            app:argType="com.gdn.android.onestop.idea.data.IdeaPost" />
+    </fragment>
+    <fragment
+        android:id="@+id/channelFragment"
+        android:name="com.gdn.android.onestop.channel.ChannelFragment"
+        android:label="Channels"
+        tools:layout="@layout/fragment_channel" />
+    <activity
+        android:id="@+id/loginActivity"
+        android:name="com.gdn.android.onestop.login.LoginActivity"
+        android:label="activity_login"
+        tools:layout="@layout/activity_login" />
+</navigation>
