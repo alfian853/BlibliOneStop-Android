@@ -8,7 +8,7 @@
     android:paddingBottom="15dp">
 
 
-<TextView
+    <TextView
         android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -21,7 +21,8 @@
         app:layout_constraintBottom_toBottomOf="@+id/iv_user"
         app:layout_constraintStart_toEndOf="@+id/iv_user"
         app:layout_constraintTop_toTopOf="@+id/iv_user"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0"
+        android:layout_marginLeft="4dp" />
 
     <TextView
         android:id="@+id/tv_date"

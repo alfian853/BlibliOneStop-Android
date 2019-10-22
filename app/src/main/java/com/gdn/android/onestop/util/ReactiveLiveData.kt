@@ -1,4 +1,4 @@
-package com.gdn.android.onestop
+package com.gdn.android.onestop.util
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.LiveData

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:padding="15dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="@dimen/size_img_1"
+                android:layout_height="@dimen/size_img_1"
+                android:background="@drawable/ic_left_row" />
+
+            <TextView
+                android:layout_weight="1"
+                android:layout_marginLeft="25dp"
+                android:layout_gravity="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_text_h3"
+                android:text="Group"
+                android:layout_marginStart="25dp" />
+
+            <ImageView
+                android:id="@+id/iv_option"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_ellipsis"
+                android:layout_width="@dimen/size_img_4"
+                android:layout_height="@dimen/size_img_4" />
+        </LinearLayout>
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_chat"
+            android:background="@color/white_grey"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            tools:itemCount="10"
+            tools:listitem="@layout/item_chat"
+            android:layout_height="0dp" />
+
+        <LinearLayout
+            android:padding="3dp"
+            android:background="@color/colorPrimaryDark"
+            android:gravity="bottom"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_weight="1"
+                android:id="@+id/et_commentInput"
+                android:layout_marginLeft="3dp"
+                android:layout_marginRight="3dp"
+                android:maxLines="2"
+                android:text="@={viewmodel.commentInput}"
+                android:layout_gravity="center_horizontal|center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/comment_input_border"
+                android:hint="@string/send_message"
+                android:inputType="textMultiLine" />
+
+            <Button
+                android:layout_weight="0.5"
+                android:id="@+id/btn_commentSubmit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|end"
+                android:background="@null"
+                android:text="@string/send"
+                android:textColor="@color/white" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

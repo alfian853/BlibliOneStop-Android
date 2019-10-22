@@ -8,22 +8,7 @@ import androidx.paging.PagedList
 import java.text.SimpleDateFormat
 import java.util.*
 
-class IdeaChannelRepository{
-    private val ideaDao: IdeaDao
-    private val ideaClient: IdeaClient
-
-    constructor(
-        ideaDao: IdeaDao,
-        ideaClient: IdeaClient
-    ){
-        this.ideaDao = ideaDao
-        this.ideaClient = ideaClient
-        Log.d("idea","create channel repo")
-        this.ideaLiveData = LivePagedListBuilder(
-            ideaDao.getIdeaDataSourceFactory(), ITEM_PER_PAGE
-        ).build()
-
-    }
+class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient: IdeaClient) {
 
     @SuppressLint("SimpleDateFormat")
     val simple = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
@@ -39,7 +24,10 @@ class IdeaChannelRepository{
     private var ideaLiveData :LiveData<PagedList<IdeaPost>>
 
     init {
-
+        Log.d("idea","create channel repo")
+        this.ideaLiveData = LivePagedListBuilder(
+            ideaDao.getIdeaDataSourceFactory(), ITEM_PER_PAGE
+        ).build()
     }
 
     suspend fun update(ideaPost : IdeaPost){
@@ -113,5 +101,6 @@ class IdeaChannelRepository{
             return false
         }
     }
+
 
 }

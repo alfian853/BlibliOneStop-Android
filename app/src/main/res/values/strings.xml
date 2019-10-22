@@ -13,13 +13,25 @@
     <string name="fa_vote_down">&#xf165;</string>
     <string name="fa_comment">&#xf27a;</string>
     <string name="load_previous_comment">Load previous comment</string>
-    <string name="tribe">Tribes</string>
+    <string name="tribes">Tribes</string>
     <string name="group_name">anti group-group club</string>
-    <string name="squad">Squads</string>
+    <string name="squads">Squads</string>
     <string name="groups">Groups</string>
     <string name="label_idea_channel">Idea Channel</string>
     <string name="login">Login Now</string>
     <string name="app_name_login">𝓑𝓵𝓲𝓫𝓵𝓲\n𝓞𝓷𝓮𝓢𝓽𝓸𝓹</string>
     <string name="password">password</string>
     <string name="what_do_you_think">What do you think?</string>
+    <string name="send_message">Send message…</string>
+    <string name="send">Send</string>
+    <string name="create_group">Create group</string>
+    <string name="hint_create_group">Letters, numbers and spaces are allowed</string>
+    <string name="private_group">Private Group</string>
+    <string name="public_group">Public Group</string>
+    <string name="group_team">Group Team</string>
+    <string name="group_type">Group Type</string>
+    <string name="group">Group</string>
+    <string name="squad">Squad</string>
+    <string name="tribe">Tribe</string>
+    <string name="guilds">Guilds</string>
 </resources>

@@ -29,10 +29,10 @@
             app:argType="com.gdn.android.onestop.idea.data.IdeaPost" />
     </fragment>
     <fragment
-        android:id="@+id/channelFragment"
-        android:name="com.gdn.android.onestop.channel.ChannelFragment"
+        android:id="@+id/groupFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupFragment"
         android:label="@string/label_idea_channel"
-        tools:layout="@layout/fragment_channel" />
+        tools:layout="@layout/fragment_group" />
     <activity
         android:id="@+id/loginActivity"
         android:name="com.gdn.android.onestop.login.LoginActivity"

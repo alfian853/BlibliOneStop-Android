@@ -2,22 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
     <TextView
-        android:id="@+id/group_name"
+        android:id="@+id/tv_group_name"
         android:text="@string/group_name"
         android:layout_marginLeft="6dp"
-        android:textSize="@dimen/size_text_h2"
+        android:textSize="@dimen/size_text_h3"
         android:layout_weight="1"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="6dp" />
 
     <com.gdn.android.onestop.base.FaSolidTextView
+        android:id="@+id/tv_option"
         android:gravity="end"
         android:layout_marginRight="10dp"
         android:textSize="@dimen/size_text_h5"
         android:background="@drawable/ic_ellipsis"
         android:textAlignment="center"
         android:layout_width="20sp"
-        android:layout_height="20sp"/>
+        android:layout_height="20sp"
+        android:layout_marginEnd="10dp" />
 </LinearLayout>

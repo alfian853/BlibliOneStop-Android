@@ -10,6 +10,7 @@
             type="com.gdn.android.onestop.idea.viewmodel.IdeaChannelViewModel" />
     </data>
 
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
@@ -58,9 +59,9 @@
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_ideapost"
-                    android:layout_marginTop="6dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="6dp"
                     app:layoutManager="LinearLayoutManager"
                     app:layout_constraintTop_toBottomOf="@+id/et_idea"
                     tools:itemCount="4"
@@ -87,5 +88,7 @@
         </androidx.core.widget.NestedScrollView>
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+
 
 </layout>

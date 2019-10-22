@@ -1,8 +1,8 @@
-package com.gdn.android.onestop.channel.injection
+package com.gdn.android.onestop.group.injection
 
 import javax.inject.Scope
 
 @Scope
 @MustBeDocumented
 @kotlin.annotation.Retention(AnnotationRetention.RUNTIME)
-annotation class ChannelScope
+annotation class GroupScope

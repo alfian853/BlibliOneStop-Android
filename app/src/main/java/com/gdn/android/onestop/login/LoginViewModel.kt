@@ -44,7 +44,7 @@ class LoginViewModel
         viewModelScope.launch {
             val response = authClient.postLogin(LoginRequest(username, password))
             if(response.isSuccessful){
-                sessionManager.saveLoginSession(response.body())
+                sessionManager.saveLoginSession(response.body()!!.data)
                 contextWrapper!!.startActivity(MainActivity::class.java)
             }
             else{

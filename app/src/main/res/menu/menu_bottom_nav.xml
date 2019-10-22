@@ -7,7 +7,7 @@
         android:icon="@drawable/ic_home"/>
 
     <item
-        android:id="@+id/channelFragment"
+        android:id="@+id/groupFragment"
         android:title="@string/label_idea_channel"
-        android:icon="@drawable/ic_group"/>
+        android:icon="@drawable/ic_guild"/>
 </menu>

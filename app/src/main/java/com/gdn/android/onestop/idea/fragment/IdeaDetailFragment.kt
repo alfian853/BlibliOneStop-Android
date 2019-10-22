@@ -2,15 +2,14 @@ package com.gdn.android.onestop.idea.fragment
 
 import android.app.Dialog
 import android.graphics.Color
+import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.view.Window
+import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -64,22 +63,6 @@ class IdeaDetailFragment : BaseDialogFragment<FragmentIdeaDetailBinding>{
             this.context
         )
     }
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
-        return dialog
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val dialog: Dialog? = dialog
-        if (dialog != null) {
-            val width = ViewGroup.LayoutParams.MATCH_PARENT
-            val height = ViewGroup.LayoutParams.MATCH_PARENT
-            dialog.window!!.setLayout(width, height)
-            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -89,6 +72,7 @@ class IdeaDetailFragment : BaseDialogFragment<FragmentIdeaDetailBinding>{
         viewmodel.reportLiveData.observe(this,Observer<String> {
             contextWrapper.toast(it)
         })
+
 
     }
 
@@ -160,8 +144,8 @@ class IdeaDetailFragment : BaseDialogFragment<FragmentIdeaDetailBinding>{
         return this.databinding.root
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onDestroy() {
+        super.onDestroy()
         viewmodel.getPagedCommentLiveData().removeObserver(commentObserver)
     }
 
