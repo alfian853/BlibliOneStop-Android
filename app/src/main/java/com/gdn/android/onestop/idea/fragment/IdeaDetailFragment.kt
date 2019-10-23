@@ -1,15 +1,10 @@
 package com.gdn.android.onestop.idea.fragment
 
-import android.app.Dialog
-import android.graphics.Color
-import android.graphics.Point
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,7 +13,7 @@ import androidx.paging.PagedList
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseDialogFragment
+import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.databinding.FragmentIdeaDetailBinding
 import com.gdn.android.onestop.idea.util.IdeaCommentRecyclerAdapter
 import com.gdn.android.onestop.idea.viewmodel.IdeaDetailViewModel
@@ -29,7 +24,7 @@ import com.gdn.android.onestop.util.DefaultContextWrapper
 import javax.inject.Inject
 
 
-class IdeaDetailFragment : BaseDialogFragment<FragmentIdeaDetailBinding>{
+class IdeaDetailFragment : BaseFullSceenFragment<FragmentIdeaDetailBinding>{
 
     constructor() : super(){
         Log.d(TAG,"create new fragment")

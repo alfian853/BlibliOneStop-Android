@@ -19,8 +19,8 @@
                 android:layout_gravity="center"
                 android:background="@drawable/ic_plus"
                 android:gravity="end"
-                android:layout_width="@dimen/size_text_h1"
-                android:layout_height="@dimen/size_text_h1"/>
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
 
             <TextView
                 android:id="@+id/tv_create_group"
@@ -28,7 +28,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Create a new group"
+                android:text="@string/create_a_new_group"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_text_h4"
                 android:layout_marginStart="20dp" />
@@ -44,15 +44,15 @@
                 android:id="@+id/iv_browse_group"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_group_thin"
-                android:layout_width="@dimen/size_text_h1"
-                android:layout_height="@dimen/size_text_h1"/>
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
 
             <TextView
                 android:id="@+id/tv_browse_group"
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Browse groups"
+                android:text="@string/browse_groups"
                 android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_text_h4"
@@ -78,7 +78,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Join a group with a code"
+                android:text="@string/join_a_group_with_a_code"
                 android:textColor="@color/black"
                 android:layout_gravity="center"
                 android:textSize="@dimen/size_text_h4"

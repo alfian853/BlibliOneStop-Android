@@ -5,16 +5,16 @@ import androidx.room.PrimaryKey
 import java.util.*
 
 @Entity
-class Chat {
+class GroupChat {
     @PrimaryKey
     lateinit var id: String
     lateinit var username: String
     lateinit var text: String
-    lateinit var createdAt: Date
+    var createdAt: Long = 0
 
     var isReply : Boolean = false
     lateinit var repliedId: String
     lateinit var repliedText: String
     var isMeeting : Boolean = false
-    lateinit var meetingDate: Date
+    var meetingDate: Long = 0
 }

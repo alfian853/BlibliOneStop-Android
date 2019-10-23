@@ -6,11 +6,13 @@ import android.content.SharedPreferences
 import com.gdn.android.onestop.login.LoginActivity
 import com.gdn.android.onestop.login.data.User
 import com.google.gson.Gson
+import java.util.*
 
 class SessionManager(private val context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences("", Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = preferences.edit()
 
+    private var observers : LinkedList<SessionObserver> = LinkedList()
 
     fun saveLoginSession(user: User?) {
         editor.putBoolean("isLoggedIn", true)
@@ -32,10 +34,16 @@ class SessionManager(private val context: Context) {
     fun logout() {
         editor.clear()
         editor.commit()
+        observers.forEach { it.onSessionExpired() }
+        observers.clear()
         val intent = Intent(context, LoginActivity::class.java)
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
         context.startActivity(intent)
+    }
+
+    fun addObserver(sessionObserver: SessionObserver){
+        observers.push(sessionObserver)
     }
 
 }

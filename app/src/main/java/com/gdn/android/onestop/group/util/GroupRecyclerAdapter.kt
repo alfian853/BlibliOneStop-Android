@@ -7,11 +7,14 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.group.data.Group
+import com.gdn.android.onestop.util.ItemClickCallback
 import kotlin.collections.ArrayList
 
 class GroupRecyclerAdapter : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
 
     var groupList : List<Group> = ArrayList()
+    lateinit var nameClickCallback: ItemClickCallback<Group>
+    lateinit var optionClickCallback: ItemClickCallback<Group>
 
     fun updateList(groupList : List<Group>){
         this.groupList = groupList
@@ -32,6 +35,13 @@ class GroupRecyclerAdapter : RecyclerView.Adapter<GroupRecyclerAdapter.GroupView
         val group = groupList[position]
 
         holder.tvName.text = group.name
+
+        holder.tvName.setOnClickListener{
+            nameClickCallback.onItemClick(group, position)
+        }
+        holder.tvOption.setOnClickListener {
+            optionClickCallback.onItemClick(group, position)
+        }
     }
 
 

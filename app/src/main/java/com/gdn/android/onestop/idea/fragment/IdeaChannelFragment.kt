@@ -18,12 +18,12 @@ import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.databinding.FragmentIdeaChannelBinding
 import com.gdn.android.onestop.idea.data.IdeaPost
 import com.gdn.android.onestop.idea.util.IdeaRecyclerAdapter
+import com.gdn.android.onestop.idea.util.VoteClickCallback
 import com.gdn.android.onestop.idea.util.VoteHelper
 import com.gdn.android.onestop.idea.viewmodel.IdeaChannelViewModel
 import com.gdn.android.onestop.util.DefaultContextWrapper
 import com.gdn.android.onestop.util.ItemClickCallback
 import com.gdn.android.onestop.util.NetworkUtil
-import com.gdn.android.onestop.util.VoteClickCallback
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

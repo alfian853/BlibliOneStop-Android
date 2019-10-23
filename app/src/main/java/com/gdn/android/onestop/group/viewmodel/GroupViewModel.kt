@@ -18,14 +18,22 @@ constructor(
     fun squadLiveData() = groupRepository.squadLiveData
     fun tribeLiveData() = groupRepository.tribeLiveData
 
-    fun refreshData(){
+    fun refreshData(isForceUpdate : Boolean = false){
         viewModelScope.launch {
-            groupRepository.reloadGroup()
+            groupRepository.reloadGroup(isForceUpdate)
         }
     }
 
     suspend fun createGroup(groupName : String, groupType : Group.Type): Group? {
         return groupRepository.createGroup(groupName, groupType)
+    }
+
+    suspend fun joinGroup(groupCode : String): Group? {
+        return groupRepository.joinGroup(groupCode)
+    }
+
+    suspend fun leaveGroup(groupId : String) {
+        groupRepository.leaveGroup(groupId)
     }
 
 }

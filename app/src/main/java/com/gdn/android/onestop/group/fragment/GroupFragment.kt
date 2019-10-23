@@ -2,11 +2,13 @@ package com.gdn.android.onestop.group.fragment
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFragment
@@ -14,6 +16,8 @@ import com.gdn.android.onestop.databinding.FragmentGroupBinding
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.util.GroupRecyclerAdapter
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
+import com.gdn.android.onestop.util.ItemClickCallback
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GroupFragment : BaseFragment<FragmentGroupBinding>() {
@@ -25,14 +29,44 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     @Inject
     lateinit var viewModel: GroupViewModel
 
+    private val groupClickCallback = object : ItemClickCallback<Group> {
+        override fun onItemClick(item: Group, position: Int) {
+            val arg = GroupChatFragmentArgs(item)
 
+            val groupChatFragment = GroupChatFragment()
+            groupChatFragment.arguments = arg.toBundle()
+
+            groupChatFragment.show(
+                this@GroupFragment.fragmentManager!!, "group chat fragment"
+            )
+        }
+    }
+
+    val groupOptionClick = object : ItemClickCallback<Group> {
+        override fun onItemClick(item: Group, position: Int) {
+            val groupSettingFragment = GroupSettingFragment(viewModel, item)
+            groupSettingFragment.show(
+                this@GroupFragment.fragmentManager!!, "group setting fragment"
+            )
+        }
+
+    }
 
     var guildRvAdapter : GroupRecyclerAdapter =
         GroupRecyclerAdapter()
+            .apply {
+                nameClickCallback = this@GroupFragment.groupClickCallback
+                optionClickCallback = this@GroupFragment.groupOptionClick
+            }
+
     var squadRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter()
+        GroupRecyclerAdapter().apply {
+            nameClickCallback = groupClickCallback
+        }
     var tribeRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter()
+        GroupRecyclerAdapter().apply {
+            nameClickCallback = groupClickCallback
+        }
 
     private val guildLiveData : LiveData<List<Group>> by lazy { viewModel.guildLiveData() }
     private val squadLiveData : LiveData<List<Group>> by lazy { viewModel.squadLiveData() }
@@ -44,6 +78,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
 
     private val observer = Observer<List<Group>> {
+        Log.d("group",it.size.toString())
         if(it.isNotEmpty()){
             when(it[0].type){
                 Group.Type.GUILD -> guildRvAdapter
@@ -57,7 +92,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(GroupViewModel::class.java)
-        viewModel.refreshData()
+        viewModel.refreshData(false)
         guildLiveData.observe(this, observer)
         squadLiveData.observe(this, observer)
         tribeLiveData.observe(this, observer)
@@ -120,6 +155,15 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         databinding.tvSquad.setOnClickListener(squadOnclick)
         databinding.tvTribe.setOnClickListener(tribeOnclick)
 
+
+        databinding.swipeLayout.setOnRefreshListener {
+            databinding.swipeLayout.isRefreshing = true
+            viewModel.viewModelScope.launch {
+                viewModel.refreshData(true)
+                databinding.swipeLayout.isRefreshing = false
+            }
+        }
+
         return databinding.root
     }
 
@@ -133,7 +177,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_group, menu)
         menu.findItem(R.id.item_group_add).setOnMenuItemClickListener {
-            val bottomOptionFragment = BottomOptionFragment()
+            val bottomOptionFragment = GroupOptionFragment(viewModel)
             bottomOptionFragment.show(
                 this.fragmentManager!!, "bottom option fragment"
             )

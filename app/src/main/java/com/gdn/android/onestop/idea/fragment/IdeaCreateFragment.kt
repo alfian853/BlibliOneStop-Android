@@ -11,7 +11,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseDialogFragment
+import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.databinding.FragmentIdeaCreateBinding
 import com.gdn.android.onestop.idea.viewmodel.IdeaCreateViewModel
 import com.gdn.android.onestop.util.SessionManager
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class IdeaCreateFragment : BaseDialogFragment<FragmentIdeaCreateBinding>() {
+class IdeaCreateFragment : BaseFullSceenFragment<FragmentIdeaCreateBinding>() {
 
 
     @Inject

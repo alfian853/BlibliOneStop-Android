@@ -5,156 +5,189 @@
     tools:context="com.gdn.android.onestop.group.fragment.GroupFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
         <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
-                android:padding="10dp"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
 
-                    <ImageView
-                        android:id="@+id/tv_toggle_tribe"
-                        android:layout_gravity="center"
-                        android:layout_width="@dimen/size_img_3"
-                        android:layout_height="@dimen/size_img_3"
-                        android:background="@drawable/ic_down"
-                        android:textSize="@dimen/size_text_h3" />
+                <ImageView
+                    android:id="@+id/tv_toggle_tribe"
+                    android:layout_width="@dimen/size_img_6"
+                    android:layout_height="@dimen/size_img_6"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_down"
+                    android:textSize="@dimen/size_text_h3"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-                    <ImageView
-                        android:background="@drawable/ic_tribe"
-                        android:layout_marginLeft="6dp"
-                        android:layout_gravity="center"
-                        android:layout_width="@dimen/size_img_4"
-                        android:layout_height="@dimen/size_img_4"
-                        android:layout_marginStart="6dp" />
+                <ImageView
+                    android:id="@+id/imageView2"
+                    android:layout_width="@dimen/size_img_4"
+                    android:layout_height="@dimen/size_img_4"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_tribe"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginStart="4dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_toggle_tribe"
+                    app:layout_constraintStart_toEndOf="@+id/tv_toggle_tribe"
+                    app:layout_constraintTop_toTopOf="@+id/tv_toggle_tribe"
+                    app:layout_constraintVertical_bias="0.5" />
 
-                    <TextView
-                        android:id="@+id/tv_tribe"
-                        android:layout_weight="1"
-                        android:text="@string/tribes"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:textSize="@dimen/size_text_h2"
-                        android:textStyle="bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content" />
 
-                </LinearLayout>
+                <TextView
+                    android:id="@+id/tv_tribe"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/tribes"
+                    android:textSize="@dimen/size_text_h2"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView2"
+                    app:layout_constraintStart_toEndOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="@+id/imageView2"
+                    app:layout_constraintVertical_bias="0.5" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_tribe"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginLeft="64dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:layout_marginRight="16dp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_tribe"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_tribe"
                     tools:itemCount="5"
-                    tools:listitem="@layout/item_group" />
-
-                <LinearLayout
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/tv_toggle_squad"
-                        android:layout_gravity="center"
-                        android:layout_width="@dimen/size_img_3"
-                        android:layout_height="@dimen/size_img_3"
-                        android:text="@string/fa_chevron_right"
-                        android:background="@drawable/ic_down" />
+                    tools:listitem="@layout/item_group"
+                    android:layout_marginEnd="16dp" />
 
 
-                    <ImageView
-                        android:background="@drawable/ic_squad"
-                        android:layout_marginLeft="6dp"
-                        android:layout_gravity="center"
-                        android:layout_width="@dimen/size_img_4"
-                        android:layout_height="@dimen/size_img_4"
-                        android:layout_marginStart="6dp" />
 
-                    <TextView
-                        android:id="@+id/tv_squad"
-                        android:layout_weight="1"
-                        android:text="@string/squads"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:textSize="@dimen/size_text_h2"
-                        android:textStyle="bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
 
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/tv_toggle_squad"
+                    android:layout_width="@dimen/size_img_6"
+                    android:layout_height="@dimen/size_img_6"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_down"
+                    android:textSize="@dimen/size_text_h3"
+                    app:layout_constraintStart_toStartOf="@+id/tv_toggle_tribe"
+                    app:layout_constraintTop_toBottomOf="@+id/rv_tribe" />
+
+                <ImageView
+                    android:id="@+id/imageView3"
+                    android:layout_width="@dimen/size_img_4"
+                    android:layout_height="@dimen/size_img_4"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_squad"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_toggle_squad"
+                    app:layout_constraintStart_toEndOf="@+id/tv_toggle_squad"
+                    app:layout_constraintStart_toStartOf="@+id/imageView2"
+                    app:layout_constraintTop_toTopOf="@+id/tv_toggle_squad" />
+
+                <TextView
+                    android:id="@+id/tv_squad"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:text="@string/squads"
+                    android:textSize="@dimen/size_text_h2"
+                    android:textStyle="bold"
+                    android:textColor="@color/black"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView3"
+                    app:layout_constraintStart_toEndOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="@+id/imageView3"
+                    app:layout_constraintVertical_bias="0.5" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_squad"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    tools:itemCount="2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginLeft="64dp"
                     app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@+id/rv_tribe"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintStart_toStartOf="@+id/tv_squad"
+                    app:layout_constraintTop_toBottomOf="@id/tv_squad"
+                    tools:itemCount="2"
                     tools:listitem="@layout/item_group"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <LinearLayout
-                    android:layout_marginTop="15dp"
-                    android:orientation="horizontal"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/tv_toggle_guild"
-                        android:layout_gravity="center"
-                        android:layout_width="@dimen/size_img_3"
-                        android:layout_height="@dimen/size_img_3"
-                        android:text="@string/fa_chevron_right"
-                        android:background="@drawable/ic_down"
-                        android:textSize="@dimen/size_text_h3" />
+                    android:layout_marginRight="16dp" />
 
 
-                    <ImageView
-                        android:background="@drawable/ic_guild"
-                        android:layout_gravity="center"
-                        android:layout_marginLeft="6dp"
-                        android:layout_width="@dimen/size_img_4"
-                        android:layout_height="@dimen/size_img_4"
-                        android:layout_marginStart="6dp" />
+                <ImageView
+                    android:id="@+id/tv_toggle_guild"
+                    android:layout_width="@dimen/size_img_6"
+                    android:layout_height="@dimen/size_img_6"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/ic_down"
+                    android:text="@string/fa_chevron_right"
+                    android:textSize="@dimen/size_text_h3"
+                    app:layout_constraintStart_toStartOf="@+id/tv_toggle_squad"
+                    app:layout_constraintTop_toBottomOf="@id/rv_squad" />
 
-                    <TextView
-                        android:id="@+id/tv_guild"
-                        android:layout_weight="1"
-                        android:text="@string/guilds"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginStart="10dp"
-                        android:textSize="@dimen/size_text_h2"
-                        android:textStyle="bold"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"/>
 
-                </LinearLayout>
+                <ImageView
+                    android:id="@+id/imageView5"
+                    android:layout_width="@dimen/size_img_4"
+                    android:layout_height="@dimen/size_img_4"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_guild"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_toggle_guild"
+                    app:layout_constraintStart_toStartOf="@+id/imageView3"
+                    app:layout_constraintTop_toTopOf="@+id/tv_toggle_guild" />
+
+                <TextView
+                    android:id="@+id/tv_guild"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_weight="1"
+                    android:textColor="@color/black"
+                    android:text="@string/guilds"
+                    android:textSize="@dimen/size_text_h2"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="@+id/imageView5"
+                    app:layout_constraintStart_toEndOf="@+id/imageView5"
+                    app:layout_constraintTop_toTopOf="@+id/imageView5" />
+
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_guild"
-                    tools:itemCount="25"
-                    android:layout_marginStart="45dp"
-                    android:layout_marginLeft="45dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    tools:listitem="@layout/item_group"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="64dp"
+                    android:layout_marginLeft="64dp"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="@+id/rv_squad"
+                    app:layout_constraintStart_toStartOf="@+id/tv_guild"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_guild"
+                    tools:itemCount="2"
+                    android:layout_marginRight="16dp"
+                    tools:listitem="@layout/item_group"
+                    android:layout_marginEnd="16dp" />
 
-            </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </layout>

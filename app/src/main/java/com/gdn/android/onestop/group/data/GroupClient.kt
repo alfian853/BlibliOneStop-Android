@@ -19,5 +19,18 @@ interface GroupClient{
     suspend fun getGroupChat(
         @Path("groupId") groupId : String,
         @Query("fromTime") fromMilliTime : Long
-    ) : Response<BaseResponse<List<Chat>>>
+    ) : Response<BaseResponse<List<GroupChat>>>
+
+    @GET("/group/last_update")
+    suspend fun getLastUpdate() : Response<BaseResponse<Long>>
+
+    @POST("/group/join_group")
+    suspend fun joinGroup(
+        @Query("group_code") groupCode : String
+    ) : Response<BaseResponse<Group>>
+
+    @POST("/group/{groupId}/leave")
+    suspend fun leaveGroup(
+        @Path("groupId") groupId: String
+    ) : Response<BaseResponse<Boolean>>
 }

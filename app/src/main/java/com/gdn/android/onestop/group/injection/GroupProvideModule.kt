@@ -1,8 +1,10 @@
 package com.gdn.android.onestop.group.injection
 
 import android.app.Application
+import android.content.Context
 import androidx.room.Room
 import com.gdn.android.onestop.group.data.*
+import com.gdn.android.onestop.util.SessionManager
 import dagger.Module
 import dagger.Provides
 import retrofit2.Retrofit
@@ -33,13 +35,19 @@ class GroupProvideModule {
 
     @GroupScope
     @Provides
-    fun provideGroupRepository(groupDao: GroupDao, groupClient: GroupClient): GroupRepository {
-        return GroupRepository(groupDao, groupClient)
+    fun provideGroupRepository(groupDao: GroupDao, groupClient: GroupClient, groupUpdateManager: GroupUpdateManager): GroupRepository {
+        return GroupRepository(groupDao, groupClient, groupUpdateManager)
     }
 
     @GroupScope
     @Provides
     fun provideGroupChatRepository(groupDao: GroupDao, groupClient: GroupClient) : GroupChatRepository {
         return GroupChatRepository(groupDao, groupClient)
+    }
+
+    @GroupScope
+    @Provides
+    fun provideGroupUpdateManager(context: Context, sessionManager: SessionManager) : GroupUpdateManager {
+        return GroupUpdateManager(context, sessionManager)
     }
 }

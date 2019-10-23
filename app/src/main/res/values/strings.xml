@@ -34,4 +34,18 @@
     <string name="squad">Squad</string>
     <string name="tribe">Tribe</string>
     <string name="guilds">Guilds</string>
+    <string name="enter_the_group_code">Enter the group code</string>
+    <string name="create_a_new_group">Create a new group</string>
+    <string name="browse_groups">Browse groups</string>
+    <string name="join_a_group_with_a_code">Join a group with a code</string>
+    <string name="join_a_group">Join a group</string>
+    <string name="join">Join</string>
+    <string name="close">Close</string>
+    <string name="group_code">Group Code</string>
+    <string name="enter_code">Enter Code</string>
+    <string name="cancel">Cancel</string>
+    <string name="leave_caution">Are you sure want to leave from group?</string>
+    <string name="view_members">View members</string>
+    <string name="leave_group">Leave group</string>
+    <string name="yes">Yes</string>
 </resources>

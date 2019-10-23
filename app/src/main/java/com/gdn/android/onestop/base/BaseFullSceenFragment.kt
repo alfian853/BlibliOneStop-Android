@@ -7,7 +7,7 @@ import com.gdn.android.onestop.R
 import dagger.android.support.DaggerDialogFragment
 
 //todo bikin fragment dialog fullscreen walau diattach didalam tag <fragment/>
-abstract class BaseDialogFragment<T : ViewDataBinding> : DaggerDialogFragment(){
+abstract class BaseFullSceenFragment<T : ViewDataBinding> : DaggerDialogFragment(){
     lateinit var databinding : T
 
     override fun onCreate(savedInstanceState: Bundle?) {

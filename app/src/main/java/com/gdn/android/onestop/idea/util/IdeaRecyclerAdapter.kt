@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.util.ItemClickCallback
-import com.gdn.android.onestop.util.VoteClickCallback
 import com.gdn.android.onestop.idea.data.IdeaPost
 
 
