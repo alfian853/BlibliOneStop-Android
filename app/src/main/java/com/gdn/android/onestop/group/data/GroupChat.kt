@@ -8,13 +8,15 @@ import java.util.*
 class GroupChat {
     @PrimaryKey
     lateinit var id: String
+    lateinit var groupId : String
     lateinit var username: String
     lateinit var text: String
-    var createdAt: Long = 0
+    lateinit var createdAt: String
 
+    var isMe : Boolean = false
     var isReply : Boolean = false
-    lateinit var repliedId: String
-    lateinit var repliedText: String
+    var repliedId: String? = null
+    var repliedText: String? = null
     var isMeeting : Boolean = false
-    var meetingDate: Long = 0
+    lateinit var meetingDate: String
 }

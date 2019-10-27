@@ -7,5 +7,8 @@ import androidx.room.PrimaryKey
 class GroupInfo {
     @PrimaryKey
     lateinit var id : String
-    var lastChatUpdate : Long = 0
+    var lowerBoundTimeStamp : Long = 0
+    var upperBoundTimeStamp : Long = 0
+
+
 }

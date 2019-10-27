@@ -53,14 +53,14 @@
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="101dp" />
 
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_idea_submit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|end"
-            android:background="@null"
             android:enabled="false"
             android:text="@string/post"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
             android:textColor="@color/faded_blue"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

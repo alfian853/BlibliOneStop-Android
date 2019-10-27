@@ -18,7 +18,8 @@ interface GroupClient{
     @GET("/group/{groupId}")
     suspend fun getGroupChat(
         @Path("groupId") groupId : String,
-        @Query("fromTime") fromMilliTime : Long
+        @Query("after_time") afterTime : Long?,
+        @Query("before_time") beforeTime : Long?
     ) : Response<BaseResponse<List<GroupChat>>>
 
     @GET("/group/last_update")
@@ -33,4 +34,5 @@ interface GroupClient{
     suspend fun leaveGroup(
         @Path("groupId") groupId: String
     ) : Response<BaseResponse<Boolean>>
+
 }

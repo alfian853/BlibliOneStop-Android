@@ -12,6 +12,7 @@ import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.databinding.FragmentGroupCreateBinding
+//import com.gdn.android.onestop.group.data.ChatSocketClient
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
 import kotlinx.coroutines.launch
@@ -45,7 +46,7 @@ class GroupCreateFragment : BaseFullSceenFragment<FragmentGroupCreateBinding>() 
 
             if(databinding.etGroupName.text!!.isNotEmpty()){
                 val groupType = when(databinding.rgGroupType.checkedRadioButtonId){
-                    R.id.ritem_tribe -> Group.Type.GUILD
+                    R.id.ritem_tribe -> Group.Type.TRIBE
                     R.id.ritem_squad -> Group.Type.SQUAD
                     else -> Group.Type.GUILD
                 }
@@ -64,6 +65,7 @@ class GroupCreateFragment : BaseFullSceenFragment<FragmentGroupCreateBinding>() 
                     chatFragment.show(
                         fragmentManager!!, "group chat fragment"
                     )
+
                 }
             }
             else{

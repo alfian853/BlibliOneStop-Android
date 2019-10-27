@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "com.gdn.android.onestop"
-        minSdkVersion 16
+        minSdkVersion 26
         targetSdkVersion 28
         versionCode 1
         versionName "1.0"
@@ -44,6 +44,14 @@ android {
         experimental = true
     }
 
+    compileOptions {
+        sourceCompatibility 1.8
+        targetCompatibility 1.8
+    }
+
+    packagingOptions {
+        exclude 'META-INF/**'
+    }
 }
 
 dependencies {
@@ -102,5 +110,11 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
+    implementation "org.springframework:spring-websocket:$websocket_version"
+    implementation "org.springframework:spring-messaging:$websocket_version"
+
+    implementation "com.google.code.gson:gson:2.8.6"
+    implementation "org.glassfish.tyrus.bundles:tyrus-standalone-client:1.15"
+    implementation "com.fasterxml.jackson.core:jackson-databind:2.10.0"
 
 }

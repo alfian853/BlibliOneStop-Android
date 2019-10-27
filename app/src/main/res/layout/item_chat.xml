@@ -4,15 +4,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:padding="8dp">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
         android:layout_width="36dp"
         android:layout_height="36dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginTop="16dp"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="18dp"
         app:cardPreventCornerOverlap="false"
@@ -27,14 +25,14 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
+        android:id="@+id/tv_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:includeFontPadding="false"
         android:maxLines="1"
         android:text="@string/username"
-        android:textStyle="bold"
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView" />
 
@@ -42,14 +40,13 @@
         android:id="@+id/tv_message"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/chat_tip"
-        android:maxWidth="315dp"
-        android:padding="12dp"
+        android:includeFontPadding="false"
         android:text="Hello\nMy name is alfian"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
+        style="@style/ChatTip"
+        android:textColor="@color/black"
+        app:layout_constraintStart_toStartOf="@+id/tv_username"
         app:layout_constraintTop_toTopOf="@+id/cardView" />
 
     <TextView

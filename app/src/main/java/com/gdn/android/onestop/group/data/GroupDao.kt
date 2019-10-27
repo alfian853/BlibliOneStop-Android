@@ -18,15 +18,25 @@ interface GroupDao {
             insertGroup(it)
         }
     }
+    
+    @Query("select * from `Group`")
+    suspend fun getAllGroup() : List<Group>
 
-    @Query("delete from `group`")
+    @Query("select * from `Group` where type = :groupType")
+    fun getGroupByType(groupType : Int) :  LiveData<List<Group>>
+
+    @Query("delete from `Group`")
     suspend fun deleteAllGroup()
+
+    @Query("delete from `Group` where id = :groupId")
+    fun deleteGroupById(groupId : String)
 
     @Query("delete from GroupInfo where id = :groupId")
     suspend fun deleteGroupInfoById(groupId: String)
 
     @Query("delete from GroupChat where id = :groupId")
     suspend fun deleteGroupChatById(groupId: String)
+
 
     @Transaction
     suspend fun deleteGroupData(groupId: String){
@@ -35,16 +45,20 @@ interface GroupDao {
         deleteGroupInfoById(groupId)
     }
 
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroupInfo(groupInfo: GroupInfo)
 
+    @Query("select * from GroupInfo where id = :groupId")
+    suspend fun getGroupInfo(groupId: String) : GroupInfo
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroupChat(groupChat: GroupChat)
+    suspend fun insertGroupChat(vararg groupChat: GroupChat)
 
-    @Query("select * from `group` where type = :groupType")
-    fun getGroupByType(groupType : Int) :  LiveData<List<Group>>
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroupChat(groupChat: List<GroupChat>)
 
-    @Query("delete from `group` where id = :groupId")
-    fun deleteGroupById(groupId : String)
+    @Query("select * from GroupChat where groupId = :groupId")
+    fun getGroupChatLiveData(groupId: String) : LiveData<List<GroupChat>>
 
 }

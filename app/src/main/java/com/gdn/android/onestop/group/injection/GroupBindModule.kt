@@ -2,6 +2,7 @@ package com.gdn.android.onestop.group.injection
 
 import androidx.lifecycle.ViewModel
 import com.gdn.android.onestop.app.ViewModelKey
+import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
 import dagger.Binds
 import dagger.Module
@@ -16,4 +17,10 @@ abstract class GroupBindModule {
     @IntoMap
     @ViewModelKey(GroupViewModel::class)
     abstract fun bindGroupViewModel(groupViewModel: GroupViewModel) : ViewModel
+
+    @GroupScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupChatViewModel::class)
+    abstract fun bindGroupChatViewModel(groupChatViewModel: GroupChatViewModel) : ViewModel
 }

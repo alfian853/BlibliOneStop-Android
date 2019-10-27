@@ -9,9 +9,18 @@ class GroupChatRepository
         private val groupClient: GroupClient) {
 
 
-    suspend fun loadMoreChat(){
+    fun getChatLiveData(groupId: String) = groupDao.getGroupChatLiveData(groupId)
 
-//        val response = groupClient.getGroupChat()
+    suspend fun loadMoreChatBefore(groupId : String){
+        val groupUser = groupDao.getGroupInfo(groupId)
+
+        val response = groupClient.getGroupChat(groupId, groupUser.lowerBoundTimeStamp, null)
+    }
+
+    suspend fun loadMoreChatAfter(groupId: String){
+        val groupUser = groupDao.getGroupInfo(groupId)
+
+        val response = groupClient.getGroupChat(groupId, null, groupUser.upperBoundTimeStamp)
     }
 
 }

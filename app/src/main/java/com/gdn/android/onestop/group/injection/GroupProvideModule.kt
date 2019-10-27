@@ -50,4 +50,10 @@ class GroupProvideModule {
     fun provideGroupUpdateManager(context: Context, sessionManager: SessionManager) : GroupUpdateManager {
         return GroupUpdateManager(context, sessionManager)
     }
+//
+//    @GroupScope
+//    @Provides
+//    fun provideChatSocketClient(groupDao: GroupDao, sessionManager: SessionManager): ChatSocketClient {
+//        return ChatSocketClient(groupDao, sessionManager,)
+//    }
 }

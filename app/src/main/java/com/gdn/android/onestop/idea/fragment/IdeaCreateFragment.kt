@@ -35,13 +35,6 @@ class IdeaCreateFragment : BaseFullSceenFragment<FragmentIdeaCreateBinding>() {
         viewmodel = ViewModelProvider(this, viewModelProviderFactory).get(IdeaCreateViewModel::class.java)
     }
 
-//    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-//        val dialog = super.onCreateDialog(savedInstanceState)
-//        dialog.window!!.requestFeature(Window.FEATURE_NO_TITLE)
-//        return dialog
-//    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -54,7 +47,7 @@ class IdeaCreateFragment : BaseFullSceenFragment<FragmentIdeaCreateBinding>() {
         databinding.btnIdeaSubmit.setOnClickListener {
             viewmodel.viewModelScope.launch {
                 viewmodel.postIdea()
-                findNavController().popBackStack()
+                fragmentManager!!.beginTransaction().remove(this@IdeaCreateFragment).commit()
             }
         }
 
@@ -79,19 +72,5 @@ class IdeaCreateFragment : BaseFullSceenFragment<FragmentIdeaCreateBinding>() {
         return databinding.root
     }
 
-
-//    override fun onStart() {
-//        super.onStart()
-//        val dialog: Dialog? = dialog
-//        if (dialog != null) {
-//            val displayMetrics = DisplayMetrics()
-//            val height = displayMetrics.heightPixels
-//            val width = displayMetrics.widthPixels
-////            val width = ViewGroup.LayoutParams.MATCH_PARENT
-////            val height = ViewGroup.LayoutParams.MATCH_PARENT
-//            dialog.window!!.setLayout(width, height)
-//            dialog.window!!.setBackgroundDrawable(ColorDrawable(Color.WHITE))
-//        }
-//    }
 
 }

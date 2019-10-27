@@ -1,7 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.gdn.android.onestop.group.fragment.GroupChatFragment">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.gdn.android.onestop.group.viewmodel.GroupChatViewModel" />
+    </data>
 
     <LinearLayout
         android:orientation="vertical"
@@ -47,6 +54,8 @@
             android:layout_weight="1"
             android:layout_width="match_parent"
             tools:itemCount="10"
+            app:stackFromEnd="true"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:listitem="@layout/item_chat"
             android:layout_height="0dp" />
 
@@ -59,11 +68,12 @@
             android:layout_height="wrap_content">
 
             <EditText
-                android:layout_weight="1"
+                android:layout_weight="10"
                 android:id="@+id/et_commentInput"
                 android:layout_marginLeft="3dp"
                 android:layout_marginRight="3dp"
                 android:maxLines="2"
+                android:text="@={viewmodel.chatText}"
                 android:layout_gravity="center_horizontal|center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -71,15 +81,17 @@
                 android:hint="@string/send_message"
                 android:inputType="textMultiLine" />
 
-            <Button
+            <ImageView
                 android:layout_weight="0.5"
+                android:layout_marginLeft="4dp"
                 android:id="@+id/btn_commentSubmit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|end"
-                android:background="@null"
-                android:text="@string/send"
-                android:textColor="@color/white" />
+                android:layout_width="@dimen/size_img_2"
+                android:layout_height="@dimen/size_img_2"
+                android:onClick="@{()->viewmodel.sendChat()}"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_send"
+                app:iconTint="@color/black"
+                android:layout_marginStart="4dp" />
         </LinearLayout>
     </LinearLayout>
 </layout>
