@@ -1,10 +1,11 @@
 package com.gdn.android.onestop.idea.injection
 
 import android.app.Application
+import android.util.Log
 import androidx.room.Room
-import com.gdn.android.onestop.idea.IdeaCommentRecyclerAdapter
-import com.gdn.android.onestop.idea.IdeaRecyclerAdapter
-import com.gdn.android.onestop.idea.VoteHelper
+import com.gdn.android.onestop.idea.util.IdeaCommentRecyclerAdapter
+import com.gdn.android.onestop.idea.util.IdeaRecyclerAdapter
+import com.gdn.android.onestop.idea.util.VoteHelper
 import com.gdn.android.onestop.idea.data.IdeaChannelRepository
 import com.gdn.android.onestop.idea.data.IdeaClient
 import com.gdn.android.onestop.idea.data.IdeaDao
@@ -47,6 +48,13 @@ class IdeaProvideModule {
     @Provides
     fun provideIdeaDao(ideaDatabase: IdeaDatabase): IdeaDao {
         return ideaDatabase.IdeaDao()
+    }
+
+    @IdeaScope
+    @Provides
+    fun provideIdeaChannelRepository(ideaDao: IdeaDao, ideaClient: IdeaClient): IdeaChannelRepository {
+        Log.d("idea","provide repo")
+        return IdeaChannelRepository(ideaDao, ideaClient)
     }
 
     @IdeaScope

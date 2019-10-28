@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.gdn.android.onestop.group.fragment.GroupSettingFragment">
+
+    <data>
+        <variable
+            name="groupName"
+            type="String"/>
+        <variable
+            name="groupCode"
+            type="String" />
+    </data>
+
+    <LinearLayout
+        android:padding="15dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_text_h4"
+            android:text="@{groupName,default=`Group Name`}"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/size_text_h5"
+            android:text="@{`Group code :`+groupCode,default=`Group code : abcd`}"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_view_member"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_group_thin"
+                android:gravity="end"
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
+
+            <TextView
+                android:id="@+id/tv_view_member"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_members"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_leave"
+                android:gravity="end"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_leave"
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
+
+            <TextView
+                android:id="@+id/tv_leave"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/leave_group"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

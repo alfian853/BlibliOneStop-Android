@@ -10,10 +10,10 @@ import retrofit2.http.*
 interface IdeaClient {
 
     @GET("/idea")
-    fun getIdeaPosts(
+    suspend fun getIdeaPosts(
         @Query("page") page : Int,
         @Query("item_per_page") itemPerPage : Int
-    ): Call<BaseResponse<List<IdeaPost>>>
+    ): Response<BaseResponse<List<IdeaPostResponse>>>
 
     @POST("/idea/{id}/vote")
     fun voteIdea(
@@ -28,9 +28,13 @@ interface IdeaClient {
         @Query("item_per_page") itemPerPage: Int
     ) : BaseResponse<List<IdeaComment>>
 
-    @POST("idea/{id}/comment")
+    @POST("/idea/{id}/comment")
     suspend fun postComment(
         @Path("id") id : String,
         @Body commentPostRequest: CommentPostRequest
     ) : Response<BaseResponse<IdeaComment>>
+
+    @POST("/idea")
+    suspend fun postIdea(@Body ideaPostRequest: IdeaPostRequest)
+            : Response<BaseResponse<IdeaPostResponse>>
 }

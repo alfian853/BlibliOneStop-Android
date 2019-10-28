@@ -1,8 +1,7 @@
 package com.gdn.android.onestop.base
 
 object UrlConstant {
-    const val BASE_URL : String = "http://10.151.252.163:8080"
-    const val LOGIN_PATH : String = "/auth/login"
-    const val IDEA_PATH : String = "/idea"
-
+    const val BASE_IP = "192.168.1.10:8080"
+    const val BASE_URL : String = "http://$BASE_IP"
+    const val BASE_SOCKET_URL : String = "ws://$BASE_IP/websocket"
 }

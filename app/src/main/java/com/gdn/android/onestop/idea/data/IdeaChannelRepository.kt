@@ -5,22 +5,11 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
-import com.gdn.android.onestop.base.BaseResponse
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.text.SimpleDateFormat
 import java.util.*
-import javax.inject.Inject
 
-class IdeaChannelRepository @Inject constructor(
-    private val ideaDao: IdeaDao,
-    private val ideaClient: IdeaClient
-) {
+class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient: IdeaClient) {
 
-    private val ideaBoundaryCallback = IdeaBoundaryCallback(this)
     @SuppressLint("SimpleDateFormat")
     val simple = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
 
@@ -28,100 +17,90 @@ class IdeaChannelRepository @Inject constructor(
     var isFetching = false
 
     companion object {
-        private const val ITEM_PER_PAGE = 2
+        private const val ITEM_PER_PAGE = 4
         private const val TAG = "ideaRepository"
     }
 
     private var ideaLiveData :LiveData<PagedList<IdeaPost>>
 
     init {
+        Log.d("idea","create channel repo")
         this.ideaLiveData = LivePagedListBuilder(
-                ideaDao.getIdeaDataSourceFactory(), ITEM_PER_PAGE
-            ).setBoundaryCallback(ideaBoundaryCallback).build()
+            ideaDao.getIdeaDataSourceFactory(), ITEM_PER_PAGE
+        ).build()
     }
 
-    fun save(ideaPost: IdeaPost){
-        Single.create<Unit> {
-            ideaDao.savePost(ideaPost)
-        }.subscribeOn(Schedulers.single())
-            .subscribe()
+    suspend fun update(ideaPost : IdeaPost){
+        ideaDao.updateIdea(ideaPost)
     }
 
     fun getIdeaLiveData() : LiveData<PagedList<IdeaPost>> = ideaLiveData
 
-    fun reloadIdeaChannelData() : Single<Boolean> {
-        return Single.create<Boolean> {s ->
-            lastPageRequest = 1
-            this.fetchMoreData().subscribeOn(Schedulers.io()).subscribe{ ideaList ->
-                Single.create<Unit> {
-                    if(ideaList.isNotEmpty()){
-                        ideaDao.deleteAllIdeaPost()
-                        ideaDao.savePost(ideaList)
-                    }
-                }.subscribeOn(Schedulers.io()).subscribe()
-                s.onSuccess(true)
-            }
+    suspend fun reloadIdeaChannelData() {
+        lastPageRequest = 1
+        this.fetchMoreData().let {
+            ideaDao.deleteAllIdeaPost()
+            ideaDao.insertIdea(it)
         }
     }
 
-    fun loadMoreData() : Single<Boolean> {
-        return Single.create{ s ->
-            this.fetchMoreData().subscribeOn(Schedulers.io())
-                .doOnError { s.onSuccess(false) }
-                .subscribe { ideaList ->
-                    Single.create<Unit> {
-                        ideaDao.savePost(ideaList)
-                    }.subscribeOn(Schedulers.io()).subscribe()
-                    s.onSuccess(true)
-                }
-        }
+    suspend fun loadMoreData() {
+        val ideaList = fetchMoreData()
+        ideaDao.insertIdea(ideaList)
     }
 
-    private fun fetchMoreData() : Single<List<IdeaPost>> {
-        return Single.create{getMoreDataSub ->
-            if(isFetching){
-                getMoreDataSub.onSuccess(emptyList())
+    private fun mapIdeaPostResponseToModel(response : IdeaPostResponse) : IdeaPost{
+        val ideaPost = IdeaPost()
+        ideaPost.id = response.id
+        ideaPost.commentCount = response.commentCount
+        ideaPost.isMeVoteUp = response.isMeVoteUp
+        ideaPost.isMeVoteDown = response.isMeVoteDown
+        ideaPost.upVoteCount = response.upVoteCount
+        ideaPost.downVoteCount = response.downVoteCount
+        ideaPost.username = response.username
+        ideaPost.content = response.content
+
+        val calender = Calendar.getInstance()
+        calender.timeInMillis = response.createdAt
+        ideaPost.createdAt = simple.format(calender.time)
+        return ideaPost
+    }
+
+    private suspend fun fetchMoreData() : List<IdeaPost> {
+        if(isFetching){
+            return emptyList()
+        }
+        else{
+            isFetching = true
+            Log.d(TAG, "page : $lastPageRequest")
+            val response = ideaClient.getIdeaPosts(lastPageRequest, ITEM_PER_PAGE)
+            if(response.isSuccessful && response.body()?.data != null){
+
+                val ideaList : List<IdeaPost> = response.body()?.data!!.map(this::mapIdeaPostResponseToModel)
+
+                ideaDao.insertIdea(ideaList)
+                lastPageRequest++
+                isFetching = false
+                return ideaList
             }
             else{
-                isFetching = true
-                Log.d(TAG, "page : $lastPageRequest")
-                ideaClient.getIdeaPosts(lastPageRequest, ITEM_PER_PAGE).enqueue(
-                    object : Callback<BaseResponse<List<IdeaPost>>> {
-                        override fun onFailure(call: Call<BaseResponse<List<IdeaPost>>>, t: Throwable) {
-                            t.printStackTrace()
-                            getMoreDataSub.onSuccess(emptyList())
-                        }
-
-                        override fun onResponse(
-                            call: Call<BaseResponse<List<IdeaPost>>>,
-                            response: Response<BaseResponse<List<IdeaPost>>>
-                        ) {
-                            if(response.isSuccessful && response.body()?.data != null){
-
-                                response.body()?.data?.let { ideaList ->
-                                    ideaList.forEach {
-                                        val calender = Calendar.getInstance()
-                                        calender.timeInMillis = it.createdAt.toLong()
-                                        it.createdAt = simple.format(calender.time)
-                                    }
-                                    lastPageRequest++
-                                    isFetching = false
-                                    getMoreDataSub.onSuccess(ideaList)
-                                }
-                            }
-                            else{
-                                getMoreDataSub.onSuccess(emptyList())
-                            }
-
-                        }
-                    }
-                )
-
+                return emptyList()
             }
-
         }
-
-
     }
+
+    suspend fun postIdea(content : String) : Boolean {
+        val response = ideaClient.postIdea(IdeaPostRequest(content))
+
+        if(response.isSuccessful){
+            val ideaPost : IdeaPost = mapIdeaPostResponseToModel(response.body()!!.data!!)
+            ideaDao.insertIdea(ideaPost)
+            return true
+        }
+        else{
+            return false
+        }
+    }
+
 
 }

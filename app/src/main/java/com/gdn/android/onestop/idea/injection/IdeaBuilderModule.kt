@@ -1,7 +1,8 @@
 package com.gdn.android.onestop.idea.injection
 
-import com.gdn.android.onestop.idea.IdeaChannelFragment
-import com.gdn.android.onestop.idea.IdeaDetailFragment
+import com.gdn.android.onestop.idea.fragment.IdeaChannelFragment
+import com.gdn.android.onestop.idea.fragment.IdeaCreateFragment
+import com.gdn.android.onestop.idea.fragment.IdeaDetailFragment
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -16,4 +17,7 @@ abstract class IdeaBuilderModule {
     @ContributesAndroidInjector(modules = [IdeaBindModule::class, IdeaProvideModule::class])
     abstract fun contributeIdeaFragment() : IdeaDetailFragment
 
+    @IdeaScope
+    @ContributesAndroidInjector(modules = [IdeaBindModule::class, IdeaProvideModule::class])
+    abstract fun contributeIdeaCreateFragment() : IdeaCreateFragment
 }

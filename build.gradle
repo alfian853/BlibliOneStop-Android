@@ -23,7 +23,7 @@ buildscript {
     ext.swipeLayout_version = '1.1.0-alpha02'
     ext.cardView_version = '1.0.0'
     ext.recyclerView_version = '1.1.0-beta04'
-
+    ext.websocket_version = '5.1.10.RELEASE'
     repositories {
         google()
         jcenter()

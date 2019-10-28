@@ -6,7 +6,7 @@
     app:startDestination="@id/ideaChannelFragment">
     <fragment
         android:id="@+id/ideaChannelFragment"
-        android:name="com.gdn.android.onestop.idea.IdeaChannelFragment"
+        android:name="com.gdn.android.onestop.idea.fragment.IdeaChannelFragment"
         android:label="@string/label_idea_channel"
         tools:layout="@layout/fragment_idea_channel" >
         <action
@@ -15,24 +15,61 @@
             app:enterAnim="@anim/fade_in"
             app:exitAnim="@anim/fade_out"
             app:popExitAnim="@anim/fade_out" />
+        <action
+            android:id="@+id/to_idea_create"
+            app:destination="@id/ideaCreateFragment" />
     </fragment>
     <fragment
         android:id="@+id/ideaDetailFragment"
-        android:name="com.gdn.android.onestop.idea.IdeaDetailFragment"
+        android:name="com.gdn.android.onestop.idea.fragment.IdeaDetailFragment"
         tools:layout="@layout/fragment_idea_detail"
-        android:label="@string/label_idea_detail" >
+        android:label="@string/label_idea_channel" >
         <argument
             android:name="ideaPost"
             app:argType="com.gdn.android.onestop.idea.data.IdeaPost" />
     </fragment>
     <fragment
-        android:id="@+id/channelFragment"
-        android:name="com.gdn.android.onestop.channel.ChannelFragment"
-        android:label="Channels"
-        tools:layout="@layout/fragment_channel" />
+        android:id="@+id/groupFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupFragment"
+        android:label="@string/label_idea_channel"
+        tools:layout="@layout/fragment_group" >
+        <action
+            android:id="@+id/action_groupFragment_to_groupCreateFragment"
+            app:destination="@id/groupCreateFragment" />
+        <action
+            android:id="@+id/action_groupFragment_to_groupChatFragment"
+            app:destination="@id/groupChatFragment" />
+
+    </fragment>
     <activity
         android:id="@+id/loginActivity"
         android:name="com.gdn.android.onestop.login.LoginActivity"
-        android:label="activity_login"
+        android:label="Login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/ideaCreateFragment"
+        android:name="com.gdn.android.onestop.idea.fragment.IdeaCreateFragment"
+        android:label="@string/label_idea_channel"
+        tools:layout="@layout/fragment_idea_create" />
+    <fragment
+        android:id="@+id/groupCreateFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupCreateFragment"
+        android:label="fragment_group_create"
+        tools:layout="@layout/fragment_group_create" >
+<!--        <action-->
+<!--            android:id="@+id/action_groupCreateFragment_to_groupChatFragment"-->
+<!--            app:destination="@id/groupChatFragment" />-->
+        <action
+            android:id="@+id/action_groupCreateFragment_to_groupChatFragment"
+            app:destination="@id/groupChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupChatFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupChatFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room">
+        <argument
+            android:name="groupModel"
+            app:argType="com.gdn.android.onestop.group.data.Group" />
+    </fragment>
 </navigation>

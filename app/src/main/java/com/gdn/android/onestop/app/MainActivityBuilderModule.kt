@@ -17,8 +17,8 @@ abstract class MainActivityBuilderModule{
     abstract fun bindAndroidInjectorFactory(factory: MainActivitySubcomponent.Factory): Factory<*>
 
     @Subcomponent
-    interface MainActivitySubcomponent : AndroidInjector<MainActivity?> {
+    interface MainActivitySubcomponent : AndroidInjector<MainActivity> {
         @Subcomponent.Factory
-        interface Factory : AndroidInjector.Factory<MainActivity?>
+        interface Factory : AndroidInjector.Factory<MainActivity>
     }
 }

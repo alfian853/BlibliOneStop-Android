@@ -25,6 +25,8 @@
             <nav-graph android:value="@navigation/main_navigation" />
         </activity>
         <activity android:name=".login.LoginActivity" />
+
+        <service android:name=".group.ChatService"/>
     </application>
 
 </manifest>

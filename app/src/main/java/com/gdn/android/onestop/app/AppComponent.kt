@@ -3,7 +3,7 @@ package com.gdn.android.onestop.app
 import android.app.Application
 import android.content.Context
 import com.gdn.android.onestop.OneStopApplication
-import com.gdn.android.onestop.channel.injection.ChannelBuilderModule
+import com.gdn.android.onestop.group.injection.GroupBuilderModule
 import com.gdn.android.onestop.idea.injection.IdeaBuilderModule
 import com.gdn.android.onestop.login.injection.LoginBuilderModule
 import com.gdn.android.onestop.util.SessionManager
@@ -18,7 +18,7 @@ import dagger.android.AndroidInjector
         AppModule::class,
         MainActivityBuilderModule::class,
         IdeaBuilderModule::class,
-        ChannelBuilderModule::class,
+        GroupBuilderModule::class,
         LoginBuilderModule::class,
         FactoryModule::class
     ]

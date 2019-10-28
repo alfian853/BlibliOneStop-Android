@@ -29,7 +29,5 @@ class LoginActivity : BaseActivity<ActivityLoginBinding>(){
         loginViewModel.contextWrapper = DefaultContextWrapper(this)
 
         this.databinding.viewmodel = loginViewModel
-
-        Log.d("idea","masuk loginnn")
     }
 }

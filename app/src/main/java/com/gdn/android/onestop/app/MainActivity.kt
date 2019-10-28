@@ -1,14 +1,12 @@
 package com.gdn.android.onestop.app
 
 import android.os.Bundle
-import android.view.View
 import androidx.appcompat.widget.Toolbar
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.base.BaseActivity
@@ -34,12 +32,19 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setupBottomNavMenu(navController)
 
         navController.addOnDestinationChangedListener{ _, destination, _ ->
-            if(destination.id == R.id.ideaDetailFragment){
-                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.GONE
+
+            when(destination.id){
+//                R.id.ideaDetailFragment, R.id.ideaCreateFragment
+//                -> findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.GONE
+//                else -> findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.VISIBLE
+
             }
-            else{
-                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.VISIBLE
-            }
+//            if(destination.id == R.id.ideaDetailFragment){
+//                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.GONE
+//            }
+//            else{
+//                findViewById<BottomNavigationView>(R.id.nav_bottom_main).visibility = View.VISIBLE
+//            }
         }
     }
 
@@ -49,8 +54,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setSupportActionBar(toolbar)
 
 
-        appBarConfiguration = AppBarConfiguration(navController.graph)
-        setupActionBarWithNavController(navController, appBarConfiguration)
+//        appBarConfiguration = AppBarConfiguration(navController.graph)
+//        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun onSupportNavigateUp(): Boolean {
