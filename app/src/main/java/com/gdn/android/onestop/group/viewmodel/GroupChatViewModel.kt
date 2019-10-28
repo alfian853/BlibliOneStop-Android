@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.group.viewmodel
 
+import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.viewModelScope
@@ -24,7 +25,18 @@ constructor(
     var activeGroup : Group? = null
     set(value){
         field = value
-        chat.groupId = value?.id ?: ""
+        value?.id?.let {
+            chat.groupId = it
+            viewModelScope.launch {
+                val groupInfo = groupDao.getGroupInfo(it)
+                if(groupInfo.isNeverFetched()){
+                    groupChatRepository.loadMoreChatBefore(it)
+                }
+                else{
+                    groupChatRepository.loadMoreChatAfter(it)
+                }
+            }
+        }
     }
     private var chat : ChatSendRequest = ChatSendRequest()
 
@@ -35,6 +47,20 @@ constructor(
         chat.text = value
         field = value
         notifyPropertyChanged(BR.chatText)
+    }
+
+    fun loadMoreChatBefore(){
+        viewModelScope.launch {
+            groupChatRepository.loadMoreChatBefore(activeGroup!!.id)
+        }
+    }
+
+    fun loadMoreChatAfter(){
+        if(!ChatSocketClient.isConnected()){
+            viewModelScope.launch {
+                groupChatRepository.loadMoreChatAfter(activeGroup!!.id)
+            }
+        }
     }
 
     fun setOnReplyChat(repliedChatId : String, repliedSummary : String){

@@ -41,8 +41,8 @@ class GroupProvideModule {
 
     @GroupScope
     @Provides
-    fun provideGroupChatRepository(groupDao: GroupDao, groupClient: GroupClient) : GroupChatRepository {
-        return GroupChatRepository(groupDao, groupClient)
+    fun provideGroupChatRepository(groupDao: GroupDao, groupClient: GroupClient, sessionManager: SessionManager) : GroupChatRepository {
+        return GroupChatRepository(groupDao, groupClient, sessionManager)
     }
 
     @GroupScope

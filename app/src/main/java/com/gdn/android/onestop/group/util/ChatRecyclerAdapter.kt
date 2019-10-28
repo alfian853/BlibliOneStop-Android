@@ -17,7 +17,7 @@ import java.util.*
 
 class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    private var chatList : List<GroupChat> = LinkedList()
+    var chatList : List<GroupChat> = LinkedList()
 
     companion object {
         private const val MESSAGE_TYPE = 0

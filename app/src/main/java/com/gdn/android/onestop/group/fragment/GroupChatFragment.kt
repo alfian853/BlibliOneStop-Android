@@ -1,6 +1,5 @@
 package com.gdn.android.onestop.group.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +10,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
+import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.databinding.FragmentChatRoomBinding
@@ -47,8 +47,10 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
 
     val chatObserver = Observer<List<GroupChat>> {
         Log.d("chat-onestop","on update")
+        val newMsg = (it.size - chatRvAdapter.chatList.size) == 1
+
         chatRvAdapter.updateChatList(it)
-        databinding.rvChat.scrollToPosition(chatRvAdapter.itemCount-1)
+        if(newMsg)databinding.rvChat.scrollToPosition(chatRvAdapter.itemCount-1)
     }
 
     lateinit var chatLiveData : LiveData<List<GroupChat>>
@@ -77,9 +79,24 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
         val intent = Intent(this.context, ChatService::class.java)
         this.context!!.startService(intent)
 
+
         databinding.ivBack.setOnClickListener {
             fragmentManager!!.beginTransaction().remove(this).commit()
         }
+
+        databinding.rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener(){
+
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+
+                if(!recyclerView.canScrollVertically(-1)){
+                    viewmodel.loadMoreChatBefore()
+                }
+                else if(!recyclerView.canScrollVertically(1)){
+                    viewmodel.loadMoreChatAfter()
+                }
+            }
+        })
 
         return databinding.root
     }

@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.group.data
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
 
@@ -18,7 +19,7 @@ interface GroupDao {
             insertGroup(it)
         }
     }
-    
+
     @Query("select * from `Group`")
     suspend fun getAllGroup() : List<Group>
 
@@ -50,7 +51,19 @@ interface GroupDao {
     suspend fun insertGroupInfo(groupInfo: GroupInfo)
 
     @Query("select * from GroupInfo where id = :groupId")
-    suspend fun getGroupInfo(groupId: String) : GroupInfo
+    suspend fun _getGroupInfo(groupId: String) : GroupInfo?
+
+    @Transaction
+    suspend fun getGroupInfo(groupId: String): GroupInfo {
+        var groupInfo : GroupInfo? = _getGroupInfo(groupId)
+        if(groupInfo == null){
+            groupInfo = GroupInfo()
+            groupInfo.id = groupId
+            insertGroupInfo(groupInfo)
+            Log.d("chat-onestop","create new info")
+        }
+        return groupInfo
+    }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroupChat(vararg groupChat: GroupChat)
@@ -58,7 +71,7 @@ interface GroupDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertGroupChat(groupChat: List<GroupChat>)
 
-    @Query("select * from GroupChat where groupId = :groupId")
+    @Query("select * from GroupChat where groupId = :groupId order by createdAt asc")
     fun getGroupChatLiveData(groupId: String) : LiveData<List<GroupChat>>
 
 }

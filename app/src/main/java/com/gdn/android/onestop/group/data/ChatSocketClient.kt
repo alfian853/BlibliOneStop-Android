@@ -1,8 +1,9 @@
 package com.gdn.android.onestop.group.data
 
+import android.util.Log
 import com.gdn.android.onestop.base.UrlConstant.BASE_SOCKET_URL
+import com.gdn.android.onestop.group.util.GroupUtil
 import com.gdn.android.onestop.util.SessionManager
-import com.google.gson.Gson
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -22,8 +23,12 @@ class ChatSocketClient {
     companion object {
         private const val emitChatEndpoint : String = "/emit/chat"
         private const val subscribeChatEndpoint = "/subscribe/chat"
-        private val gson = Gson()
         private var instance : ChatSocketClient? = null
+
+        fun isConnected() : Boolean {
+            return if(instance != null) instance!!.isConnected
+            else false
+        }
 
         fun getInstance(
             groupDao: GroupDao,
@@ -72,10 +77,10 @@ class ChatSocketClient {
 
 
     fun connect() {
-            if(isConnected)return //it.onSuccess(Unit)
+            if(isConnected)return
             this.sessionHandler = object : StompSessionHandler {
                 override fun getPayloadType(headers: StompHeaders): Type {
-                    return GroupChat::class.java
+                    return GroupChatResponse::class.java
                 }
 
                 override fun afterConnected(
@@ -87,6 +92,7 @@ class ChatSocketClient {
                     val refSessionHandler = this
                     GlobalScope.launch {
                         val groupList = groupDao.getAllGroup()
+                        Log.d("chat-onestop","connected to server")
                         groupList.forEach {
                             stompSession.subscribe("$subscribeChatEndpoint/${it.id}", refSessionHandler)
                         }
@@ -101,6 +107,7 @@ class ChatSocketClient {
                     exception: Throwable
                 ) {
                     exception.printStackTrace()
+                    Log.d("chat-onestop",exception.message)
                 }
 
                 override fun handleTransportError(
@@ -108,19 +115,26 @@ class ChatSocketClient {
                     exception: Throwable
                 ) {
                     exception.printStackTrace()
+                    Log.d("chat-onestop",exception.message)
                 }
-
 
                 override fun handleFrame(
                     headers: StompHeaders?,
                     payload: Any?
                 ) {
-                    val response = payload as GroupChat
-                    val groupId = headers!!.destination.substring(subscribeChatEndpoint.length+1)
-                    response.groupId = groupId
+                    val response = payload as GroupChatResponse
+                    Log.d("chat-onestop","receive response ${response.text}")
                     coroutineScope.launch {
-                        response.isMe = response.username == sessionManager.user!!.username
-                        groupDao.insertGroupChat(response)
+                        val groupChat = GroupUtil.mapChatResponse(response)
+                        groupChat.isMe = response.username == sessionManager.user!!.username
+
+                        val groupId = headers!!.destination.substring(subscribeChatEndpoint.length+1)
+                        groupChat.groupId = groupId
+
+                        groupDao.insertGroupChat(groupChat)
+                        val groupInfo = groupDao.getGroupInfo(groupId)
+                        groupInfo.upperBoundTimeStamp = response.createdAt
+                        groupDao.insertGroupInfo(groupInfo)
                     }
                 }
             }
@@ -130,13 +144,11 @@ class ChatSocketClient {
             // use '-' as separator for avoid invalid character exception
             headers.add("Authorization", "Bearer-"+sessionManager.user!!.token)
             stompClient.connect(BASE_SOCKET_URL, headers, sessionHandler)
-
     }
 
     suspend fun sendChat(request : ChatSendRequest) {
         if (!isConnected) return
         GlobalScope.launch {
-            val gson = Gson()
             stompSession.send(emitChatEndpoint, request)
         }
     }

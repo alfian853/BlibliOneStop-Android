@@ -15,12 +15,13 @@ interface GroupClient{
         @Body createGroupRequest: CreateGroupRequest
     ) : Response<BaseResponse<Group>>
 
-    @GET("/group/{groupId}")
+    @GET("/group/{groupId}/chat")
     suspend fun getGroupChat(
         @Path("groupId") groupId : String,
+        @Query("before_time") beforeTime : Long?,
         @Query("after_time") afterTime : Long?,
-        @Query("before_time") beforeTime : Long?
-    ) : Response<BaseResponse<List<GroupChat>>>
+        @Query("size") size : Int
+    ) : Response<BaseResponse<List<GroupChatResponse>>>
 
     @GET("/group/last_update")
     suspend fun getLastUpdate() : Response<BaseResponse<Long>>

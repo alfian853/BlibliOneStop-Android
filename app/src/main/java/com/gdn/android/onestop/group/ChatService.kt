@@ -6,6 +6,7 @@ import android.os.IBinder
 import android.util.Log
 import com.gdn.android.onestop.group.data.ChatSocketClient
 import com.gdn.android.onestop.group.data.GroupDao
+import com.gdn.android.onestop.group.data.GroupUpdateManager
 import com.gdn.android.onestop.util.SessionManager
 import dagger.android.DaggerIntentService
 import dagger.android.DaggerService
@@ -32,9 +33,8 @@ class ChatService : DaggerService(), CoroutineScope {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Log.d("chat-onestop","start service")
-        val chatSocketClient : ChatSocketClient = ChatSocketClient.getInstance(groupDao, sessionManager, this)
-        Log.d("chat-onestop",chatSocketClient.toString())
-        Log.d("chat-onestop","current service thread : ${Thread.currentThread().name}")
+        val chatSocketClient : ChatSocketClient
+                = ChatSocketClient.getInstance(groupDao, sessionManager, this)
         this.launch {
             chatSocketClient.connect()
         }
@@ -42,7 +42,8 @@ class ChatService : DaggerService(), CoroutineScope {
     }
 
     override fun onDestroy() {
-        Log.d("chat-onestop","Iam died :(")
+        Log.d("chat-onestop","Service died :(")
+
         super.onDestroy()
     }
 }

@@ -12,7 +12,6 @@ import com.gdn.android.onestop.R
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.databinding.FragmentGroupCreateBinding
-//import com.gdn.android.onestop.group.data.ChatSocketClient
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
 import kotlinx.coroutines.launch

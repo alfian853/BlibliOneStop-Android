@@ -14,5 +14,5 @@ class ChatSendRequest : Serializable{
     var repliedId: String? = null
 
     var isMeeting = false
-    var meetingDate: Long = 0
+    var meetingDate: Long? = null
 }
