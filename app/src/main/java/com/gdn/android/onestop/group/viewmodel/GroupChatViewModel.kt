@@ -87,10 +87,10 @@ constructor(
 
     private fun convertRequestChatToGroupChat(request: ChatSendRequest) : GroupChat{
         return GroupChat().apply {
-            this.isMe = true
-            this.text = request.text
-            this.isSending = true
-            this.createdAt = Long.MAX_VALUE
+            isMe = true
+            text = request.text
+            isSending = true
+            createdAt = Long.MAX_VALUE
         }
     }
 
