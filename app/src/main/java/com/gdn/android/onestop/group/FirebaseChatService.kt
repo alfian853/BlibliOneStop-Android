@@ -49,18 +49,19 @@ class FirebaseChatService : FirebaseMessagingService() {
         Log.d("chat-onestop-firebase",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(message.data))
         val data = message.data
         if(data["username"]!! == username)return
-        val chat = GroupChat()
-        chat.id = data["id"]!!
-        chat.groupId = data["groupId"]!!
-        chat.text = data["text"]!!
-        chat.username = data["username"]!!
-        chat.createdAt = data["createdAt"]!!.toLong()
-        chat.isMeeting = data["isMeeting"]!!.toBoolean()
-        chat.meetingDate = data.getOrDefault("meetingDate",null)?.toLong()
-        chat.isReply = data["isReply"]!!.toBoolean()
-        chat.repliedId = data.getOrDefault("repliedId",null)
-        chat.repliedText = data.getOrDefault("repliedText",null)
-        chat.isMe = chat.username == username
+        val chat = GroupChat().apply {
+            id = data["id"]!!
+            groupId = data["groupId"]!!
+            text = data["text"]!!
+            username = data["username"]!!
+            createdAt = data["createdAt"]!!.toLong()
+            isMeeting = data["isMeeting"]!!.toBoolean()
+            meetingDate = data.getOrDefault("meetingDate",null)?.toLong()
+            isReply = data["isReply"]!!.toBoolean()
+            repliedId = data.getOrDefault("repliedId",null)
+            repliedText = data.getOrDefault("repliedText",null)
+            isMe = username == username
+        }
 
         GlobalScope.launch {
             groupDao.insertGroupChat(chat)
