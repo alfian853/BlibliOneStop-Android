@@ -1,6 +1,6 @@
 package com.gdn.android.onestop.group.injection
 
-import com.gdn.android.onestop.group.ChatService
+import com.gdn.android.onestop.group.FirebaseChatService
 import com.gdn.android.onestop.group.fragment.GroupChatFragment
 import com.gdn.android.onestop.group.fragment.GroupCreateFragment
 import com.gdn.android.onestop.group.fragment.GroupFragment
@@ -24,5 +24,5 @@ abstract class GroupBuilderModule {
 
     @GroupScope
     @ContributesAndroidInjector(modules = [GroupBindModule::class, GroupProvideModule::class])
-    abstract fun contributeChatService() : ChatService
+    abstract fun contributeFirebaseChatService() : FirebaseChatService
 }

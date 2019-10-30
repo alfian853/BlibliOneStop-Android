@@ -1,26 +1,34 @@
 package com.gdn.android.onestop.group.fragment
 
-import android.content.Intent
 import android.os.Bundle
+import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.NestedScrollView
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
+import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.gdn.android.onestop.app.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.databinding.FragmentChatRoomBinding
-import com.gdn.android.onestop.group.ChatService
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupChat
+import com.gdn.android.onestop.group.data.GroupClient
 import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
 import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import com.gdn.android.onestop.util.SessionManager
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -38,6 +46,9 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
     @Inject
     lateinit var viewmodel : GroupChatViewModel
 
+    @Inject
+    lateinit var groupClient: GroupClient
+
     private val chatRvAdapter = ChatRecyclerAdapter()
 
     val group : Group by lazy {
@@ -45,15 +56,33 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
         tmp.groupModel
     }
 
-    val chatObserver = Observer<List<GroupChat>> {
-        Log.d("chat-onestop","on update")
-        val newMsg = (it.size - chatRvAdapter.chatList.size) == 1
+    private val chatObserver = Observer<List<GroupChat>> {
+        if(it.isNotEmpty()){
+            if(chatRvAdapter.chatList.isEmpty()){
+                chatRvAdapter.updateChatList(it)
+                databinding.rvChat.scrollToPosition(it.size-1)
+            }
+            else{
+                // if load old chat
+                if(chatRvAdapter.chatList[0].createdAt > it[0].createdAt){
+                    val oldSize = chatRvAdapter.chatList.size
+                    val difSize = it.size-oldSize-1
+                    chatRvAdapter.chatList = it
+                    chatRvAdapter.notifyItemRangeInserted(0,difSize)
+                }
+                else{
+                    chatRvAdapter.chatList = it
+                    chatRvAdapter.notifyDataSetChanged()
+                    databinding.rvChat.scrollToPosition(it.size-1)
+                }
+            }
 
-        chatRvAdapter.updateChatList(it)
-        if(newMsg)databinding.rvChat.scrollToPosition(chatRvAdapter.itemCount-1)
+        }
     }
 
     lateinit var chatLiveData : LiveData<List<GroupChat>>
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -68,35 +97,44 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
         savedInstanceState: Bundle?
     ): View? {
         databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
-        chatLiveData = viewmodel.getChatLiveData(group.id)
+        chatLiveData = viewmodel.getChatLiveData()
         chatLiveData.observe(this, chatObserver)
 
         databinding.tvGroupName.text = group.name
         databinding.viewmodel = viewmodel
         databinding.rvChat.adapter = chatRvAdapter
-        Log.d("chat-onestop","current thread : ${Thread.currentThread().name}")
-
-        val intent = Intent(this.context, ChatService::class.java)
-        this.context!!.startService(intent)
 
 
         databinding.ivBack.setOnClickListener {
             fragmentManager!!.beginTransaction().remove(this).commit()
         }
 
-        databinding.rvChat.addOnScrollListener(object : RecyclerView.OnScrollListener(){
-
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-
-                if(!recyclerView.canScrollVertically(-1)){
-                    viewmodel.loadMoreChatBefore()
-                }
-                else if(!recyclerView.canScrollVertically(1)){
-                    viewmodel.loadMoreChatAfter()
-                }
+        databinding.rvChat.setOnScrollChangeListener { v, _, _, _, _ ->
+            if(!v.canScrollVertically(-1)){
+                viewmodel.loadMoreChatBefore()
             }
-        })
+        }
+
+        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(
+            OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    return@OnCompleteListener
+                }
+
+                // Get new Instance ID token
+                val token = task.result!!.token
+
+                viewmodel.viewModelScope.launch {
+                    groupClient.subscribeGroupsByToken(token)
+                }
+            })
+
+
+        databinding.btnChatSend.setOnClickListener {
+            viewmodel.viewModelScope.launch {
+                viewmodel.sendChat()
+            }
+        }
 
         return databinding.root
     }

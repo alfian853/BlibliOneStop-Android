@@ -17,7 +17,9 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient
 import org.springframework.web.socket.messaging.WebSocketStompClient
 import java.lang.reflect.Type
 
-
+/**
+ * Unused class/function, for archive purpose
+ */
 class ChatSocketClient {
 
     companion object {
@@ -125,8 +127,7 @@ class ChatSocketClient {
                     val response = payload as GroupChatResponse
                     Log.d("chat-onestop","receive response ${response.text}")
                     coroutineScope.launch {
-                        val groupChat = GroupUtil.mapChatResponse(response)
-                        groupChat.isMe = response.username == sessionManager.user!!.username
+                        val groupChat = GroupUtil.mapChatResponse(response, sessionManager.user!!.username)
 
                         val groupId = headers!!.destination.substring(subscribeChatEndpoint.length+1)
                         groupChat.groupId = groupId

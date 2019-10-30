@@ -18,6 +18,9 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.coroutines.CoroutineContext
 
+/**
+ * Unused class/function, for archive purpose
+ */
 class ChatService : DaggerService(), CoroutineScope {
     override fun onBind(intent: Intent?): IBinder? {
         throw UnsupportedOperationException("Not yet implemented")
@@ -43,7 +46,6 @@ class ChatService : DaggerService(), CoroutineScope {
 
     override fun onDestroy() {
         Log.d("chat-onestop","Service died :(")
-
         super.onDestroy()
     }
 }

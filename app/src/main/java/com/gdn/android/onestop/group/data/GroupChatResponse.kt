@@ -1,6 +1,6 @@
 package com.gdn.android.onestop.group.data
 
-import androidx.room.PrimaryKey
+import com.google.gson.annotations.SerializedName
 
 class GroupChatResponse {
     lateinit var id: String
@@ -9,9 +9,11 @@ class GroupChatResponse {
     lateinit var text: String
     var createdAt: Long = 0
 
+    @SerializedName("isReply")
     var isReply : Boolean = false
     var repliedId: String? = null
     var repliedText: String? = null
+    @SerializedName("isMeeting")
     var isMeeting : Boolean = false
     var meetingDate: Long? = null
 }

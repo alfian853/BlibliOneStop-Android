@@ -8,18 +8,18 @@ import com.gdn.android.onestop.util.toDateString
 class GroupUtil {
 
     companion object {
-        fun mapChatResponse(chatResponse: GroupChatResponse) : GroupChat {
+        fun mapChatResponse(chatResponse: GroupChatResponse, username : String) : GroupChat {
             val groupChat = GroupChat()
             groupChat.id = chatResponse.id
             groupChat.username = chatResponse.username
+            groupChat.isMe = username == chatResponse.username
             groupChat.text = chatResponse.text
 
-            groupChat.createdAt = chatResponse.createdAt.toDateString()
+            groupChat.createdAt = chatResponse.createdAt
             chatResponse.meetingDate?.let {
-                groupChat.meetingDate = it.toDateString()
+                groupChat.meetingDate = it
             }
             groupChat.isMeeting = chatResponse.isMeeting
-
             groupChat.isReply = chatResponse.isReply
             groupChat.repliedId = chatResponse.repliedId
             groupChat.repliedText = chatResponse.repliedText

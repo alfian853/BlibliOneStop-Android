@@ -1,7 +1,11 @@
 package com.gdn.android.onestop.group.data
 
+import android.util.Log
+import androidx.paging.LivePagedListBuilder
 import com.gdn.android.onestop.group.util.GroupUtil
 import com.gdn.android.onestop.util.SessionManager
+import kotlin.math.max
+import kotlin.math.min
 
 
 class GroupChatRepository constructor(
@@ -11,10 +15,10 @@ class GroupChatRepository constructor(
 
 
     companion object {
-        private const val PAGE_SIZE = 5
+        private const val PAGE_SIZE = 20
     }
 
-    val sessionUsername = sessionManager.user!!.username
+    private val sessionUsername = sessionManager.user!!.username
 
     fun getChatLiveData(groupId: String) = groupDao.getGroupChatLiveData(groupId)
 
@@ -26,12 +30,22 @@ class GroupChatRepository constructor(
         if(response.isSuccessful){
             response.body()?.data?.let {
                 if(it.isNotEmpty()){
-                    groupInfo.lowerBoundTimeStamp = it.minBy { it.createdAt }!!.createdAt
+
+                    var minTime = groupInfo.lowerBoundTimeStamp
+                    var maxTime = groupInfo.upperBoundTimeStamp
+
+                    it.forEach {
+                        maxTime = max(it.createdAt, maxTime)
+                        minTime = min(it.createdAt, minTime)
+                    }
+
+                    groupInfo.lowerBoundTimeStamp = minTime
+                    groupInfo.upperBoundTimeStamp = maxTime
+
                     groupDao.insertGroupInfo(groupInfo)
                     val chatList : List<GroupChat> = it.map {
-                        GroupUtil.mapChatResponse(it).apply {
+                        GroupUtil.mapChatResponse(it, sessionUsername).apply {
                             this.groupId = groupId
-                            this.isMe = this.username == sessionUsername
                         }
                     }
                     groupDao.insertGroupChat(chatList)
@@ -52,10 +66,21 @@ class GroupChatRepository constructor(
         if(response.isSuccessful){
             response.body()?.data?.let {
                 if(it.isNotEmpty()){
-                    groupInfo.upperBoundTimeStamp = it.maxBy { it.createdAt }!!.createdAt
+
+                    var minTime = groupInfo.lowerBoundTimeStamp
+                    var maxTime = groupInfo.upperBoundTimeStamp
+
+                    it.forEach {
+                        maxTime = max(it.createdAt, maxTime)
+                        minTime = min(it.createdAt, minTime)
+                    }
+
+                    groupInfo.lowerBoundTimeStamp = minTime
+                    groupInfo.upperBoundTimeStamp = maxTime
+
                     groupDao.insertGroupInfo(groupInfo)
                     val chatList : List<GroupChat> = it.map {
-                        GroupUtil.mapChatResponse(it).apply {
+                        GroupUtil.mapChatResponse(it, sessionUsername).apply {
                             this.groupId = groupId
                             this.isMe = this.username == sessionUsername
                         }
@@ -64,6 +89,20 @@ class GroupChatRepository constructor(
                 }
             }
         }
+    }
+
+    suspend fun sendChat(groupId: String, chatSendRequest: ChatSendRequest): Boolean {
+
+        val response = groupClient.postGroupChat(groupId, chatSendRequest)
+
+        if(response.isSuccessful){
+            val groupChat = GroupUtil.mapChatResponse(response.body()!!.data!!, sessionUsername).apply {
+                this.groupId = groupId
+            }
+            groupDao.insertGroupChat(groupChat)
+        }
+
+        return response.isSuccessful
     }
 
 }
