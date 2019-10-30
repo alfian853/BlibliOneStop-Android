@@ -4,14 +4,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.appcompat.view.menu.ActionMenuItemView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.R
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.util.toDateString
-import kotlinx.android.synthetic.main.item_chat.view.*
 import java.util.*
 
 
@@ -70,7 +69,7 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         val chat = chatList[position]
         if(holder is ChatViewHolder){
             holder.tvName.text = chat.username
-            holder.tvDate.text = chat.createdAt
+            holder.tvDate.text = chat.createdAt.toDateString()
             holder.tvMessage.text = chat.text
             Glide.with(holder.itemView)
                 .load(R.drawable.ic_default_user)
@@ -78,7 +77,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         }
         else if(holder is MyChatViewHolder){
             holder.tvMessage.text = chat.text
-            holder.tvDate.text = chat.createdAt
+            holder.tvDate.text = chat.createdAt.toDateString()
+            holder.pbSending.visibility = if(chat.isSending)View.VISIBLE
+                                        else View.GONE
         }
     }
 
@@ -93,6 +94,7 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     inner class MyChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val tvMessage : TextView =itemView.findViewById(R.id.tv_message)
         val tvDate : TextView = itemView.findViewById(R.id.tv_date)
+        val pbSending : ProgressBar = itemView.findViewById(R.id.pb_sending)
     }
 
     //TODO add remain view holder

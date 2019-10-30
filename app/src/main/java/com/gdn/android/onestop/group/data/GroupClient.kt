@@ -23,6 +23,12 @@ interface GroupClient{
         @Query("size") size : Int
     ) : Response<BaseResponse<List<GroupChatResponse>>>
 
+    @POST("/group/{groupId}/chat")
+    suspend fun postGroupChat(
+        @Path("groupId") groupId: String,
+        @Body groupChatSendRequest: ChatSendRequest
+    ) : Response<BaseResponse<GroupChatResponse>>
+
     @GET("/group/last_update")
     suspend fun getLastUpdate() : Response<BaseResponse<Long>>
 
@@ -36,4 +42,8 @@ interface GroupClient{
         @Path("groupId") groupId: String
     ) : Response<BaseResponse<Boolean>>
 
+    @POST("/group/subscribe")
+    suspend fun subscribeGroupsByToken(
+        @Query("token")token : String
+    ) : Response<BaseResponse<Boolean>>
 }

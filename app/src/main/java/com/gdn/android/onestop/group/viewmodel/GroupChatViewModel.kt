@@ -1,32 +1,44 @@
 package com.gdn.android.onestop.group.viewmodel
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MediatorLiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.ObservableViewModel
 import com.gdn.android.onestop.group.data.*
-import com.gdn.android.onestop.util.SessionManager
 import kotlinx.coroutines.launch
+import java.util.*
 import javax.inject.Inject
 
 class GroupChatViewModel
 @Inject
 constructor(
     private val groupDao: GroupDao,
-    private val sessionManager: SessionManager,
     private val groupChatRepository: GroupChatRepository
 ) : ObservableViewModel(){
 
-    private val chatSocketClient = ChatSocketClient.getInstance(groupDao, sessionManager, this.viewModelScope)
+    private var pendingMsgList : LinkedList<GroupChat> = LinkedList()
+    private var pendingMessage : MutableLiveData<List<GroupChat>> = MutableLiveData()
 
-    fun getChatLiveData(groupId: String) = groupChatRepository.getChatLiveData(groupId)
+
+    fun getChatLiveData() : LiveData<List<GroupChat>> =
+        MediatorLiveData<List<GroupChat>>().apply {
+            val realData = groupChatRepository.getChatLiveData(activeGroup!!.id)
+            this.addSource(realData) {
+                this.value = it.plus(pendingMsgList)
+            }
+            this.addSource(pendingMessage) {
+                this.value = realData.value!!.plus(it)
+            }
+
+        }
 
     var activeGroup : Group? = null
     set(value){
         field = value
         value?.id?.let {
-            chat.groupId = it
             viewModelScope.launch {
                 val groupInfo = groupDao.getGroupInfo(it)
                 if(groupInfo.isNeverFetched()){
@@ -40,7 +52,7 @@ constructor(
     }
     private var chat : ChatSendRequest = ChatSendRequest()
 
-    var chatText : String = "test send"
+    var chatText = ""
     @Bindable
     get(){return field}
     set(value) {
@@ -73,15 +85,29 @@ constructor(
         chat.repliedText = null
     }
 
-    fun sendChat(){
-        viewModelScope.launch {
-            chat.groupId = activeGroup!!.id
-            chatSocketClient.sendChat(chat)
-            chat = ChatSendRequest()
-            chatText = ""
+    private fun convertRequestChatToGroupChat(request: ChatSendRequest) : GroupChat{
+        return GroupChat().apply {
+            this.isMe = true
+            this.text = request.text
+            this.isSending = true
+            this.createdAt = Long.MAX_VALUE
         }
     }
 
+    fun sendChat(){
+        viewModelScope.launch {
+            val requestChat = chat
+            chat = ChatSendRequest()
+            chatText = ""
+            pendingMsgList.add(convertRequestChatToGroupChat(requestChat))
+            pendingMessage.postValue(pendingMsgList)
+
+            groupChatRepository.sendChat(activeGroup!!.id, requestChat)
+
+            pendingMsgList.pop()
+            pendingMessage.postValue(pendingMsgList)
+        }
+    }
 
 
 

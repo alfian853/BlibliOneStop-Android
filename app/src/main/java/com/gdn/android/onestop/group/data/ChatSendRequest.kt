@@ -4,9 +4,7 @@ import java.io.Serializable
 
 class ChatSendRequest : Serializable{
 
-    lateinit var groupId: String
-
-    lateinit var text: String
+    var text: String = ""
 
     var isReply = false
     var repliedText: String? = null
