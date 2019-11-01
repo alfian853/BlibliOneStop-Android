@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/groupFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/groupFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupFragment"
+        android:label="@string/groups"
+        tools:layout="@layout/fragment_group" >
+        <action
+            android:id="@+id/action_groupFragment_to_groupCreateFragment"
+            app:destination="@id/groupCreateFragment" />
+        <action
+            android:id="@+id/action_groupFragment_to_groupChatFragment"
+            app:destination="@id/groupChatFragment" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/groupCreateFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupCreateFragment"
+        android:label="fragment_group_create"
+        tools:layout="@layout/fragment_group_create" >
+        <action
+            android:id="@+id/action_groupCreateFragment_to_groupChatFragment"
+            app:destination="@id/groupChatFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/groupChatFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupChatFragment"
+        android:label="fragment_chat_room"
+        tools:layout="@layout/fragment_chat_room">
+        <argument
+            android:name="groupModel"
+            app:argType="com.gdn.android.onestop.group.data.Group" />
+    </fragment>
+</navigation>

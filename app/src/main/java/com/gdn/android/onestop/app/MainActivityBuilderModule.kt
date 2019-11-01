@@ -13,12 +13,12 @@ abstract class MainActivityBuilderModule{
 
     @Binds
     @IntoMap
-    @ClassKey(MainActivity::class)
+    @ClassKey(com.gdn.android.onestop.app.MainActivity::class)
     abstract fun bindAndroidInjectorFactory(factory: MainActivitySubcomponent.Factory): Factory<*>
 
     @Subcomponent
-    interface MainActivitySubcomponent : AndroidInjector<MainActivity> {
+    interface MainActivitySubcomponent : AndroidInjector<com.gdn.android.onestop.app.MainActivity> {
         @Subcomponent.Factory
-        interface Factory : AndroidInjector.Factory<MainActivity>
+        interface Factory : AndroidInjector.Factory<com.gdn.android.onestop.app.MainActivity>
     }
 }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="size_text_h1">26sp</dimen>
+    <dimen name="size_text_h2">23sp</dimen>
+    <dimen name="size_text_h3">20sp</dimen>
+    <dimen name="size_text_h4">16sp</dimen>
+    <dimen name="size_text_h5">13sp</dimen>
+    <dimen name="size_text_h6">10sp</dimen>
+    <dimen name="size_img_6">16dp</dimen>
+    <dimen name="size_img_5">20dp</dimen>
+    <dimen name="size_img_4">24dp</dimen>
+    <dimen name="size_img_3">28dp</dimen>
+    <dimen name="size_img_2">32dp</dimen>
+    <dimen name="size_img_1">36dp</dimen>
+    <dimen name="size_back">36dp</dimen>
+</resources>
