@@ -148,14 +148,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
-            <com.google.android.material.button.MaterialButton
+            <TextView
                 android:id="@+id/btn_commentSubmit"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|end"
                 android:background="@color/white"
                 android:text="@string/post"
-                android:textSize="@dimen/size_text_h2"
+                android:textSize="@dimen/size_text_h3"
                 android:textColor="@color/faded_blue"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 app:layout_constraintBottom_toBottomOf="parent"
