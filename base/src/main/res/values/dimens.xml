@@ -6,6 +6,7 @@
     <dimen name="size_text_h4">16sp</dimen>
     <dimen name="size_text_h5">13sp</dimen>
     <dimen name="size_text_h6">10sp</dimen>
+    <dimen name="size_img_7">12dp</dimen>
     <dimen name="size_img_6">16dp</dimen>
     <dimen name="size_img_5">20dp</dimen>
     <dimen name="size_img_4">24dp</dimen>

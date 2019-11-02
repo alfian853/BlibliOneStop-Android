@@ -8,12 +8,20 @@ import java.util.*
 val calender: Calendar = Calendar.getInstance()
 
 @SuppressLint("SimpleDateFormat")
-val simple = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
+val dateTimeFormat = SimpleDateFormat("dd MMM yyyy HH:mm")
+
+@SuppressLint("SimpleDateFormat")
+val timeFormat = SimpleDateFormat("HH:mm a")
 
 
 fun Long.toDateString(): String {
     calender.timeInMillis = this
-    return simple.format(calender.time)
+    return dateTimeFormat.format(calender.time)
+}
+
+fun Long.toTimeString(): String {
+    calender.timeInMillis = this
+    return timeFormat.format(calender.time)
 }
 
 fun String.toAliasName(): String {
@@ -27,6 +35,7 @@ fun String.toAliasName(): String {
     for(i in 2 until len){
         if(this[i] == ' ' && i+1 < len){
             res = res.substring(0,1) + this[i+1]
+            break
         }
     }
 

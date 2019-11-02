@@ -28,5 +28,6 @@
     <string name="username">username</string>
     <string name="group_name">anti group-group club</string>
     <string name="groups">Groups</string>
+    <string name="time">10:10 PM</string>
 
 </resources>

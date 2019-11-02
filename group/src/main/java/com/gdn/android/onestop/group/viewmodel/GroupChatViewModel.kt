@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.group.viewmodel
 
+import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
@@ -36,31 +37,40 @@ constructor(
         }
 
     var activeGroup : Group? = null
-    set(value){
-        field = value
-        value?.id?.let {
-            viewModelScope.launch {
-                val groupInfo = groupDao.getGroupInfo(it)
-                if(groupInfo.isNeverFetched()){
-                    groupChatRepository.loadMoreChatBefore(it)
-                }
-                else{
-                    groupChatRepository.loadMoreChatAfter(it)
+        set(value){
+            field = value
+            value?.id?.let {
+                viewModelScope.launch {
+                    val groupInfo = groupDao.getGroupInfo(it)
+                    if(groupInfo.isNeverFetched()){
+                        groupChatRepository.loadMoreChatBefore(it)
+                    }
+                    else{
+                        groupChatRepository.loadMoreChatAfter(it)
+                    }
                 }
             }
         }
-    }
     private var chat : ChatSendRequest =
         ChatSendRequest()
 
     var chatText = ""
-    @Bindable
-    get(){return field}
-    set(value) {
-        chat.text = value
-        field = value
-        notifyPropertyChanged(BR.chatText)
-    }
+        @Bindable
+        get(){return field}
+        set(value) {
+            chat.text = value
+            field = value
+            notifyPropertyChanged(BR.chatText)
+        }
+
+    var replyVisibility = View.GONE
+        @Bindable
+        get(){return field}
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.replyVisibility)
+        }
+
 
     fun loadMoreChatBefore(){
         viewModelScope.launch {
@@ -76,14 +86,24 @@ constructor(
         }
     }
 
-    fun setOnReplyChat(repliedChatId : String, repliedSummary : String){
+    fun setOnReplyChat(
+        repliedChatId: String,
+        repliedUsername: String,
+        repliedSummary: String
+    ){
+        chat.isReply = true
+        chat.repliedUsername = repliedUsername
         chat.repliedId = repliedChatId
         chat.repliedText = repliedSummary
+        replyVisibility = View.VISIBLE
     }
 
     fun setOffReplyChat(){
+        chat.isReply = false
         chat.repliedId = null
+        chat.repliedUsername = null
         chat.repliedText = null
+        replyVisibility = View.GONE
     }
 
     private fun convertRequestChatToGroupChat(request: ChatSendRequest) : GroupChat {
@@ -92,6 +112,10 @@ constructor(
             text = request.text
             isSending = true
             createdAt = Long.MAX_VALUE
+            isReply = request.isReply
+            repliedId = request.repliedId
+            repliedText = request.repliedText
+            repliedUsername = request.repliedUsername
         }
     }
 
@@ -102,6 +126,8 @@ constructor(
             chatText = ""
             pendingMsgList.add(convertRequestChatToGroupChat(requestChat))
             pendingMessage.postValue(pendingMsgList)
+
+            replyVisibility = View.GONE
 
             groupChatRepository.sendChat(activeGroup!!.id, requestChat)
 

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/white_grey"
     android:padding="8dp">
 
     <androidx.cardview.widget.CardView
@@ -19,7 +20,6 @@
 
         <TextView
             android:id="@+id/iv_user"
-            android:foreground="@drawable/border_round_image"
             android:background="@color/colorPrimaryDark"
             android:text="AL"
             android:gravity="center"
@@ -43,28 +43,27 @@
 
     <TextView
         android:id="@+id/tv_message"
+        style="@style/ChatTip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:background="@drawable/chat_tip"
         android:includeFontPadding="false"
         android:text="Hello\nMy name is alfian"
-        style="@style/ChatTip"
+        android:layout_marginTop="4dp"
         android:textColor="@color/black"
         app:layout_constraintStart_toStartOf="@+id/tv_username"
-        app:layout_constraintTop_toTopOf="@+id/cardView" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
         android:maxWidth="315dp"
-        android:visibility="gone"
-        android:text="@string/date_time"
+        android:text="@string/time"
         android:textSize="@dimen/size_text_h6"
-        app:layout_constraintStart_toStartOf="@+id/tv_message"
-        app:layout_constraintTop_toBottomOf="@+id/tv_message" />
+        android:layout_marginStart="4dp"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_message"
+        app:layout_constraintStart_toEndOf="@+id/tv_message" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

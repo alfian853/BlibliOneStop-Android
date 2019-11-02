@@ -13,7 +13,10 @@ class GroupChatResponse {
     var isReply : Boolean = false
     var repliedId: String? = null
     var repliedText: String? = null
+    var repliedUsername: String? = null
+
     @SerializedName("isMeeting")
     var isMeeting : Boolean = false
     var meetingDate: Long? = null
+
 }

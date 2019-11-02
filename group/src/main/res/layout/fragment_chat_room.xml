@@ -55,9 +55,77 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="10"
             tools:listitem="@layout/item_chat" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:visibility="@{viewmodel.replyVisibility}"
+            android:id="@+id/cl_reply_container"
+            android:paddingBottom="8dp"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <View
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimaryDark"/>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardView"
+                android:layout_width="@dimen/size_img_2"
+                android:layout_height="@dimen/size_img_2"
+                app:cardBackgroundColor="@color/black"
+                app:cardCornerRadius="18dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="8dp"
+                app:cardPreventCornerOverlap="false"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_reply_user_pict"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="AL"
+                    android:gravity="center"
+                    android:textSize="@dimen/size_text_h4"
+                    android:layout_width="@dimen/size_img_2"
+                    android:layout_height="@dimen/size_img_2"
+                    tools:srcCompat="@tools:sample/avatars" />
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/tv_reply_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:maxLines="1"
+                android:text="@string/username"
+                app:layout_constraintStart_toEndOf="@+id/cardView"
+                app:layout_constraintTop_toTopOf="@+id/cardView" />
+
+            <TextView
+                android:id="@+id/tv_reply_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:includeFontPadding="false"
+                android:text="Hello\nMy name is alfian"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                app:layout_constraintStart_toStartOf="@+id/tv_reply_username"
+                app:layout_constraintTop_toTopOf="@+id/cardView" />
+
+            <ImageView
+                android:id="@+id/iv_reply_close"
+                android:layout_width="@dimen/size_img_7"
+                android:layout_height="@dimen/size_img_7"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/ic_cross_out"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
             android:padding="3dp"
