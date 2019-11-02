@@ -22,12 +22,6 @@ abstract class BaseActivity<D : Activity, T : ViewDataBinding> : AppCompatActivi
     override fun onCreate(savedInstanceState: Bundle?) {
         activityInjector().inject(activity())
         super.onCreate(savedInstanceState)
-//        if(!sessionManager.isLoggedIn && this !is LoginActivity){
-//            val intent = Intent(this, LoginActivity::class.java)
-//            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-//            startActivity(intent)
-//            finish()
-//        }
         this.databinding = DataBindingUtil.setContentView(this, getLayout())
         this.databinding.lifecycleOwner = this
     }

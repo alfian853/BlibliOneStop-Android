@@ -50,14 +50,17 @@
         app:layout_constraintStart_toStartOf="@+id/tv_username"
         app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
-    <ImageView
+    <TextView
         android:id="@+id/iv_user"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        android:foreground="@drawable/border_round_image"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
+        android:foreground="@drawable/border_round_image"
+        android:text="AL"
+        android:background="@color/colorPrimaryDark"
+        android:textSize="@dimen/size_text_h5"
+        android:gravity="center"
+        tools:srcCompat="@drawable/ic_default_user" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

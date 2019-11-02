@@ -9,18 +9,23 @@
 
     <androidx.cardview.widget.CardView
         android:id="@+id/cardView"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
+        android:layout_width="@dimen/size_img_2"
+        android:layout_height="@dimen/size_img_2"
         app:cardBackgroundColor="@color/black"
         app:cardCornerRadius="18dp"
         app:cardPreventCornerOverlap="false"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <ImageView
+        <TextView
             android:id="@+id/iv_user"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
+            android:foreground="@drawable/border_round_image"
+            android:background="@color/colorPrimaryDark"
+            android:text="AL"
+            android:gravity="center"
+            android:textSize="@dimen/size_text_h4"
+            android:layout_width="@dimen/size_img_2"
+            android:layout_height="@dimen/size_img_2"
             tools:srcCompat="@tools:sample/avatars" />
     </androidx.cardview.widget.CardView>
 

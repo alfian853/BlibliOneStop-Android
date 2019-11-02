@@ -3,14 +3,15 @@ package com.gdn.android.onestop.ideation.util
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.base.util.toAliasName
+import com.gdn.android.onestop.base.util.toDateString
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaPost
 
@@ -47,13 +48,12 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
             setVoteText(ideaPost, holder)
 
             holder.tvUsername.text = ideaPost.username
-            holder.tvDate.text = ideaPost.createdAt
+            holder.tvDate.text = ideaPost.createdAt.toDateString()
             holder.tvContent.text = ideaPost.content
-            Glide.with(holder.ivUserPict.context)
-                .load(R.drawable.ic_default_user)
-                .into(holder.ivUserPict)
-
             holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
+            val nameAlias = ideaPost.username.toAliasName()
+            holder.tvNamePict.text = nameAlias
+            holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
 
             this.itemContentClickCallback.let { itemClickCallback ->
                 holder.tvContent.setOnClickListener {
@@ -72,10 +72,7 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
                     voteClickCallback.onVote(ideaPost, holder,false)
                 }
             }
-
-
         }
-
 
     }
 
@@ -84,10 +81,11 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         val tvUsername: TextView = itemView.findViewById(R.id.tv_username)
         val tvDate: TextView = itemView.findViewById(R.id.tv_date)
         val tvContent: TextView = itemView.findViewById(R.id.tv_content)
-        val ivUserPict: ImageView = itemView.findViewById(R.id.iv_user)
+        val tvNamePict: TextView = itemView.findViewById(R.id.tv_name_pict)
         val tvUpVote: FaSolidTextView = itemView.findViewById(R.id.tv_upVote)
         val tvDownVote: FaSolidTextView = itemView.findViewById(R.id.tv_downVote)
         val tvComment: FaSolidTextView = itemView.findViewById(R.id.tv_comment)
+        val tvSeeMore: TextView = itemView.findViewById(R.id.tv_seemore)
     }
 
 

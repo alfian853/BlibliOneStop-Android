@@ -3,11 +3,11 @@ package com.gdn.android.onestop.group.util
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.base.util.toDateString
@@ -69,17 +69,27 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         val chat = chatList[position]
         if(holder is ChatViewHolder){
             holder.tvName.text = chat.username
+            holder.tvDate.visibility = View.GONE
             holder.tvDate.text = chat.createdAt.toDateString()
             holder.tvMessage.text = chat.text
-            Glide.with(holder.itemView)
-                .load(R.drawable.ic_default_user)
-                .into(holder.ivUser)
+            val nameAlias = chat.username.toAliasName()
+            holder.tvNamePict.text = nameAlias
+            holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
+            holder.tvMessage.setOnClickListener {
+                holder.tvDate.visibility = if(holder.tvDate.visibility == View.GONE)View.VISIBLE
+                                        else View.GONE
+            }
         }
         else if(holder is MyChatViewHolder){
             holder.tvMessage.text = chat.text
+            holder.tvDate.visibility = View.GONE
             holder.tvDate.text = chat.createdAt.toDateString()
             holder.pbSending.visibility = if(chat.isSending)View.VISIBLE
                                         else View.GONE
+            holder.tvMessage.setOnClickListener {
+                holder.tvDate.visibility = if(holder.tvDate.visibility == View.GONE)View.VISIBLE
+                else View.GONE
+            }
         }
     }
 
@@ -88,7 +98,7 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         val tvName : TextView = itemView.findViewById(R.id.tv_username)
         val tvMessage : TextView =itemView.findViewById(R.id.tv_message)
         val tvDate : TextView = itemView.findViewById(R.id.tv_date)
-        val ivUser : ImageView = itemView.findViewById(R.id.iv_user)
+        val tvNamePict : TextView = itemView.findViewById(R.id.iv_user)
     }
 
     inner class MyChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){

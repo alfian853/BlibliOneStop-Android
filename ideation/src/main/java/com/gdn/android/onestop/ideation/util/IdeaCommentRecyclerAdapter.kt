@@ -3,12 +3,12 @@ package com.gdn.android.onestop.ideation.util
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaComment
 
@@ -30,9 +30,9 @@ class IdeaCommentRecyclerAdapter :
             holder.tvUsername.text = it.username
             holder.tvComment.text = it.text
             holder.tvDate.text = it.date
-            Glide.with(holder.itemView)
-                .load(R.drawable.ic_default_user)
-                .into(holder.ivUser)
+            val nameAlias = ideaComment.username.toAliasName()
+            holder.tvNamePict.text = nameAlias
+            holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
         }
     }
 
@@ -40,7 +40,7 @@ class IdeaCommentRecyclerAdapter :
         val tvUsername : TextView = itemView.findViewById(R.id.tv_username)
         val tvDate : TextView = itemView.findViewById(R.id.tv_date)
         val tvComment : TextView = itemView.findViewById(R.id.tv_comment)
-        val ivUser : ImageView = itemView.findViewById(R.id.iv_user)
+        val tvNamePict : TextView = itemView.findViewById(R.id.iv_user)
         init {
             tvComment.text = ""
         }

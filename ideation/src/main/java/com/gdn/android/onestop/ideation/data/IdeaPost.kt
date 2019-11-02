@@ -15,5 +15,5 @@ class IdeaPost : Serializable {
     var isMeVoteUp: Boolean = false
     var isMeVoteDown: Boolean = false
     var downVoteCount: Int = 0
-    lateinit var createdAt: String
+    var createdAt: Long = 0
 }

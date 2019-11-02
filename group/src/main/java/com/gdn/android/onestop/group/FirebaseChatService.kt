@@ -1,12 +1,15 @@
 package com.gdn.android.onestop.group
 
 import android.util.Log
+import androidx.lifecycle.viewModelScope
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.data.GroupClient
 import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.group.injection.GroupComponent
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.android.AndroidInjection
@@ -19,7 +22,7 @@ class FirebaseChatService : FirebaseMessagingService() {
     /**
      * TODO use the same groupDao instance as the groupViewModel has
      * because viewmodel liveData onChange callback not triggered from another groupDao instance (this service groupDao instance)
-    **/
+     **/
     @Inject
     lateinit var groupDao: GroupDao
 
@@ -35,6 +38,22 @@ class FirebaseChatService : FirebaseMessagingService() {
 
     override fun onCreate() {
         GroupComponent.getInstance().inject(this)
+        GlobalScope.launch {
+            FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(
+                OnCompleteListener { task ->
+                    if (!task.isSuccessful) {
+                        return@OnCompleteListener
+                    }
+
+                    // Get new Instance ID token
+                    val token = task.result!!.token
+
+                    GlobalScope.launch {
+
+                        groupClient.subscribeGroupsByToken(token)
+                    }
+                })
+        }
         super.onCreate()
     }
 

@@ -113,26 +113,12 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
             }
         }
 
-        FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(
-            OnCompleteListener { task ->
-                if (!task.isSuccessful) {
-                    return@OnCompleteListener
-                }
-
-                // Get new Instance ID token
-                val token = task.result!!.token
-
-                viewmodel.viewModelScope.launch {
-                    groupClient.subscribeGroupsByToken(token)
-                }
-            })
-
-
         databinding.btnChatSend.setOnClickListener {
             viewmodel.viewModelScope.launch {
                 viewmodel.sendChat()
             }
         }
+
 
         return databinding.root
     }
