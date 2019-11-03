@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.ideation.util
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -44,12 +45,18 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         val ideaPost = getItem(position)
 
         ideaPost?.let {
-
             setVoteText(ideaPost, holder)
 
             holder.tvUsername.text = ideaPost.username
             holder.tvDate.text = ideaPost.createdAt.toDateString()
+
             holder.tvContent.text = ideaPost.content
+            holder.tvContent.measure(0,0)
+
+            if(holder.tvContent.lineCount < 4){
+                holder.tvSeeMore.visibility = View.GONE
+            }
+
             holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
             val nameAlias = ideaPost.username.toAliasName()
             holder.tvNamePict.text = nameAlias

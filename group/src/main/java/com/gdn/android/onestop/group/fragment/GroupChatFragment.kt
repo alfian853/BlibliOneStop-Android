@@ -2,14 +2,16 @@ package com.gdn.android.onestop.group.fragment
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -18,15 +20,14 @@ import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullSceenFragment
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.group.data.Group
-import com.gdn.android.onestop.group.data.GroupChat
-import com.gdn.android.onestop.group.data.GroupClient
-import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
 import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.R
+import com.gdn.android.onestop.group.data.*
 import com.gdn.android.onestop.group.injection.GroupComponent
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -52,12 +53,14 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
     @Inject
     lateinit var groupClient: GroupClient
 
-    private val chatRvAdapter = ChatRecyclerAdapter()
+    private var chatRvAdapter = ChatRecyclerAdapter()
 
     val group : Group by lazy {
         val tmp : GroupChatFragmentArgs by navArgs()
         tmp.groupModel
     }
+
+
 
     private val chatObserver = Observer<List<GroupChat>> {
         if(it.isNotEmpty()){
@@ -85,13 +88,13 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
 
     lateinit var chatLiveData : LiveData<List<GroupChat>>
 
-
+    @Inject
+    lateinit var groupChatRepository: GroupChatRepository
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewmodel = ViewModelProvider(this, viewModelProvierFactory)
+        ViewModelProvider(this, viewModelProvierFactory)
             .get(GroupChatViewModel::class.java)
-        viewmodel.activeGroup = group
     }
 
     override fun onCreateView(
@@ -99,20 +102,26 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
-        chatLiveData = viewmodel.getChatLiveData()
-        chatLiveData.observe(this, chatObserver)
 
+        databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
+        chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
+        chatLiveData.observe(this, chatObserver)
+        chatRvAdapter = ChatRecyclerAdapter()
         databinding.tvGroupName.text = group.name
         databinding.viewmodel = viewmodel
+        val point = Point()
+        activity!!.windowManager.defaultDisplay.getSize(point)
+        chatRvAdapter.layoutWidth = point.x
 
         databinding.ivBack.setOnClickListener {
             fragmentManager!!.beginTransaction().remove(this).commit()
         }
 
         databinding.btnChatSend.setOnClickListener {
-            viewmodel.viewModelScope.launch {
+            GlobalScope.launch {
+                Log.d("chat","send")
                 viewmodel.sendChat()
+                Log.d("chat","complete")
             }
         }
 
@@ -146,10 +155,9 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
                 val offset : Int = (databinding.rvChat.height*(0.3)).toInt()
                 chatLayoutManager.scrollToPositionWithOffset(repliedPosition, offset)
 
-                val colorFrom = resources.getColor(R.color.reply_color,null)
-                val colorTo = resources.getColor(R.color.white_grey,null)
-                val animator = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, colorTo);
-                animator.setDuration(2000)
+                val colorFrom = ResourcesCompat.getColor(resources,R.color.reply_color,null)
+                val animator = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, 0)
+                animator.duration = 2000
 
                 val target = chatRvAdapter.itemViewArray[repliedPosition]
                 if(target == null){
@@ -170,12 +178,13 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
         databinding.rvChat.adapter = chatRvAdapter
         databinding.rvChat.layoutManager = chatLayoutManager
 
-        databinding.rvChat.setOnScrollChangeListener { v, _, _, _, _ ->
-            if(!v.canScrollVertically(-1)){
-                viewmodel.loadMoreChatBefore()
+        databinding.rvChat.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                if(!recyclerView.canScrollVertically(-1)){
+                    viewmodel.loadMoreChatBefore()
+                }
             }
-        }
-
+        })
 
         // handle reply
         databinding.clReplyContainer.visibility = View.GONE
@@ -197,13 +206,14 @@ class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
                 chatRvAdapter.notifyItemChanged(position)
                 val chat = chatRvAdapter.chatList[position]
                 if(chat.isSending)return
-                viewmodel.setOnReplyChat(chat.id, chat.username, chat.text)
+                val previewText = Util.shrinkText(chat.text)
+                viewmodel.setOnReplyChat(chat.id, chat.username, previewText)
 
                 databinding.tvReplyUsername.text = chat.username
                 databinding.tvReplyUserPict.text = chat.nameAlias
                 databinding.tvReplyUserPict.setBackgroundColor(chat.nameColor)
                 databinding.tvReplyUsername.setTextColor(chat.nameColor)
-                databinding.tvReplyMessage.text = chat.text
+                databinding.tvReplyMessage.text = Util.shrinkText(previewText)
                 databinding.clReplyContainer.visibility = View.VISIBLE
             }
 

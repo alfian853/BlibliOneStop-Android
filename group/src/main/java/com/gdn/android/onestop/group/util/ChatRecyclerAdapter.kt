@@ -1,7 +1,6 @@
 package com.gdn.android.onestop.group.util
 
 import android.animation.ValueAnimator
-import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -9,16 +8,13 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.base.util.toTimeString
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
@@ -31,6 +27,16 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     var itemViewArray : SparseArray<View> = SparseArray()
 
     lateinit var repliedClickCallback : ItemClickCallback<GroupChat>
+
+    var layoutWidth : Int = 0
+        set(value) {
+            field = value
+            chatMaxWidth = (layoutWidth.toDouble() * MSG_MAXW_RATIO).toInt()
+            myChatMaxWidth = (layoutWidth.toDouble() * MY_MSG_MAXW_RATIO).toInt()
+        }
+
+    var chatMaxWidth : Int = 0
+    var myChatMaxWidth : Int = 0
 
     class ItemAnimationTask(
         var position : Int = 0,
@@ -51,6 +57,8 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
         private const val MY_MESSAGE_TYPE = 1
         private const val REPLY_TYPE = 2
         private const val MY_REPLY_TYPE = 3
+        val MSG_MAXW_RATIO = 0.65
+        val MY_MSG_MAXW_RATIO = 0.75
     }
 
     fun updateChatList(chatList : List<GroupChat>){
@@ -87,7 +95,8 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
             )
         }
         return ChatViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false))
+            LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false)
+        )
     }
 
     override fun getItemCount(): Int {
@@ -97,11 +106,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
 
         val chat = chatList[position]
-        Log.d("chat-onestop","rebind display $position")
         itemViewArray.put(position, holder.itemView)
         pendingReplyShowAnimation?.let {
             if(it.position == position){
-                Log.d("chat-onestop","animate $position")
                 pendingReplyShowAnimation?.animate(holder.itemView)
             }
             pendingReplyShowAnimation = null
@@ -125,6 +132,7 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
                     repliedClickCallback.onItemClick(chat, position)
                 }
             }
+            holder.tvMessage.maxWidth = chatMaxWidth
         }
         else if(holder is MyChatViewHolder){
             holder.tvMessage.text = chat.text
@@ -148,7 +156,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
                     repliedClickCallback.onItemClick(chat, position)
                 }
             }
+            holder.tvMessage.maxWidth = myChatMaxWidth
         }
+
     }
 
 
@@ -168,16 +178,13 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
     inner class ChatReplyViewHolder(itemView: View) : ChatViewHolder(itemView){
         val tvReplyName : TextView = itemView.findViewById(R.id.tv_reply_username)
         val tvReplyText : TextView = itemView.findViewById(R.id.tv_reply_message)
-        val clReplyContainer : ConstraintLayout = itemView.findViewById(R.id.cl_reply_container)
+        val clReplyContainer : LinearLayout = itemView.findViewById(R.id.ll_reply_container)
     }
 
     inner class MyChatReplyViewHolder(itemView: View) : MyChatViewHolder(itemView){
         val tvReplyName : TextView = itemView.findViewById(R.id.tv_reply_username)
         val tvReplyText : TextView = itemView.findViewById(R.id.tv_reply_message)
-        val clReplyContainer : ConstraintLayout = itemView.findViewById(R.id.cl_reply_container)
+        val clReplyContainer : LinearLayout = itemView.findViewById(R.id.ll_reply_container)
     }
-
-    //TODO add remain view holder
-
 
 }

@@ -8,11 +8,13 @@
     <string name="public_group">Public Group</string>
     <string name="group_team">Group Team</string>
     <string name="group_type">Group Type</string>
+    <string name="guilds">Guilds</string>
     <string name="group">Group</string>
     <string name="squad">Squad</string>
-    <string name="squads">Squads</string>
     <string name="tribe">Tribe</string>
-    <string name="guilds">Guilds</string>
+    <string name="groups">Groups</string>
+    <string name="tribes">Tribes</string>
+    <string name="squads">Squads</string>
     <string name="enter_the_group_code">Enter the group code</string>
     <string name="join_a_group">Join a group</string>
     <string name="join">Join</string>
@@ -27,7 +29,6 @@
     <string name="date_time">10:10 PM, 22–09–2019</string>
     <string name="username">username</string>
     <string name="group_name">anti group-group club</string>
-    <string name="groups">Groups</string>
     <string name="time">10:10 PM</string>
 
 </resources>

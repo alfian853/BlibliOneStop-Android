@@ -23,36 +23,48 @@ constructor(
     private var pendingMsgList : LinkedList<GroupChat> = LinkedList()
     private var pendingMessage : MutableLiveData<List<GroupChat>> = MutableLiveData()
 
+    private lateinit var realData : LiveData<List<GroupChat>>
 
-    fun getChatLiveData() : LiveData<List<GroupChat>> =
-        MediatorLiveData<List<GroupChat>>().apply {
-            val realData = groupChatRepository.getChatLiveData(activeGroup!!.id)
-            this.addSource(realData) {
-                this.value = it.plus(pendingMsgList)
-            }
-            this.addSource(pendingMessage) {
-                this.value = realData.value!!.plus(it)
-            }
-
+    private suspend fun loadData(groupId: String){
+        val groupInfo = groupDao.getGroupInfo(groupId)
+        if(groupInfo.isNeverFetched()){
+            groupChatRepository.loadMoreChatBefore(groupId)
         }
+        else{
+            groupChatRepository.loadMoreChatAfter(groupId)
+        }
+    }
 
-    var activeGroup : Group? = null
-        set(value){
-            field = value
-            value?.id?.let {
-                viewModelScope.launch {
-                    val groupInfo = groupDao.getGroupInfo(it)
-                    if(groupInfo.isNeverFetched()){
-                        groupChatRepository.loadMoreChatBefore(it)
-                    }
-                    else{
-                        groupChatRepository.loadMoreChatAfter(it)
-                    }
+    fun resetStateAndGetLiveData(groupId : String) : LiveData<List<GroupChat>> {
+        activeGroupId = groupId
+        pendingMsgList = LinkedList()
+        pendingMessage.postValue(pendingMsgList)
+        realData = groupChatRepository.getChatLiveData(groupId)
+        chatText = ""
+        chat = ChatSendRequest()
+        viewModelScope.launch {
+            loadData(groupId)
+        }
+        return MediatorLiveData<List<GroupChat>>().apply {
+            var realDataSize = 0
+            this.addSource(realData) {chatList ->
+                realDataSize = chatList.size
+                this.value = chatList.plus(pendingMsgList)
+            }
+            this.addSource(pendingMessage) {pendingMsgLd ->
+                this.value?.let {
+                    this.value = it.subList(0, realDataSize-1).plus(pendingMsgLd)
                 }
             }
+
         }
-    private var chat : ChatSendRequest =
-        ChatSendRequest()
+
+    }
+
+    lateinit var activeGroupId : String
+
+
+    private var chat : ChatSendRequest = ChatSendRequest()
 
     var chatText = ""
         @Bindable
@@ -74,14 +86,14 @@ constructor(
 
     fun loadMoreChatBefore(){
         viewModelScope.launch {
-            groupChatRepository.loadMoreChatBefore(activeGroup!!.id)
+            groupChatRepository.loadMoreChatBefore(activeGroupId)
         }
     }
 
     fun loadMoreChatAfter(){
         if(!ChatSocketClient.isConnected()){
             viewModelScope.launch {
-                groupChatRepository.loadMoreChatAfter(activeGroup!!.id)
+                groupChatRepository.loadMoreChatAfter(activeGroupId)
             }
         }
     }
@@ -121,6 +133,7 @@ constructor(
 
     fun sendChat(){
         viewModelScope.launch {
+            if(chatText == "")return@launch
             val requestChat = chat
             chat = ChatSendRequest()
             chatText = ""
@@ -129,13 +142,11 @@ constructor(
 
             replyVisibility = View.GONE
 
-            groupChatRepository.sendChat(activeGroup!!.id, requestChat)
+            groupChatRepository.sendChat(activeGroupId, requestChat)
 
             pendingMsgList.pop()
             pendingMessage.postValue(pendingMsgList)
         }
     }
-
-
 
 }

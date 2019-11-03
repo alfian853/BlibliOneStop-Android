@@ -1,9 +1,14 @@
 package com.gdn.android.onestop.base.util
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Color
+import android.util.TypedValue
+import android.view.View.MeasureSpec
+import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 val calender: Calendar = Calendar.getInstance()
 
@@ -44,8 +49,9 @@ fun String.toAliasName(): String {
 
 class Util {
     companion object {
+        val MAX_STEXT_SIZE = 38
 
-        val colors = arrayOf(
+        private val colors = arrayOf(
             Color.rgb(33,150,243),
             Color.rgb(212,23,240),
             Color.rgb(255, 149, 25),
@@ -57,6 +63,21 @@ class Util {
             var sum = 0
             string.forEach { sum+=it.toInt() }
             return colors[sum%5]
+        }
+
+        fun shrinkText(text : String): String {
+            val len = minOf(MAX_STEXT_SIZE, text.length)
+            var res = text.substring(0, len)
+            for (i in 0 until len){
+                if(res[i] == '\n'){
+                    return res.substring(0, minOf(i, MAX_STEXT_SIZE-3)).plus("...")
+                }
+            }
+
+            if(text.length > MAX_STEXT_SIZE){
+                return text.substring(0, MAX_STEXT_SIZE-3).plus("...")
+            }
+            return text
         }
     }
 }
