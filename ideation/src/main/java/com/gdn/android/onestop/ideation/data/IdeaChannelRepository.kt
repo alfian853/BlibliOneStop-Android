@@ -62,10 +62,8 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
         ideaPost.downVoteCount = response.downVoteCount
         ideaPost.username = response.username
         ideaPost.content = response.content
+        ideaPost.createdAt = response.createdAt
 
-        val calender = Calendar.getInstance()
-        calender.timeInMillis = response.createdAt
-        ideaPost.createdAt = simple.format(calender.time)
         return ideaPost
     }
 

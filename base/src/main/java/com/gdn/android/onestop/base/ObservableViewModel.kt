@@ -5,6 +5,9 @@ import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.cancel
 
 abstract class ObservableViewModel : ViewModel(), Observable {
 
@@ -55,5 +58,11 @@ abstract class ObservableViewModel : ViewModel(), Observable {
             }
         }
         mCallbacks!!.notifyCallbacks(this, fieldId, null)
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelScope.cancel(null)
+
     }
 }

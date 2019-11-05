@@ -40,29 +40,69 @@
         app:layout_constraintStart_toEndOf="@+id/cardView"
         app:layout_constraintTop_toTopOf="@+id/cardView" />
 
-    <TextView
-        android:id="@+id/tv_message"
-        style="@style/ChatTip"
+
+    <LinearLayout
+        android:id="@+id/ll_chat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/chat_tip"
-        android:includeFontPadding="false"
-        android:text="Hello\nMy name is alfian"
         android:layout_marginTop="4dp"
-        android:textColor="@color/black"
+        android:background="@drawable/chat_tip"
+        android:orientation="vertical"
+        android:padding="10dp"
         app:layout_constraintStart_toStartOf="@+id/tv_username"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_username">
+
+
+        <LinearLayout
+            android:id="@+id/ll_reply_container"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chat_tip_grey"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            android:paddingTop="4dp"
+            android:paddingBottom="8dp">
+
+            <TextView
+                android:id="@+id/tv_reply_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:text="@string/username" />
+
+            <TextView
+                android:id="@+id/tv_reply_message"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:includeFontPadding="false"
+                android:text="Hello My name is alfian"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:includeFontPadding="false"
+            android:text="Hello alfian"
+            android:textColor="@color/black" />
+
+    </LinearLayout>
 
     <TextView
         android:id="@+id/tv_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
         android:maxWidth="315dp"
         android:text="@string/time"
         android:textSize="@dimen/size_text_h6"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_message"
-        app:layout_constraintStart_toEndOf="@+id/tv_message" />
+        app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
+        app:layout_constraintStart_toEndOf="@+id/ll_chat" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

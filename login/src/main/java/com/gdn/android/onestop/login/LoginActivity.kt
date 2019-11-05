@@ -40,6 +40,13 @@ class LoginActivity : BaseActivity<LoginActivity, ActivityLoginBinding>(){
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        if(sessionManager.isLoggedIn){
+            val intent = Navigator.getIntent(Navigator.Destination.MAIN_ACTIVITY)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            startActivity(intent)
+            finish()
+        }
+
         loginViewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(LoginViewModel::class.java)
 
@@ -53,6 +60,7 @@ class LoginActivity : BaseActivity<LoginActivity, ActivityLoginBinding>(){
                     val intent = Navigator.getIntent(Navigator.Destination.MAIN_ACTIVITY)
                     intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
                     startActivity(intent)
+                    finish()
                 }
                 else{
                     Toast.makeText(this@LoginActivity, "Invalid sername/password", Toast.LENGTH_SHORT).show()

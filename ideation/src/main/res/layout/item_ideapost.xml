@@ -20,26 +20,25 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
+            android:includeFontPadding="false"
             android:text="@string/username"
             android:textColor="@color/black"
             android:textSize="@dimen/size_text_h4"
             android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_user"
-            app:layout_constraintStart_toEndOf="@+id/iv_user"
-            app:layout_constraintTop_toTopOf="@+id/iv_user"
-            app:layout_constraintVertical_bias="0.5" />
+            app:layout_constraintBottom_toBottomOf="@+id/tv_name_pict"
+            app:layout_constraintStart_toEndOf="@+id/tv_name_pict"
+            app:layout_constraintTop_toTopOf="@+id/tv_name_pict"
+            app:layout_constraintVertical_bias="0.0" />
 
         <TextView
             android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
             android:text="@string/date_time"
             android:textColor="@color/black"
             android:textSize="@dimen/size_text_h6"
-            app:layout_constraintStart_toStartOf="@+id/iv_user"
-            app:layout_constraintTop_toBottomOf="@+id/iv_user" />
+            app:layout_constraintStart_toStartOf="@+id/tv_username"
+            app:layout_constraintTop_toBottomOf="@+id/tv_username" />
 
         <TextView
             android:id="@+id/tv_content"
@@ -54,7 +53,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_date" />
 
         <TextView
-            android:id="@+id/idea_tv_seemore"
+            android:id="@+id/tv_seemore"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/see_more"
@@ -70,7 +69,7 @@
             android:text="&#xf164; 10"
             android:textSize="18sp"
             app:layout_constraintStart_toStartOf="@+id/tv_content"
-            app:layout_constraintTop_toBottomOf="@+id/idea_tv_seemore" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_seemore" />
 
         <com.gdn.android.onestop.base.FaSolidTextView
             android:id="@+id/tv_downVote"
@@ -94,13 +93,17 @@
             app:layout_constraintStart_toEndOf="@+id/tv_downVote"
             app:layout_constraintTop_toTopOf="@+id/tv_downVote" />
 
-        <ImageView
-            android:id="@+id/iv_user"
+        <TextView
+            android:id="@+id/tv_name_pict"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:foreground="@drawable/border_round_image"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:foreground="@drawable/border_round_image"
+            android:text="AL"
+            android:background="@color/colorPrimaryDark"
+            android:textSize="@dimen/size_text_h4"
+            android:gravity="center"
             tools:srcCompat="@drawable/ic_default_user" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

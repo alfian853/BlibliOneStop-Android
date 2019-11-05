@@ -8,8 +8,8 @@ class ChatSendRequest : Serializable{
 
     var isReply = false
     var repliedText: String? = null
-
     var repliedId: String? = null
+    var repliedUsername: String? = null
 
     var isMeeting = false
     var meetingDate: Long? = null

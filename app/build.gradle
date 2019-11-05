@@ -15,15 +15,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments = [
-                        "room.schemaLocation":"$projectDir/schemas".toString(),
-                        "room.incremental":"true",
-                        "room.expandProjection":"true"
-                ]
-            }
-        }
         vectorDrawables.useSupportLibrary = true
 
     }
@@ -60,8 +51,4 @@ dependencies {
     api project(':ideation')
     api project(':login')
     api project(':group')
-
-    kapt "com.google.dagger:dagger-android-processor:$dagger2_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger2_version"
-    kapt "androidx.room:room-compiler:$room_version"
 }

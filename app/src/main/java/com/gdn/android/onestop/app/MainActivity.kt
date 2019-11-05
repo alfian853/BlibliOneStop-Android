@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -11,6 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.gdn.android.onestop.app.databinding.ActivityMainBinding
+import com.gdn.android.onestop.group.FirebaseChatService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
@@ -29,6 +31,9 @@ class MainActivity : AppCompatActivity() {
         setActionBar()
         setupBottomNavMenu(navController)
 
+
+        val intent = Intent(this, FirebaseChatService::class.java)
+        startService(intent)
     }
 
 

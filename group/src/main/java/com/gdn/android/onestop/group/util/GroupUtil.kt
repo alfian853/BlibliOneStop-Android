@@ -21,6 +21,7 @@ class GroupUtil {
             groupChat.isMeeting = chatResponse.isMeeting
             groupChat.isReply = chatResponse.isReply
             groupChat.repliedId = chatResponse.repliedId
+            groupChat.repliedUsername = chatResponse. repliedUsername
             groupChat.repliedText = chatResponse.repliedText
 
             return groupChat

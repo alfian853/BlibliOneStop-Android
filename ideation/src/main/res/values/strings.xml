@@ -5,13 +5,11 @@
     <string name="see_more">See More…</string>
     <string name="comment_hint">Leave you thoughs here…</string>
     <string name="fa_vote_up">&#xf164;</string>
-    <string name="fa_chevron_right">&#xf054;</string>
     <string name="fa_plus">&#xf067;</string>
     <string name="fa_option">&#xf142;</string>
     <string name="fa_vote_down">&#xf165;</string>
     <string name="fa_comment">&#xf27a;</string>
     <string name="load_previous_comment">Load previous comment</string>
-    <string name="tribes">Tribes</string>
     <string name="label_idea_channel">Idea Channel</string>
     <string name="what_do_you_think">What do you think?</string>
     <string name="post">POST</string>

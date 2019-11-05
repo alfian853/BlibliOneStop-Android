@@ -3,6 +3,7 @@ package com.gdn.android.onestop.base
 import android.content.Context
 import android.content.Intent
 import android.util.Log
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.base.util.NetworkUtil
 import com.gdn.android.onestop.base.util.SessionManager
@@ -11,8 +12,10 @@ import dagger.Provides
 import okhttp3.OkHttpClient
 import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
+import retrofit2.CallAdapter
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.lang.reflect.Type
 import javax.inject.Singleton
 
 
@@ -28,7 +31,6 @@ class AppModule{
     @Provides
     @Singleton
     fun provideRetrofit(sessionManager: SessionManager, context: Context): Retrofit {
-        Log.d("idea-retro-app","call app")
         val logger = HttpLoggingInterceptor()
         logger.level = HttpLoggingInterceptor.Level.BODY
         val clientBuilder = OkHttpClient.Builder()
@@ -47,9 +49,8 @@ class AppModule{
                 if(response.code == 403 || response.code == 401){
                     sessionManager.logout()
                     val intent = Navigator.getIntent(Navigator.Destination.LOGIN)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     context.startActivity(intent)
-                    Log.d("login","start to login")
                 }
                 response
             }
