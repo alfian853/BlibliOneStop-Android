@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BlibliOneStop</string>
+    <string name="library">Library</string>
 </resources>

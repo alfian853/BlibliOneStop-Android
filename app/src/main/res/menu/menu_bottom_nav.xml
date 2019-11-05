@@ -10,4 +10,9 @@
         android:id="@+id/groupFragment"
         android:title="@string/label_idea_channel"
         android:icon="@drawable/ic_guild"/>
+
+    <item
+        android:id="@+id/libraryFragment"
+        android:title="@string/library"
+        android:icon="@drawable/ic_guild"/>
 </menu>

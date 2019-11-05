@@ -51,4 +51,5 @@ dependencies {
     api project(':ideation')
     api project(':login')
     api project(':group')
+    api project(':library')
 }

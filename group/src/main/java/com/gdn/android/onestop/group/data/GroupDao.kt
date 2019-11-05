@@ -3,6 +3,7 @@ package com.gdn.android.onestop.group.data
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GroupDao {
