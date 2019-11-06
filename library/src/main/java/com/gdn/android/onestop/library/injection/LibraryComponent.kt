@@ -2,6 +2,7 @@ package com.gdn.android.onestop.library.injection
 
 import com.gdn.android.onestop.base.BaseComponent
 import com.gdn.android.onestop.library.fragment.BookCatalogFragment
+import com.gdn.android.onestop.library.util.BookDownloadService
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 
@@ -13,6 +14,7 @@ import dagger.android.AndroidInjectionModule
 interface LibraryComponent {
 
     fun inject(bookListFragment: BookCatalogFragment)
+    fun inject(bookDownloadService: BookDownloadService)
 
     companion object {
         private var instance : LibraryComponent? = null

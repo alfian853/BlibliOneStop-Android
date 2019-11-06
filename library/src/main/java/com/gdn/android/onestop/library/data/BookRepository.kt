@@ -2,10 +2,7 @@ package com.gdn.android.onestop.library.data
 
 import android.content.Context
 import android.os.Environment
-import android.util.Log
-import com.gdn.android.onestop.base.UrlConstant
 import io.reactivex.rxjava3.core.Observable
-import io.reactivex.rxjava3.core.ObservableEmitter
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -15,7 +12,6 @@ import retrofit2.Callback
 import retrofit2.Response
 import java.io.File
 import java.io.FileOutputStream
-import java.io.InputStream
 import java.io.OutputStream
 
 class BookRepository(
@@ -24,10 +20,6 @@ class BookRepository(
     private val libraryClient: LibraryClient,
     private val bookUpdateManager: BookUpdateManager
 ){
-
-    companion object {
-        private const val BOOK_RES_PREFIX = "/books/"
-    }
 
     fun getLibraryLiveData() = libraryDao.getAllBook()
 
@@ -47,10 +39,9 @@ class BookRepository(
     }
 
     fun downloadBook(book : Book) : Observable<Int> {
-        var filename = book.path
+        var fileName = book.fileName
         var received = 0L
-        var filesize = book.fileSize
-        filename = filename.replace(BOOK_RES_PREFIX,"").replace(" ","")
+        var fileSize = book.fileSize
         return Observable.create { s ->
             libraryClient.downloadBook(book.fileUrl)
                 .enqueue(object : Callback<ResponseBody> {
@@ -62,9 +53,8 @@ class BookRepository(
                         call: Call<ResponseBody>,
                         response: Response<ResponseBody>
                     ) {
-                        Log.d("book","enter this")
                         CoroutineScope(Dispatchers.IO).launch {
-                            val apkFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!, filename)
+                            val apkFile = book.getFile(context)
                             try {
                                 var outputStream: OutputStream? = null
                                 var inputStream = response.body()!!.byteStream()
@@ -79,8 +69,8 @@ class BookRepository(
                                         }
                                         outputStream.write(fileReader, 0, read)
                                         received += read.toLong()
-                                        val progress = ((received.toDouble() / filesize.toDouble())*100).toInt()
-                                        if(progress != lastProgress)s.onNext(progress)
+                                        val progress = ((received.toDouble() / fileSize.toDouble())*100).toInt()
+                                        if(progress/2 != lastProgress/2)s.onNext(progress)
                                         lastProgress = progress
                                     }
                                     outputStream.flush()
@@ -100,24 +90,6 @@ class BookRepository(
                                 s.onError(RuntimeException("Download failed"))
                             }
 
-//                            val successWrite = writeResponseBodyToDisk(
-//                                filename,
-//                                response.body()!!.byteStream()
-//                            )
-//
-//                            if(successWrite){
-//                                received += response.body()!!.contentLength()
-//                                val progress = ((received.toDouble() / filesize.toDouble())*100).toInt()
-//                                Log.d("book","progress : $progress")
-//                                if(progress == 100){
-//                                    s.onComplete()
-//                                }
-//                                else{
-//                                    s.onNext(progress)
-//                                }
-//                            }
-//                            else{
-//                            }
                         }
                     }
 
@@ -125,41 +97,6 @@ class BookRepository(
         }
 
     }
-
-    fun writeResponseBodyToDisk(filename : String, inputStream: InputStream): Boolean {
-        val apkFile = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!, filename)
-        try {
-            var outputStream: OutputStream? = null
-            try {
-                val fileReader = ByteArray(1048576)
-                var fileSizeDownloaded: Long = 0
-                outputStream = FileOutputStream(apkFile)
-
-                while (true) {
-                    val read = inputStream.read(fileReader)
-                    if (read == -1) {
-                        break
-                    }
-                    outputStream.write(fileReader, 0, read)
-                    fileSizeDownloaded += read.toLong()
-                }
-                outputStream.flush()
-                inputStream.close()
-                outputStream.close()
-                return true
-            } catch (e: Exception) {
-                e.printStackTrace()
-                inputStream.close()
-                outputStream?.close()
-                return false
-            }
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
-        return false
-    }
-
 
 }
 

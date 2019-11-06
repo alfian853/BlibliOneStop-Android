@@ -147,7 +147,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        liveData.removeObserver(observer)
+        liveData.removeObserver(observer)
 
     }
 

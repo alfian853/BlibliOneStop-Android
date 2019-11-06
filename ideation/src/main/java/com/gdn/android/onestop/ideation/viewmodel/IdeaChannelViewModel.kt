@@ -1,7 +1,5 @@
 package com.gdn.android.onestop.ideation.viewmodel
 
-import android.content.Context
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,9 +19,7 @@ class IdeaChannelViewModel @Inject constructor(
 
     fun getIdeaLiveData(): LiveData<PagedList<IdeaPost>> {
         viewModelScope.launch {
-            Log.d("idea","test inet")
             if(networkUtil.isConnectedToNetwork()){
-                Log.d("idea","lolos")
                 ideaRepository.reloadIdeaChannelData()
             }
         }
@@ -31,7 +27,6 @@ class IdeaChannelViewModel @Inject constructor(
     }
 
     fun refreshIdeaChannelData() {
-        Log.d("idea","refresh idea channel")
         viewModelScope.launch {
             if(networkUtil.isConnectedToNetwork()){
                 ideaRepository.reloadIdeaChannelData()
