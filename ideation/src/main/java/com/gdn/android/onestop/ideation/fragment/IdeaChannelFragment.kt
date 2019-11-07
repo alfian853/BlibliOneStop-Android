@@ -152,8 +152,12 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
             ideaCreateFragment.show(fm,"idea create fragment")
         }
 
-        databinding.tvUser.text = user.username.toAliasName()
-        databinding.tvUser.setBackgroundColor(user.username.toColorInt())
+        databinding.tvUser.text = user.alias
+        databinding.tvUser.setBackgroundColor(user.color)
+
+        Log.d("secretxy","result :"+user.alias)
+        Log.d("secretx",user.color.toString())
+
         return databinding.root
     }
 

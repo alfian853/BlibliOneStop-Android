@@ -80,12 +80,18 @@ class IdeaDetailFragment : BaseFullSceenFragment<FragmentIdeaDetailBinding>(){
         savedInstanceState: Bundle?
     ): View? {
 
-        ideaCommentRecyclerAdapter.currentList?.clear()
-
         val args : IdeaDetailFragmentArgs by navArgs()
         ideaPost = args.ideaPost
 
         databinding = FragmentIdeaDetailBinding.inflate(inflater,container, false)
+
+        databinding.toolbar.tvToolbarTitle.text = ideaPost.username
+
+        databinding.toolbar.ivToolbarBack.setOnClickListener {
+            fragmentManager!!.beginTransaction().remove(this@IdeaDetailFragment)
+                .commit()
+        }
+
         databinding.viewmodel = viewmodel
 
         viewmodel.setIdeaPostId(ideaPost.id)
@@ -137,7 +143,6 @@ class IdeaDetailFragment : BaseFullSceenFragment<FragmentIdeaDetailBinding>(){
         }
 
         setVoteText()
-
 
         return this.databinding.root
     }

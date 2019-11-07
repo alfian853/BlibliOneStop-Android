@@ -63,7 +63,7 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
         val nameAlias = ideaPost.username.toAliasName()
         holder.tvNamePict.text = nameAlias
-        holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
+        holder.tvNamePict.setBackgroundColor(Util.getColorFromString(ideaPost.username))
 
         this.itemContentClickCallback.let { itemClickCallback ->
             holder.tvContent.setOnClickListener {
