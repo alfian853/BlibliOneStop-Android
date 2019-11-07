@@ -17,13 +17,11 @@ class IdeaChannelViewModel @Inject constructor(
     private val networkUtil: NetworkUtil
 ) : ViewModel() {
 
-    private val ideaLiveData : LiveData<PagedList<IdeaPost>> = ideaRepository.getIdeaLiveData()
+    private val ideaLiveData : LiveData<List<IdeaPost>> = ideaRepository.getIdeaLiveData()
 
-    fun getIdeaLiveData(): LiveData<PagedList<IdeaPost>> {
+    fun getIdeaLiveData(): LiveData<List<IdeaPost>> {
         viewModelScope.launch {
-            Log.d("idea","test inet")
             if(networkUtil.isConnectedToNetwork()){
-                Log.d("idea","lolos")
                 ideaRepository.reloadIdeaChannelData()
             }
         }

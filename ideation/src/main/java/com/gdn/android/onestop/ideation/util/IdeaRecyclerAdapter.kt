@@ -1,11 +1,9 @@
 package com.gdn.android.onestop.ideation.util
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.FaSolidTextView
@@ -15,12 +13,18 @@ import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.base.util.toDateString
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaPost
+import java.util.*
 
 
 class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
-    PagedListAdapter<IdeaPost, IdeaRecyclerAdapter.IdeaViewHolder>(
-        IDEA_COMPARATOR
+    RecyclerView.Adapter<IdeaRecyclerAdapter.IdeaViewHolder>(
     ) {
+
+    var ideaList: List<IdeaPost> = Collections.emptyList()
+
+    override fun getItemCount(): Int {
+        return ideaList.size
+    }
 
     lateinit var itemContentClickCallback : ItemClickCallback<IdeaPost>
     lateinit var voteClickCallback : VoteClickCallback
@@ -42,42 +46,40 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
     }
 
     override fun onBindViewHolder(holder: IdeaViewHolder, position: Int) {
-        val ideaPost = getItem(position)
+        val ideaPost = ideaList[position]
 
-        ideaPost?.let {
-            setVoteText(ideaPost, holder)
+        setVoteText(ideaPost, holder)
 
-            holder.tvUsername.text = ideaPost.username
-            holder.tvDate.text = ideaPost.createdAt.toDateString()
+        holder.tvUsername.text = ideaPost.username
+        holder.tvDate.text = ideaPost.createdAt.toDateString()
 
-            holder.tvContent.text = ideaPost.content
-            holder.tvContent.measure(0,0)
+        holder.tvContent.text = ideaPost.content
+        holder.tvContent.measure(0,0)
 
-            if(holder.tvContent.lineCount < 4){
-                holder.tvSeeMore.visibility = View.GONE
+        if(holder.tvContent.lineCount < 4){
+            holder.tvSeeMore.visibility = View.GONE
+        }
+
+        holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
+        val nameAlias = ideaPost.username.toAliasName()
+        holder.tvNamePict.text = nameAlias
+        holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
+
+        this.itemContentClickCallback.let { itemClickCallback ->
+            holder.tvContent.setOnClickListener {
+                itemClickCallback.onItemClick(ideaPost, position)
             }
-
-            holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
-            val nameAlias = ideaPost.username.toAliasName()
-            holder.tvNamePict.text = nameAlias
-            holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
-
-            this.itemContentClickCallback.let { itemClickCallback ->
-                holder.tvContent.setOnClickListener {
-                    itemClickCallback.onItemClick(ideaPost, position)
-                }
-                holder.tvComment.setOnClickListener{
-                    itemClickCallback.onItemClick(ideaPost, position)
-                }
+            holder.tvComment.setOnClickListener{
+                itemClickCallback.onItemClick(ideaPost, position)
             }
+        }
 
-            this.voteClickCallback.let { voteClickCallback ->
-                holder.tvUpVote.setOnClickListener {
-                    voteClickCallback.onVote(ideaPost, holder, true)
-                }
-                holder.tvDownVote.setOnClickListener {
-                    voteClickCallback.onVote(ideaPost, holder,false)
-                }
+        this.voteClickCallback.let { voteClickCallback ->
+            holder.tvUpVote.setOnClickListener {
+                voteClickCallback.onVote(ideaPost, holder, true)
+            }
+            holder.tvDownVote.setOnClickListener {
+                voteClickCallback.onVote(ideaPost, holder,false)
             }
         }
 
@@ -93,21 +95,6 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         val tvDownVote: FaSolidTextView = itemView.findViewById(R.id.tv_downVote)
         val tvComment: FaSolidTextView = itemView.findViewById(R.id.tv_comment)
         val tvSeeMore: TextView = itemView.findViewById(R.id.tv_seemore)
-    }
-
-
-
-    companion object {
-        private val IDEA_COMPARATOR = object : DiffUtil.ItemCallback<IdeaPost>(){
-            override fun areItemsTheSame(oldItem: IdeaPost, newItem: IdeaPost): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-            override fun areContentsTheSame(oldItem: IdeaPost, newItem: IdeaPost): Boolean {
-                return oldItem.id == newItem.id
-            }
-
-        }
     }
 
 }

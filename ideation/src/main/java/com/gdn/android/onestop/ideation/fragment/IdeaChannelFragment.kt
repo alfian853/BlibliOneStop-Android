@@ -1,11 +1,14 @@
 package com.gdn.android.onestop.ideation.fragment
 
 import android.os.Bundle
+import android.se.omapi.Session
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.graphics.toColorInt
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -14,10 +17,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
+import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.util.DefaultContextWrapper
-import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.NetworkUtil
+import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.databinding.FragmentIdeaChannelBinding
 import com.gdn.android.onestop.ideation.injection.IdeaComponent
@@ -47,6 +49,13 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
     @Inject
     lateinit var networkUtil: NetworkUtil
 
+    @Inject
+    lateinit var sessionManager : SessionManager
+
+    private val user : User by lazy {
+        sessionManager.user!!
+    }
+
     lateinit var viewmodel: IdeaChannelViewModel
 
     private val contextWrapper : DefaultContextWrapper by lazy {
@@ -55,9 +64,10 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         )
     }
 
-    private val observer = Observer<PagedList<IdeaPost>> {
+    private val observer = Observer<List<IdeaPost>> {
         Log.d("idea","on submit list ${it.size}")
-        this.ideaRecyclerAdapter.submitList(it)
+        ideaRecyclerAdapter.ideaList = it
+        ideaRecyclerAdapter.notifyDataSetChanged()
         databinding.swipeLayout.isRefreshing = false
         context?.let {context ->
             if(it.isEmpty() && !networkUtil.isConnectedToNetwork()){
@@ -67,7 +77,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         }
     }
 
-    private val liveData : LiveData<PagedList<IdeaPost>> by lazy { viewmodel.getIdeaLiveData() }
+    private val liveData : LiveData<List<IdeaPost>> by lazy { viewmodel.getIdeaLiveData() }
 
     override fun doFragmentInjection() {
         IdeaComponent.getInstance().inject(this)
@@ -142,6 +152,8 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
             ideaCreateFragment.show(fm,"idea create fragment")
         }
 
+        databinding.tvUser.text = user.username.toAliasName()
+        databinding.tvUser.setBackgroundColor(user.username.toColorInt())
         return databinding.root
     }
 
