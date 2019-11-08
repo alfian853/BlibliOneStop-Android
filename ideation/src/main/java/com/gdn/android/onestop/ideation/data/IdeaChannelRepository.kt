@@ -3,10 +3,7 @@ package com.gdn.android.onestop.ideation.data
 import android.annotation.SuppressLint
 import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.paging.LivePagedListBuilder
-import androidx.paging.PagedList
 import java.text.SimpleDateFormat
-import java.util.*
 
 class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient: IdeaClient) {
 
@@ -22,26 +19,18 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
         private const val TAG = "ideaRepository"
     }
 
-    private var ideaLiveData :LiveData<PagedList<IdeaPost>>
-
-    init {
-        Log.d("idea","create channel repo")
-        this.ideaLiveData = LivePagedListBuilder(
-            ideaDao.getIdeaDataSourceFactory(), ITEM_PER_PAGE
-        ).build()
-    }
+    private var ideaLiveData :LiveData<List<IdeaPost>> = ideaDao.getIdeaLiveData()
 
     suspend fun update(ideaPost : IdeaPost){
         ideaDao.updateIdea(ideaPost)
     }
 
-    fun getIdeaLiveData() : LiveData<PagedList<IdeaPost>> = ideaLiveData
+    fun getIdeaLiveData() : LiveData<List<IdeaPost>> = ideaLiveData
 
     suspend fun reloadIdeaChannelData() {
         Log.d("idea","reload channel")
         lastPageRequest = 1
         allFetched = false
-        Log.d("idea","reload data")
         this.fetchMoreData().let {
             ideaDao.deleteAllIdeaPost()
             ideaDao.insertIdea(it)

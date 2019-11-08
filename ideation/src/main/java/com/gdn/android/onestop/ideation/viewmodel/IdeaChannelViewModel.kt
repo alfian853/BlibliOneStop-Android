@@ -15,9 +15,9 @@ class IdeaChannelViewModel @Inject constructor(
     private val networkUtil: NetworkUtil
 ) : ViewModel() {
 
-    private val ideaLiveData : LiveData<PagedList<IdeaPost>> = ideaRepository.getIdeaLiveData()
+    private val ideaLiveData : LiveData<List<IdeaPost>> = ideaRepository.getIdeaLiveData()
 
-    fun getIdeaLiveData(): LiveData<PagedList<IdeaPost>> {
+    fun getIdeaLiveData(): LiveData<List<IdeaPost>> {
         viewModelScope.launch {
             if(networkUtil.isConnectedToNetwork()){
                 ideaRepository.reloadIdeaChannelData()
