@@ -26,15 +26,17 @@
                 android:layout_height="match_parent">
 
 
-                <ImageView
-                    android:id="@+id/iv_user"
+                <TextView
+                    android:id="@+id/tv_user"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_marginStart="16dp"
-                    android:layout_marginLeft="16dp"
                     android:layout_marginTop="16dp"
-                    android:background="@drawable/ic_default_user"
+                    android:background="@color/colorPrimary"
                     android:foreground="@drawable/border_round_image"
+                    android:text="AL"
+                    android:gravity="center"
+                    android:textSize="@dimen/size_text_h3"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,7 +46,6 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="12dp"
-                    android:layout_marginLeft="12dp"
                     android:layout_marginEnd="12dp"
                     android:layout_weight="1"
                     android:background="@drawable/comment_input_border"
@@ -52,10 +53,10 @@
                     android:focusable="false"
                     android:hint="@string/what_do_you_think"
                     android:textSize="@dimen/size_text_h5"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_user"
+                    app:layout_constraintBottom_toBottomOf="@+id/tv_user"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/iv_user"
-                    app:layout_constraintTop_toTopOf="@+id/iv_user" />
+                    app:layout_constraintStart_toEndOf="@+id/tv_user"
+                    app:layout_constraintTop_toTopOf="@+id/tv_user" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_ideapost"

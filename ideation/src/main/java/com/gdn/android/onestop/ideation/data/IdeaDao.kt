@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.ideation.data
 
+import androidx.lifecycle.LiveData
 import androidx.paging.DataSource
 import androidx.room.*
 
@@ -25,7 +26,7 @@ interface IdeaDao {
     suspend fun getPostById(ideaId : String) : IdeaPost
 
     @Query("select * from IdeaPost order by IdeaPost.createdAt DESC")
-    fun getIdeaDataSourceFactory() : DataSource.Factory<Int,IdeaPost>
+    fun getIdeaLiveData() : LiveData<List<IdeaPost>>
 
     @Query("delete from IdeaPost")
     suspend fun deleteAllIdeaPost()
