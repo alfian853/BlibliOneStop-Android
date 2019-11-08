@@ -84,12 +84,10 @@ class IdeaDetailFragment : BaseFullSceenFragment<FragmentIdeaDetailBinding>(){
         ideaPost = args.ideaPost
 
         databinding = FragmentIdeaDetailBinding.inflate(inflater,container, false)
-
         databinding.toolbar.tvToolbarTitle.text = ideaPost.username
 
         databinding.toolbar.ivToolbarBack.setOnClickListener {
-            fragmentManager!!.beginTransaction().remove(this@IdeaDetailFragment)
-                .commit()
+            fragmentManager?.beginTransaction()?.remove(this@IdeaDetailFragment)?.commit()
         }
 
         databinding.viewmodel = viewmodel

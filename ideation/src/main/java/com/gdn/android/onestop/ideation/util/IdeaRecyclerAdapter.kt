@@ -59,6 +59,9 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         if(holder.tvContent.lineCount < 4){
             holder.tvSeeMore.visibility = View.GONE
         }
+        else{
+            holder.tvSeeMore.visibility = View.VISIBLE
+        }
 
         holder.tvComment.text = (holder.itemView.resources.getString(R.string.fa_comment) + " "+ ideaPost.commentCount)
         val nameAlias = ideaPost.username.toAliasName()
