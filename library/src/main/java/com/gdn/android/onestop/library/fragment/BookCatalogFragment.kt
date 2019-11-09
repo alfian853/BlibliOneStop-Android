@@ -1,88 +1,113 @@
 package com.gdn.android.onestop.library.fragment
 
 import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.library.data.Book
+import com.gdn.android.onestop.library.data.LibraryDao
 import com.gdn.android.onestop.library.databinding.LayoutPageBookBinding
 import com.gdn.android.onestop.library.injection.LibraryComponent
-import com.gdn.android.onestop.library.util.BookDownloadService
 import com.gdn.android.onestop.library.util.BookRecyclerAdapter
 import com.gdn.android.onestop.library.viewmodel.BookCatalogViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
 
+  override fun doFragmentInjection() {
+    LibraryComponent.getInstance().inject(this)
+  }
 
+  @Inject
+  lateinit var viewModelProviderFactory: ViewModelProviderFactory
 
-    override fun doFragmentInjection() {
-        LibraryComponent.getInstance().inject(this)
-    }
+  @Inject
+  lateinit var applicationContext: Context
 
-    @Inject
-    lateinit var viewModelProviderFactory : ViewModelProviderFactory
+  @Inject
+  lateinit var libraryDao : LibraryDao
 
-    @Inject
-    lateinit var applicationContext : Context
+  private lateinit var viewModel: BookCatalogViewModel
 
-    lateinit var viewModel: BookCatalogViewModel
+  private lateinit var bookRecyclerAdapter: BookRecyclerAdapter
 
-    private val bookRecyclerAdapter: BookRecyclerAdapter = BookRecyclerAdapter()
+  private fun openOptionDialog(book : Book){
+    val args = BookOptionFragmentArgs(book)
+    val optionFragment = BookOptionFragment()
+    optionFragment.arguments = args.toBundle()
+    optionFragment.show(
+        fragmentManager!!, "book option dialog"
+    )
+  }
 
-    private val itemClick : ItemClickCallback<Book> = object : ItemClickCallback<Book> {
+  private val itemClick: ItemClickCallback<Book> = object : ItemClickCallback<Book> {
 
+    override fun onItemClick(item: Book, position: Int) {
 
-        override fun onItemClick(item: Book, position: Int) {
-
-            if(item.isDownloaded){
-                val args = BookReaderFragmentArgs(item)
-                val bookReaderFragment = BookReaderFragment()
-                bookReaderFragment.arguments = args.toBundle()
-                bookReaderFragment.show(
-                    fragmentManager!!, "book reader"
-                )
-            }
-            else{
-                val intent = Intent(context, BookDownloadService::class.java)
-                intent.putExtra("book",item)
-                context!!.startService(intent)
-
-            }
-
+      if (item.isDownloaded) {
+        val file = item.getFile(context!!)
+        if(!file.exists()){
+          item.isDownloaded = false
+          viewModel.viewModelScope.launch {
+            libraryDao.insertBook(item)
+          }
+          Toast.makeText(context, "File not found, please redownload the book", Toast.LENGTH_SHORT).show()
+          openOptionDialog(item)
+          return
         }
+        val args = BookReaderFragmentArgs(item)
+        val bookReaderFragment = BookReaderFragment()
+        bookReaderFragment.arguments = args.toBundle()
+        bookReaderFragment.show(fragmentManager!!, "book reader")
+      } else {
+        openOptionDialog(item)
+      }
 
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(BookCatalogViewModel::class.java)
+  }
 
+  private val itemLongClick: ItemClickCallback<Book> = object : ItemClickCallback<Book> {
+    override fun onItemClick(item: Book, position: Int) {
+      openOptionDialog(item)
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        databinding = LayoutPageBookBinding.inflate(inflater, container, false)
-        viewModel.doFetchLatestData()
-        viewModel.getLibraryFlow().observe(this, Observer {
-            bookRecyclerAdapter.bookList = it
-            bookRecyclerAdapter.notifyDataSetChanged()
-        })
+  }
 
-        bookRecyclerAdapter.itemClickCallback = itemClick
-        databinding.rvBook.adapter = bookRecyclerAdapter
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    viewModel = ViewModelProvider(this, viewModelProviderFactory).get(
+        BookCatalogViewModel::class.java)
+    bookRecyclerAdapter = BookRecyclerAdapter(resources)
 
-        return databinding.root
-    }
+  }
+
+  override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+      savedInstanceState: Bundle?): View? {
+    databinding = LayoutPageBookBinding.inflate(inflater, container, false)
+    databinding.lifecycleOwner = this
+    databinding.viewmodel = viewModel
+    viewModel.doFetchLatestData()
+    viewModel.getLibraryLiveData().observe(this, Observer {
+      bookRecyclerAdapter.bookList = it
+      bookRecyclerAdapter.notifyDataSetChanged()
+    })
+
+    bookRecyclerAdapter.itemClickCallback = itemClick
+    bookRecyclerAdapter.itemLongClickCallback = itemLongClick
+    databinding.rvBook.adapter = bookRecyclerAdapter
+
+
+    return databinding.root
+  }
 
 }

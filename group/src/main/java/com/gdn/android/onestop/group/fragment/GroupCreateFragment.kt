@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseFullSceenFragment
+import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.FragmentGroupCreateBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
@@ -18,7 +18,7 @@ import com.gdn.android.onestop.group.viewmodel.GroupViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GroupCreateFragment : BaseFullSceenFragment<FragmentGroupCreateBinding>() {
+class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>() {
 
     override fun doFragmentInjection() {
         GroupComponent.getInstance().inject(this)

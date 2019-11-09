@@ -7,33 +7,34 @@ import com.gdn.android.onestop.base.util.SessionObserver
 
 class BookUpdateManager : SessionObserver {
 
-    val context : Context
+  val context: Context
 
-    constructor(context: Context, sessionManager: SessionManager){
-        sessionManager.addObserver(this)
-        this.context = context
-        preferences = context.getSharedPreferences("book_update", Context.MODE_PRIVATE)
-        editor = preferences.edit()
-    }
-    override fun onSessionExpired() {
-        clear()
-    }
+  constructor(context: Context, sessionManager: SessionManager) {
+    sessionManager.addObserver(this)
+    this.context = context
+    preferences = context.getSharedPreferences("book_update", Context.MODE_PRIVATE)
+    editor = preferences.edit()
+  }
 
-    private val preferences: SharedPreferences
-    private val editor: SharedPreferences.Editor
+  override fun onSessionExpired() {
+    clear()
+  }
 
-    private val LAST_UPDATE_CONST = "lastUpdate"
+  private val preferences: SharedPreferences
+  private val editor: SharedPreferences.Editor
 
-    fun setLastUpdate(lastUpdate: Long){
-        editor.putLong(LAST_UPDATE_CONST, lastUpdate)
-        editor.commit()
-    }
+  private val LAST_UPDATE_CONST = "lastUpdate"
 
-    fun getLastUpdate() : Long = preferences.getLong(LAST_UPDATE_CONST,0)
+  fun setLastUpdate(lastUpdate: Long) {
+    editor.putLong(LAST_UPDATE_CONST, lastUpdate)
+    editor.commit()
+  }
 
-    fun clear() {
-        editor.clear()
-        editor.commit()
-    }
+  fun getLastUpdate(): Long = preferences.getLong(LAST_UPDATE_CONST, 0)
+
+  fun clear() {
+    editor.clear()
+    editor.commit()
+  }
 
 }

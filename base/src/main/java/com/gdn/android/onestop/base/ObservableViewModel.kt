@@ -57,11 +57,4 @@ abstract class ObservableViewModel : ViewModel(), Observable {
         mCallbacks!!.notifyCallbacks(this, fieldId, null)
     }
 
-//    override fun onCleared() {
-//        super.onCleared()
-////        viewModelScope.coroutineContext.cancel()
-////        viewModelScope.cancel(null)
-//        Log.d("debugdebug",viewModelScope.toString())
-//    }
-
 }

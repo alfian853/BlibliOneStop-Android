@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@id/tv_title"
+            android:text="@string/efective_java"
+            android:textSize="@dimen/size_text_h4"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"/>
+
+        <LinearLayout
+            android:id="@+id/ll_bookmark"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@drawable/ic_bookmark"
+                android:gravity="end"
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
+
+            <TextView
+                android:id="@+id/tv_bookmark"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/bookmark_this_book"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_download"
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_gravity="center"
+                android:background="@drawable/ic_download"
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
+
+            <TextView
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/download_this_book"
+                android:layout_gravity="center"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

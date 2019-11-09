@@ -14,7 +14,15 @@
     <fragment
         android:id="@+id/bookReaderFragment"
         android:name="com.gdn.android.onestop.library.fragment.BookReaderFragment"
-        android:label="BookReaderFragment" >
+        android:label="BookReaderFragment">
+        <argument
+            android:name="book"
+            app:argType="com.gdn.android.onestop.library.data.Book" />
+    </fragment>
+    <fragment
+        android:id="@+id/bookOptionFragment"
+        android:name="com.gdn.android.onestop.library.fragment.BookOptionFragment"
+        android:label="BookOptionFragment" >
         <argument
             android:name="book"
             app:argType="com.gdn.android.onestop.library.data.Book" />

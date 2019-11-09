@@ -7,14 +7,12 @@ import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
-@Module
-abstract class LibraryBindModule {
+@Module abstract class LibraryBindModule {
 
-
-    @LibraryScope
-    @Binds
-    @IntoMap
-    @ViewModelKey(BookCatalogViewModel::class)
-    abstract fun bindBookCatalogViewModel(bookCatalogViewModel: BookCatalogViewModel) : ViewModel
+  @LibraryScope
+  @Binds
+  @IntoMap
+  @ViewModelKey(BookCatalogViewModel::class)
+  abstract fun bindBookCatalogViewModel(bookCatalogViewModel: BookCatalogViewModel): ViewModel
 
 }

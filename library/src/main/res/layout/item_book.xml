@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:padding="20dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="12dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
     app:cardCornerRadius="6dp"
+    app:strokeColor="@color/colorPrimary"
+    app:strokeWidth="0.5dp"
     android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
+
+
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:padding="10dp"
@@ -14,12 +20,25 @@
         android:layout_height="match_parent">
 
         <ImageView
+            android:id="@+id/iv_bookmark"
+            android:layout_width="@dimen/size_text_h2"
+            android:layout_height="@dimen/size_text_h2"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_bookmark_red"
+            android:gravity="end"
+            app:layout_constraintStart_toStartOf="@+id/iv_book_pict"
+            app:layout_constraintTop_toTopOf="@+id/iv_book_pict" />
+
+        <ImageView
             android:id="@+id/iv_book_pict"
             android:layout_width="@dimen/size_img_2_large"
             android:layout_height="@dimen/size_img_2_large"
-            android:background="@android:drawable/ic_menu_report_image"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@android:drawable/ic_menu_report_image" />
 
         <TextView
             android:id="@+id/tv_title"
@@ -38,9 +57,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
-            android:textSize="@dimen/size_text_h5"
-            android:textColor="@color/black"
             android:text="@string/page_read"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_text_h5"
             app:layout_constraintStart_toStartOf="@+id/tv_title"
             app:layout_constraintTop_toBottomOf="@+id/tv_title" />
 

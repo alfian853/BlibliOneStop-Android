@@ -2,6 +2,7 @@ package com.gdn.android.onestop.library.injection
 
 import com.gdn.android.onestop.base.BaseComponent
 import com.gdn.android.onestop.library.fragment.BookCatalogFragment
+import com.gdn.android.onestop.library.fragment.BookOptionFragment
 import com.gdn.android.onestop.library.util.BookDownloadService
 import dagger.Component
 import dagger.android.AndroidInjectionModule
@@ -13,29 +14,30 @@ import dagger.android.AndroidInjectionModule
 )
 interface LibraryComponent {
 
-    fun inject(bookListFragment: BookCatalogFragment)
-    fun inject(bookDownloadService: BookDownloadService)
+  fun inject(bookListFragment: BookCatalogFragment)
+  fun inject(bookOptionFragment: BookOptionFragment)
+  fun inject(bookDownloadService: BookDownloadService)
 
-    companion object {
-        private var instance : LibraryComponent? = null
+  companion object {
+    private var instance: LibraryComponent? = null
 
-        fun getInstance() : LibraryComponent {
-            var localInstance = instance
-            if(localInstance == null){
-                synchronized(LibraryComponent::class){
-                    localInstance = instance
-                    if(localInstance == null){
-                        instance = DaggerLibraryComponent.factory().create(BaseComponent.getInstance()!!)
-                        localInstance = instance
-                    }
-                }
-            }
-            return instance!!
+    fun getInstance(): LibraryComponent {
+      var localInstance = instance
+      if (localInstance == null) {
+        synchronized(LibraryComponent::class) {
+          localInstance = instance
+          if (localInstance == null) {
+            instance = DaggerLibraryComponent.factory().create(BaseComponent.getInstance()!!)
+            localInstance = instance
+          }
         }
+      }
+      return instance!!
     }
+  }
 
-    @Component.Factory
-    interface Factory{
-        fun create(baseComponent: BaseComponent) : LibraryComponent
-    }
+  @Component.Factory
+  interface Factory {
+    fun create(baseComponent: BaseComponent): LibraryComponent
+  }
 }
