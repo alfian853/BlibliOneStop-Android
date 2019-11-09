@@ -15,7 +15,7 @@ interface LibraryDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertBook(bookList: List<Book>)
 
-  @Query("select * from Book order by title")
+  @Query("select * from Book order by isBookmarked DESC,title ASC")
   fun getAllBook(): LiveData<List<Book>>
 
 }

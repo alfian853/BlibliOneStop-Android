@@ -40,7 +40,6 @@ class Book : Serializable {
   }
 
   @Ignore
-  fun getFile(context: Context) = File(
-      context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!, fileName)
+  fun getFile(context: Context) = File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS)!!, fileName)
 
 }

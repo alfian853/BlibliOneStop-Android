@@ -32,7 +32,7 @@
         <CheckBox
             android:id="@+id/cb_saved_book"
             android:layout_marginTop="8dp"
-            android:text="@string/my_saved_book"
+            android:text="@string/bookmarked_only"
             android:checked="@={viewmodel.bookmarkFilter}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>

@@ -12,22 +12,20 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
-
+    <ImageView
+        android:id="@+id/iv_bookmark"
+        android:layout_width="@dimen/size_text_h2"
+        android:layout_height="@dimen/size_text_h2"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/ic_bookmark_red"
+        android:layout_marginLeft="2dp" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:padding="10dp"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_bookmark"
-            android:layout_width="@dimen/size_text_h2"
-            android:layout_height="@dimen/size_text_h2"
-            android:layout_gravity="center"
-            android:background="@drawable/ic_bookmark_red"
-            android:gravity="end"
-            app:layout_constraintStart_toStartOf="@+id/iv_book_pict"
-            app:layout_constraintTop_toTopOf="@+id/iv_book_pict" />
 
         <ImageView
             android:id="@+id/iv_book_pict"

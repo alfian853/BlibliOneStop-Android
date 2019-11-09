@@ -6,7 +6,7 @@
     <string name="title">Title : Introduction to Algorithm</string>
     <string name="page_read">Read : 20 / 90 Pages</string>
     <string name="efective_java">Efective Java...</string>
-    <string name="my_saved_book">My saved book</string>
+    <string name="bookmarked_only">Bookmarked only</string>
     <string name="download_this_book">Download this book</string>
     <string name="bookmark_this_book">Bookmark this book</string>
     <string name="delete_bookmark">Delete bookmark</string>

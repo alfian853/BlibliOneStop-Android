@@ -18,7 +18,7 @@ class BookCatalogViewModel
   val titleFilter : MutableLiveData<String> = MutableLiveData()
 
   init {
-    bookmarkFilter.postValue(true)
+    bookmarkFilter.postValue(false)
     titleFilter.postValue("")
   }
 
