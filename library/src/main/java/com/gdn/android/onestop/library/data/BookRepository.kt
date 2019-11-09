@@ -39,7 +39,6 @@ class BookRepository(
     }
 
     fun downloadBook(book : Book) : Observable<Int> {
-        var fileName = book.fileName
         var received = 0L
         var fileSize = book.fileSize
         return Observable.create { s ->

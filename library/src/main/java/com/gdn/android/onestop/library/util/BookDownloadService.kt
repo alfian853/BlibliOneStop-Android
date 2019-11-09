@@ -1,13 +1,11 @@
 package com.gdn.android.onestop.library.util
 
 import android.app.Service
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.work.WorkerParameters
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.injection.LibraryComponent

@@ -3,9 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.gdn.android.onestop.library.fragment.BookReaderFragment">
 
-    <data>
-
-    </data>
 
     <LinearLayout
         android:orientation="vertical"
