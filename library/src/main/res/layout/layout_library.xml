@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.gdn.android.onestop.library.fragment.LibraryFragment">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_library"
+            android:layout_height="wrap_content"
+            android:layout_width="match_parent">
+
+            <com.google.android.material.tabs.TabItem
+                android:text="@string/book"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+
+            <com.google.android.material.tabs.TabItem
+                android:text="@string/audio"
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content" />
+        </com.google.android.material.tabs.TabLayout>
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_library"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></androidx.viewpager2.widget.ViewPager2>
+
+    </LinearLayout>
+</layout>

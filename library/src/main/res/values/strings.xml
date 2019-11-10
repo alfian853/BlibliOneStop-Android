@@ -1,0 +1,14 @@
+<resources>
+    <string name="type_to_search">Type to search</string>
+    <string name="app_name">library</string>
+    <string name="book">Book</string>
+    <string name="audio">Audio</string>
+    <string name="title">Title : Introduction to Algorithm</string>
+    <string name="page_read">Read : 20 / 90 Pages</string>
+    <string name="efective_java">Efective Java...</string>
+    <string name="bookmarked_only">Bookmarked only</string>
+    <string name="download_this_book">Download this book</string>
+    <string name="bookmark_this_book">Bookmark this book</string>
+    <string name="delete_bookmark">Delete bookmark</string>
+    <string name="page_n_a">Page : N/A</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:padding="12dp"
+    android:layout_marginTop="8dp"
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="6dp"
+    app:strokeColor="@color/colorPrimary"
+    app:strokeWidth="0.5dp"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_bookmark"
+        android:layout_width="@dimen/size_text_h2"
+        android:layout_height="@dimen/size_text_h2"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="2dp"
+        android:background="@drawable/ic_bookmark_red"
+        android:layout_marginLeft="2dp" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+
+
+        <ImageView
+            android:id="@+id/iv_book_pict"
+            android:layout_width="@dimen/size_img_2_large"
+            android:layout_height="@dimen/size_img_2_large"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:background="@android:drawable/ic_menu_report_image" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="120dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/title"
+            android:textSize="@dimen/size_text_h5"
+            android:textColor="@color/black"
+            app:layout_constraintEnd_toEndOf="@+id/iv_book_pict"
+            app:layout_constraintStart_toStartOf="@+id/iv_book_pict"
+            app:layout_constraintTop_toBottomOf="@+id/iv_book_pict" />
+
+        <TextView
+            android:id="@+id/tv_read"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/page_read"
+            android:textColor="@color/black"
+            android:textSize="@dimen/size_text_h5"
+            app:layout_constraintStart_toStartOf="@+id/tv_title"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

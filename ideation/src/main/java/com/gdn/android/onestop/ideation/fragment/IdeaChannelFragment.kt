@@ -14,7 +14,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import androidx.paging.PagedList
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.User
@@ -163,7 +162,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-//        liveData.removeObserver(observer)
+        liveData.removeObserver(observer)
 
     }
 

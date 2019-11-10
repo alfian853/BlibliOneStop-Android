@@ -14,5 +14,7 @@
     <dimen name="size_img_3">28dp</dimen>
     <dimen name="size_img_2">32dp</dimen>
     <dimen name="size_img_1">36dp</dimen>
+    <dimen name="size_img_1_large">120dp</dimen>
+    <dimen name="size_img_2_large">120dp</dimen>
     <dimen name="size_back">36dp</dimen>
 </resources>

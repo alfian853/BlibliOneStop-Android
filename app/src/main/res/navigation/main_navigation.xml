@@ -28,4 +28,8 @@
         android:name="com.gdn.android.onestop.login.LoginActivity"
         android:label="Login"
         tools:layout="@layout/activity_login" />
+    <fragment
+        android:id="@+id/libraryFragment"
+        android:name="com.gdn.android.onestop.library.fragment.LibraryFragment"
+        android:label="LibraryFragment" />
 </navigation>
