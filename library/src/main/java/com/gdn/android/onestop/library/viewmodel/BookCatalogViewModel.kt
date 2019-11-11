@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.library.viewmodel
 
+import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -11,8 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BookCatalogViewModel
-@Inject constructor(private val libraryRepository: BookRepository) :
-  ObservableViewModel() {
+@Inject constructor(private val libraryRepository: BookRepository) : ObservableViewModel() {
 
   val bookmarkFilter : MutableLiveData<Boolean> = MutableLiveData()
   val titleFilter : MutableLiveData<String> = MutableLiveData()
@@ -28,7 +28,6 @@ class BookCatalogViewModel
 
     val originalData = libraryRepository.getLibraryLiveData()
     livedata.addSource(originalData){
-      livedata.postValue(it)
       bookmarkFilter.postValue(bookmarkFilter.value)
     }
 
@@ -43,7 +42,6 @@ class BookCatalogViewModel
           originalData.value
         }
         filteredData.postValue(filteredValue)
-        livedata.postValue(filteredValue)
         titleFilter.postValue(titleFilter.value)
       }
     }
