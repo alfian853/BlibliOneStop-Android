@@ -1,11 +1,14 @@
 package com.gdn.android.onestop.ideation.fragment
 
 import android.os.Bundle
+import android.se.omapi.Session
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.graphics.toColorInt
+import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
