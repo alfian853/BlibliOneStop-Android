@@ -102,7 +102,8 @@
         android:text="@string/time"
         android:textSize="@dimen/size_text_h6"
         app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
-        app:layout_constraintStart_toEndOf="@+id/ll_chat" />
+        app:layout_constraintStart_toEndOf="@+id/ll_chat"
+        android:layout_marginLeft="4dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

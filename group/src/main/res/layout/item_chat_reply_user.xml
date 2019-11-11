@@ -70,7 +70,8 @@
         android:textSize="@dimen/size_text_h6"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
-        app:layout_constraintEnd_toStartOf="@+id/ll_chat" />
+        app:layout_constraintEnd_toStartOf="@+id/ll_chat"
+        android:layout_marginRight="4dp" />
 
     <ProgressBar
         android:id="@+id/pb_sending"

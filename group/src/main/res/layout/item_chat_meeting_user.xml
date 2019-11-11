@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="end"
+    android:padding="8dp">
+
+    <ProgressBar
+        android:id="@+id/pb_sending"
+        android:layout_width="@dimen/size_img_6"
+        android:layout_height="@dimen/size_img_6"
+        android:layout_gravity="bottom"
+        android:layout_marginEnd="4dp"
+        android:layout_marginRight="4dp" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        android:text="@string/time"
+        android:layout_marginEnd="4dp"
+        android:textSize="@dimen/size_text_h6"
+        android:visibility="visible"
+        android:layout_marginRight="4dp" />
+
+    <RelativeLayout
+        android:id="@+id/rl_chat_tip"
+        style="@style/ChatTip"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/chat_tip_blue"
+        android:includeFontPadding="false"
+        android:text="Hello\nMy name is alfian"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/black"
+        android:padding="0dp">
+
+        <ImageView
+            android:id="@+id/iv_meeting_pict"
+            android:layout_width="match_parent"
+            android:padding="3dp"
+            android:layout_height="140dp"
+            android:src="@drawable/idea"
+            android:background="@drawable/round_top"/>
+        <TextView
+            android:id="@+id/tv_meeting_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="@string/meeting"
+            android:layout_below="@id/iv_meeting_pict"
+            android:textSize="@dimen/size_text_h3"
+            android:textColor="@color/white"
+            android:gravity="center_horizontal"/>
+        <TextView
+            android:id="@+id/tv_meeting_date"
+            android:layout_below="@id/tv_meeting_title"
+            android:layout_width="match_parent"
+            style="@style/ChatTip"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="Date: 17:30 10 Nov 2019"/>
+
+        <TextView
+            android:id="@+id/tv_message"
+            android:layout_below="@id/tv_meeting_date"
+            style="@style/ChatTip"
+            android:textColor="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/description"/>
+
+        <View
+            android:id="@+id/v_separator_meeting"
+            android:layout_below="@+id/tv_message"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"/>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_see_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/v_separator_meeting"
+            android:textColor="@color/white"
+            android:background="@color/white"
+            style="@style/Widget.MaterialComponents.Button.TextButton"
+            android:text="See note"/>
+
+    </RelativeLayout>
+
+</LinearLayout>

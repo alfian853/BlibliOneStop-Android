@@ -62,7 +62,8 @@
         android:textSize="@dimen/size_text_h6"
         android:layout_marginStart="4dp"
         app:layout_constraintBottom_toBottomOf="@+id/tv_message"
-        app:layout_constraintStart_toEndOf="@+id/tv_message" />
+        app:layout_constraintStart_toEndOf="@+id/tv_message"
+        android:layout_marginLeft="4dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

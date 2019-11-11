@@ -13,7 +13,8 @@
             android:layout_width="@dimen/size_img_1"
             android:layout_height="@dimen/size_img_1"
             android:background="@drawable/ic_left_row_white"
-            android:layout_marginStart="16dp" />
+            android:layout_marginStart="@dimen/toolbar_horizontal_margin"
+            android:layout_marginLeft="12dp" />
 
         <TextView
             android:id="@+id/tv_toolbar_title"
@@ -22,6 +23,7 @@
             android:textSize="@dimen/size_text_h1"
             android:textColor="@color/white"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp" />
     </LinearLayout>
 </layout>

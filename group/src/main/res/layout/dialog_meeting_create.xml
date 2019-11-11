@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="meetingdata"
+            type="com.gdn.android.onestop.group.fragment.MeetingCreateData" />
+
+    </data>
+
+    <RelativeLayout
+        android:paddingTop="20dp"
+        android:paddingBottom="20dp"
+        android:paddingLeft="12dp"
+        android:paddingStart="12dp"
+        android:paddingRight="12dp"
+        android:paddingEnd="12dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/tv_dialog_title"
+            android:text="@string/create_meeting_schedule"
+            android:textSize="@dimen/size_text_h3"
+            android:textColor="@color/black"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <LinearLayout
+            android:id="@+id/ll_date_box"
+            android:orientation="horizontal"
+            android:background="@drawable/round"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:layout_below="@id/tv_dialog_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_calender"
+                android:background="@drawable/ic_date"
+                android:layout_width="@dimen/size_img_4"
+                android:layout_height="@dimen/size_img_4" />
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_date"
+                android:textColor="@color/black"
+                android:layout_marginLeft="8dp"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_time_box"
+            android:orientation="horizontal"
+            android:background="@drawable/round"
+            android:layout_marginTop="12dp"
+            android:padding="8dp"
+            android:layout_below="@id/ll_date_box"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_time"
+                android:background="@drawable/ic_time"
+                android:layout_width="@dimen/size_img_4"
+                android:layout_height="@dimen/size_img_4" />
+
+            <TextView
+                android:id="@+id/tv_time"
+                android:gravity="center_vertical"
+                android:hint="@string/enter_time"
+                android:textColor="@color/black"
+                android:layout_marginLeft="8dp"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp" />
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/tl_description"
+            android:layout_below="@id/ll_time_box"
+            android:layout_marginTop="12dp"
+            app:boxBackgroundColor="@null"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/et_group_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:text="@={meetingdata.description}"
+                android:lines="4"
+                android:gravity="top|start"
+                android:textSize="@dimen/size_text_h4" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_close"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/tl_description"
+            android:layout_toLeftOf="@id/btn_submit"
+            android:layout_marginRight="12dp"
+            style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+            android:layout_width="wrap_content"
+            android:text="@string/close"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/btn_submit"
+            android:layout_marginEnd="12dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_submit"
+            android:layout_marginTop="16dp"
+            android:layout_below="@id/tl_description"
+            android:layout_alignParentRight="true"
+            android:layout_width="wrap_content"
+            android:text="@string/submit"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true" />
+
+    </RelativeLayout>
+</layout>

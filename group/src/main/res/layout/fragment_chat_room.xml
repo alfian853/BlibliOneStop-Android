@@ -10,57 +10,187 @@
             type="com.gdn.android.onestop.group.viewmodel.GroupChatViewModel" />
     </data>
 
-    <LinearLayout
+    <RelativeLayout
         android:background="@color/white_grey"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:id="@+id/ll_toolbar"
             android:orientation="horizontal"
-            android:padding="15dp"
             android:background="@color/white"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/toolbar_height">
 
             <ImageView
                 android:id="@+id/iv_back"
+                android:layout_marginStart="@dimen/toolbar_horizontal_margin"
+                android:layout_marginLeft="@dimen/toolbar_horizontal_margin"
                 android:layout_width="@dimen/size_img_1"
                 android:layout_height="@dimen/size_img_1"
+                android:layout_gravity="center_vertical"
                 android:background="@drawable/ic_left_row" />
 
             <TextView
                 android:id="@+id/tv_group_name"
                 android:layout_weight="1"
-                android:layout_marginLeft="25dp"
+                android:layout_marginLeft="@dimen/toolbar_horizontal_margin"
                 android:layout_gravity="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_text_h3"
                 android:text="Group"
-                android:layout_marginStart="25dp" />
+                android:layout_marginStart="@dimen/toolbar_horizontal_margin" />
 
             <ImageView
                 android:id="@+id/iv_option"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_ellipsis"
                 android:layout_width="@dimen/size_img_4"
-                android:layout_height="@dimen/size_img_4" />
+                android:layout_height="@dimen/size_img_4"
+                android:layout_marginEnd="@dimen/toolbar_horizontal_margin"
+                android:layout_marginRight="@dimen/toolbar_horizontal_margin" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
+            android:layout_height="match_parent"
+            android:layout_below="@id/ll_toolbar"
+            android:layout_above="@id/ll_chat_box"
             android:layout_weight="1"
             android:nestedScrollingEnabled="true"
             tools:itemCount="10"
             tools:listitem="@layout/item_chat" />
+
+        <LinearLayout
+            android:id="@+id/ll_chat_option"
+            android:padding="15dp"
+            android:visibility="visible"
+            android:orientation="vertical"
+            android:layout_below="@id/ll_toolbar"
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_view_member"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_group_thin"
+                    android:gravity="end"
+                    android:layout_width="@dimen/size_text_h2"
+                    android:layout_height="@dimen/size_text_h2"/>
+
+                <TextView
+                    android:id="@+id/tv_view_member"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/view_members"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_text_h4"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_meeting"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_datetime"
+                    android:gravity="end"
+                    android:layout_width="@dimen/size_text_h2"
+                    android:layout_height="@dimen/size_text_h2"/>
+
+                <TextView
+                    android:id="@+id/tv_meeting"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/meeting"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_text_h4"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="horizontal"
+                android:layout_marginTop="18dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_notification"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_alarm_disable"
+                    android:gravity="end"
+                    android:layout_width="@dimen/size_text_h2"
+                    android:layout_height="@dimen/size_text_h2"/>
+
+                <TextView
+                    android:id="@+id/tv_notification"
+                    android:layout_gravity="center"
+                    android:layout_marginLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Mute group"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/size_text_h4"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:layout_marginTop="18dp"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:id="@+id/iv_leave"
+                    android:gravity="end"
+                    android:layout_gravity="center"
+                    android:background="@drawable/ic_leave"
+                    android:layout_width="@dimen/size_text_h2"
+                    android:layout_height="@dimen/size_text_h2"/>
+
+                <TextView
+                    android:id="@+id/tv_leave"
+                    android:layout_marginLeft="12dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/leave_group"
+                    android:textColor="@color/black"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/size_text_h4"
+                    android:layout_marginStart="12dp" />
+            </LinearLayout>
+        </LinearLayout>
+
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:visibility="@{viewmodel.replyVisibility}"
             android:id="@+id/cl_reply_container"
             android:paddingBottom="8dp"
+            android:layout_above="@id/ll_chat_box"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
@@ -127,23 +257,35 @@
                 android:layout_marginTop="4dp"
                 android:layout_marginEnd="4dp"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_marginRight="4dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <LinearLayout
+            android:id="@+id/ll_chat_box"
             android:padding="3dp"
             android:background="@color/colorPrimaryDark"
             android:gravity="bottom"
+            android:layout_alignParentBottom="true"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageView
+                android:id="@+id/btn_meeting"
+                android:layout_width="@dimen/size_img_3"
+                android:layout_height="@dimen/size_img_3"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="8dp"
+                android:background="@drawable/ic_datetime_white"
+                android:layout_marginStart="8dp" />
+
             <EditText
                 android:layout_weight="10"
                 android:id="@+id/et_message"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
+                android:layout_marginLeft="6dp"
+                android:layout_marginRight="6dp"
                 android:maxLines="4"
                 android:text="@={viewmodel.chatText}"
                 android:layout_gravity="center_horizontal|center"
@@ -162,7 +304,19 @@
                 android:layout_gravity="center"
                 android:background="@drawable/ic_send"
                 app:iconTint="@color/black"
-                android:layout_marginStart="4dp" />
+                android:layout_marginStart="4dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginEnd="8dp"/>
         </LinearLayout>
-    </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_shadow"
+            android:orientation="vertical"
+            android:layout_below="@id/ll_chat_option"
+            android:background="@drawable/bg_shadow"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"/>
+
+    </RelativeLayout>
 </layout>

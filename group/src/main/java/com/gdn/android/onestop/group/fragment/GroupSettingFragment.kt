@@ -29,8 +29,7 @@ class GroupSettingFragment(private val groupViewModel: GroupViewModel,
             val groupLeaveFragment = GroupLeaveFragment(
                 groupViewModel,
                 group,
-                object :
-                    ActionSuccessCallback {
+                object : ActionSuccessCallback {
                     override fun onSuccess() {
                         fragmentManager!!.beginTransaction().remove(this@GroupSettingFragment)
                             .commit()
