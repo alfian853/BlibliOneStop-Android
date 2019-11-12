@@ -1,124 +1,126 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="@dimen/size_img_2"
-        android:layout_height="@dimen/size_img_2"
-        app:cardBackgroundColor="@color/black"
-        app:cardCornerRadius="18dp"
-        app:cardPreventCornerOverlap="false"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
-        <TextView
-            android:id="@+id/iv_user"
-            android:background="@color/colorPrimaryDark"
-            android:text="AL"
-            android:gravity="center"
-            android:textSize="@dimen/size_text_h4"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cardView"
             android:layout_width="@dimen/size_img_2"
             android:layout_height="@dimen/size_img_2"
-            tools:srcCompat="@tools:sample/avatars" />
-    </androidx.cardview.widget.CardView>
+            app:cardBackgroundColor="@color/black"
+            app:cardCornerRadius="18dp"
+            app:cardPreventCornerOverlap="false"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tv_username"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:includeFontPadding="false"
-        android:maxLines="1"
-        android:text="@string/username"
-        app:layout_constraintStart_toEndOf="@+id/cardView"
-        app:layout_constraintTop_toTopOf="@+id/cardView" />
-
-    <RelativeLayout
-        android:id="@+id/rl_chat_tip"
-        style="@style/ChatTip"
-        android:layout_width="200dp"
-        android:layout_height="wrap_content"
-        android:background="@drawable/chat_tip"
-        android:includeFontPadding="false"
-        android:text="Hello\nMy name is alfian"
-        android:layout_marginTop="4dp"
-        android:textColor="@color/black"
-        android:padding="0dp"
-        app:layout_constraintStart_toStartOf="@+id/tv_username"
-        app:layout_constraintTop_toBottomOf="@+id/tv_username">
-
-        <ImageView
-            android:id="@+id/iv_meeting_pict"
-            android:layout_width="match_parent"
-            android:padding="3dp"
-            android:layout_height="140dp"
-            android:src="@drawable/idea"
-            android:background="@drawable/round_top"/>
+            <TextView
+                android:id="@+id/iv_user"
+                android:background="@color/colorPrimaryDark"
+                android:text="AL"
+                android:gravity="center"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_width="@dimen/size_img_2"
+                android:layout_height="@dimen/size_img_2"
+                tools:srcCompat="@tools:sample/avatars" />
+        </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tv_meeting_title"
-            android:layout_width="match_parent"
+            android:id="@+id/tv_username"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="@string/username"
+            app:layout_constraintStart_toEndOf="@+id/cardView"
+            app:layout_constraintTop_toTopOf="@+id/cardView" />
+
+        <RelativeLayout
+            android:id="@+id/rl_chat_tip"
+            style="@style/ChatTip"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/chat_tip"
+            android:includeFontPadding="false"
+            android:text="Hello\nMy name is alfian"
             android:layout_marginTop="4dp"
-            android:text="Meeting"
-            android:layout_below="@id/iv_meeting_pict"
-            android:textSize="@dimen/size_text_h3"
             android:textColor="@color/black"
-            android:gravity="center_horizontal"/>
+            android:padding="0dp"
+            app:layout_constraintStart_toStartOf="@+id/tv_username"
+            app:layout_constraintTop_toBottomOf="@+id/tv_username">
+
+            <ImageView
+                android:id="@+id/iv_meeting_pict"
+                android:layout_width="match_parent"
+                android:padding="3dp"
+                android:layout_height="140dp"
+                android:src="@drawable/idea"
+                android:background="@drawable/round_top" />
+
+            <TextView
+                android:id="@+id/tv_meeting_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="Meeting"
+                android:layout_below="@id/iv_meeting_pict"
+                android:textSize="@dimen/size_text_h3"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal" />
+
+            <TextView
+                android:id="@+id/tv_meeting_date"
+                android:layout_below="@id/tv_meeting_title"
+                android:layout_width="match_parent"
+                style="@style/ChatTip"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="Date: 17:30 10 Nov 2019" />
+
+            <TextView
+                android:id="@+id/tv_message"
+                android:layout_below="@id/tv_meeting_date"
+                style="@style/ChatTip"
+                android:textColor="@color/black"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/description" />
+
+            <View
+                android:id="@+id/v_separator_meeting"
+                android:layout_below="@+id/tv_message"
+                android:background="@color/colorPrimaryDark"
+                android:layout_width="match_parent"
+                android:layout_height="1dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_see_note"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/v_separator_meeting"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:text="See note" />
+
+        </RelativeLayout>
 
         <TextView
-            android:id="@+id/tv_meeting_date"
-            android:layout_below="@id/tv_meeting_title"
-            android:layout_width="match_parent"
-            style="@style/ChatTip"
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/black"
-            android:text="Date: 17:30 10 Nov 2019"/>
+            android:maxWidth="315dp"
+            android:text="@string/time"
+            android:textSize="@dimen/size_text_h6"
+            android:layout_marginStart="4dp"
+            app:layout_constraintBottom_toBottomOf="@+id/rl_chat_tip"
+            app:layout_constraintStart_toEndOf="@+id/rl_chat_tip"
+            android:layout_marginLeft="4dp" />
 
-        <TextView
-            android:id="@+id/tv_message"
-            android:layout_below="@id/tv_meeting_date"
-            style="@style/ChatTip"
-            android:textColor="@color/black"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/description"/>
-
-        <View
-            android:id="@+id/v_separator_meeting"
-            android:layout_below="@+id/tv_message"
-            android:background="@color/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_see_note"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/v_separator_meeting"
-            style="@style/Widget.MaterialComponents.Button.TextButton"
-            android:text="See note"/>
-
-    </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxWidth="315dp"
-        android:text="@string/time"
-        android:textSize="@dimen/size_text_h6"
-        android:layout_marginStart="4dp"
-        app:layout_constraintBottom_toBottomOf="@+id/rl_chat_tip"
-        app:layout_constraintStart_toEndOf="@+id/rl_chat_tip"
-        android:layout_marginLeft="4dp" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
