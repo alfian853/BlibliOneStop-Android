@@ -41,6 +41,8 @@ class BookOptionFragment : BaseDialogFragment<DialogBookOptionBinding>(){
       savedInstanceState: Bundle?): View? {
     databinding = DialogBookOptionBinding.inflate(inflater, container, false)
 
+    databinding.tvTitle.text = book.title
+
     databinding.llDownload.setOnClickListener {
       val file = book.getFile(context!!)
       if(book.isDownloaded && !file.exists()){return@setOnClickListener}

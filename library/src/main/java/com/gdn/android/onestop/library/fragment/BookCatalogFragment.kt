@@ -13,6 +13,7 @@ import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.base.util.ItemSpacingDecoration
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.data.LibraryDao
 import com.gdn.android.onestop.library.databinding.LayoutPageBookBinding
@@ -53,7 +54,7 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
     val optionFragment = BookOptionFragment()
     optionFragment.arguments = args.toBundle()
     optionFragment.show(
-        fragmentManager!!, "book option dialog"
+      fragmentManager!!, "book option dialog"
     )
   }
 
@@ -94,13 +95,13 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel = ViewModelProvider(this, viewModelProviderFactory).get(
-        BookCatalogViewModel::class.java)
+      BookCatalogViewModel::class.java)
     bookRecyclerAdapter = BookRecyclerAdapter(resources)
 
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
+    savedInstanceState: Bundle?): View? {
     databinding = LayoutPageBookBinding.inflate(inflater, container, false)
     databinding.lifecycleOwner = this
     databinding.viewmodel = viewModel
@@ -112,6 +113,8 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
     bookRecyclerAdapter.itemClickCallback = itemClick
     bookRecyclerAdapter.itemLongClickCallback = itemLongClick
     databinding.rvBook.adapter = bookRecyclerAdapter
+    databinding.rvBook.addItemDecoration(ItemSpacingDecoration(60))
+
 
 
     return databinding.root
