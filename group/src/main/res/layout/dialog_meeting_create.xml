@@ -31,7 +31,7 @@
         <LinearLayout
             android:id="@+id/ll_date_box"
             android:orientation="horizontal"
-            android:background="@drawable/round"
+            android:background="@drawable/round_border"
             android:layout_marginTop="12dp"
             android:padding="8dp"
             android:layout_below="@id/tv_dialog_title"
@@ -59,7 +59,7 @@
         <LinearLayout
             android:id="@+id/ll_time_box"
             android:orientation="horizontal"
-            android:background="@drawable/round"
+            android:background="@drawable/round_border"
             android:layout_marginTop="12dp"
             android:padding="8dp"
             android:layout_below="@id/ll_date_box"

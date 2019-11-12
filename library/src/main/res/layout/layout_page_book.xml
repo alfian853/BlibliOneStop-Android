@@ -26,7 +26,7 @@
             android:gravity="center_vertical"
             android:textSize="@dimen/size_text_h3"
             android:padding="4dp"
-            android:background="@drawable/round"
+            android:background="@drawable/round_border"
             android:drawableLeft="@android:drawable/ic_menu_search" />
 
         <CheckBox

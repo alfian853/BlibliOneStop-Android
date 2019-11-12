@@ -127,7 +127,8 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
     }
 
     setupChatRecyclerView()
-    databinding.ivOption.setOnClickListener {
+
+    val optionClick = View.OnClickListener {
       val isVisible = databinding.llChatOption.visibility == View.VISIBLE
       databinding.llChatOption.visibility = if(isVisible){
         View.GONE
@@ -138,9 +139,13 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
       databinding.llShadow.visibility = databinding.llChatOption.visibility
     }
 
+    databinding.ivOption.setOnClickListener(optionClick)
+    databinding.llShadow.setOnClickListener(optionClick)
+
+
 
     databinding.btnMeeting.setOnClickListener {
-      val meetingCreateFragment = MeetingCreateFragment(
+      MeetingCreateFragment(
           object : FragmentActionCallback<MeetingCreateData>{
             override fun onActionSuccess(data: MeetingCreateData) {
               viewmodel.sendMeetingSchedule(data.datetime, data.description)

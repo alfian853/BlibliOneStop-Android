@@ -68,7 +68,7 @@
         <LinearLayout
             android:id="@+id/ll_chat_option"
             android:padding="15dp"
-            android:visibility="visible"
+            android:visibility="gone"
             android:orientation="vertical"
             android:layout_below="@id/ll_toolbar"
             android:background="@color/white"
@@ -312,6 +312,7 @@
         <LinearLayout
             android:id="@+id/ll_shadow"
             android:orientation="vertical"
+            android:visibility="gone"
             android:layout_below="@id/ll_chat_option"
             android:background="@drawable/bg_shadow"
             android:layout_width="match_parent"
