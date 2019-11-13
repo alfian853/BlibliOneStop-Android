@@ -10,9 +10,6 @@ import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.databinding.LayoutBookReaderBinding
 
 class BookReaderFragment : BaseFullScreenFragment<LayoutBookReaderBinding>() {
-  override fun doFragmentInjection() {
-
-  }
 
   val book: Book by lazy {
     val args: BookReaderFragmentArgs by navArgs()

@@ -6,12 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.base.util.ItemSpacingDecoration
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.data.LibraryDao
 import com.gdn.android.onestop.library.databinding.LayoutPageBookBinding
@@ -34,18 +36,25 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
   lateinit var applicationContext: Context
 
   @Inject
-  lateinit var libraryDao : LibraryDao
+  lateinit var libraryDao: LibraryDao
 
   private lateinit var viewModel: BookCatalogViewModel
 
   private lateinit var bookRecyclerAdapter: BookRecyclerAdapter
+
+  private lateinit var bookLiveData: LiveData<List<Book>>
+
+  private var observer: Observer<List<Book>> = Observer {
+    bookRecyclerAdapter.bookList = it
+    bookRecyclerAdapter.notifyDataSetChanged()
+  }
 
   private fun openOptionDialog(book : Book){
     val args = BookOptionFragmentArgs(book)
     val optionFragment = BookOptionFragment()
     optionFragment.arguments = args.toBundle()
     optionFragment.show(
-        fragmentManager!!, "book option dialog"
+      fragmentManager!!, "book option dialog"
     )
   }
 
@@ -86,28 +95,33 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewModel = ViewModelProvider(this, viewModelProviderFactory).get(
-        BookCatalogViewModel::class.java)
+      BookCatalogViewModel::class.java)
     bookRecyclerAdapter = BookRecyclerAdapter(resources)
 
   }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-      savedInstanceState: Bundle?): View? {
+    savedInstanceState: Bundle?): View? {
     databinding = LayoutPageBookBinding.inflate(inflater, container, false)
     databinding.lifecycleOwner = this
     databinding.viewmodel = viewModel
     viewModel.doFetchLatestData()
-    viewModel.getLibraryLiveData().observe(this, Observer {
-      bookRecyclerAdapter.bookList = it
-      bookRecyclerAdapter.notifyDataSetChanged()
-    })
+    bookLiveData = viewModel.getLibraryLiveData()
+
+    bookLiveData.observe(this, observer)
 
     bookRecyclerAdapter.itemClickCallback = itemClick
     bookRecyclerAdapter.itemLongClickCallback = itemLongClick
     databinding.rvBook.adapter = bookRecyclerAdapter
+    databinding.rvBook.addItemDecoration(ItemSpacingDecoration(60))
+
 
 
     return databinding.root
   }
 
+  override fun onDestroy() {
+    bookLiveData.removeObserver(observer)
+    super.onDestroy()
+  }
 }

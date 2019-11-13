@@ -15,5 +15,5 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment(){
         super.onCreate(savedInstanceState)
     }
 
-    abstract fun doFragmentInjection()
+    open fun doFragmentInjection(){}
 }

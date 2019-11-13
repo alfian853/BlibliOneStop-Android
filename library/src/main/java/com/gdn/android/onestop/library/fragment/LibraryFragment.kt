@@ -13,7 +13,6 @@ import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.databinding.LayoutLibraryBinding
 import com.gdn.android.onestop.library.util.Constant
 import com.gdn.android.onestop.library.util.LibraryFragmentAdapter
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 
 class LibraryFragment : BaseFragment<LayoutLibraryBinding>() {
@@ -23,6 +22,8 @@ class LibraryFragment : BaseFragment<LayoutLibraryBinding>() {
   override fun doFragmentInjection() {
   }
 
+  lateinit var tabLayoutMediator: TabLayoutMediator
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
   }
@@ -31,19 +32,17 @@ class LibraryFragment : BaseFragment<LayoutLibraryBinding>() {
       savedInstanceState: Bundle?): View? {
     databinding = LayoutLibraryBinding.inflate(inflater, container, false)
 
-    databinding.vpLibrary.adapter = LibraryFragmentAdapter(
-        fragmentManager!!, this.lifecycle)
+    databinding.vpLibrary.adapter = LibraryFragmentAdapter(this)
 
-    TabLayoutMediator(databinding.tlLibrary, databinding.vpLibrary,
-        object : TabLayoutMediator.TabConfigurationStrategy {
-          override fun onConfigureTab(tab: TabLayout.Tab, position: Int) {
-            Log.d("library-onestop", "mediator $position")
-            when (position) {
-              0 -> tab.text = resources.getText(R.string.book)
-              1 -> tab.text = resources.getText(R.string.audio)
-            }
-          }
-        }).attach()
+    tabLayoutMediator = TabLayoutMediator(databinding.tlLibrary, databinding.vpLibrary,
+      TabLayoutMediator.TabConfigurationStrategy { tab, position -> Log.d("library-onestop", "mediator $position")
+        when (position) {
+          0 -> tab.text = resources.getText(R.string.book)
+          1 -> tab.text = resources.getText(R.string.audio)
+        }
+      })
+
+    tabLayoutMediator.attach()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       val downloadNotifChannel = NotificationChannel(Constant.NOTIF_DOWNLOAD_ID, "download",
@@ -53,5 +52,12 @@ class LibraryFragment : BaseFragment<LayoutLibraryBinding>() {
     }
 
     return databinding.root
+  }
+
+  override fun onDestroyView() {
+    Log.d("bookmark","destroy main")
+    tabLayoutMediator.detach()
+
+    super.onDestroyView()
   }
 }

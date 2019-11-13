@@ -7,8 +7,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.gdn.android.onestop.library.fragment.AudioCatalogFragment
 import com.gdn.android.onestop.library.fragment.BookCatalogFragment
 
-class LibraryFragmentAdapter(fragmentManager: FragmentManager, lifecycle: Lifecycle) :
-    FragmentStateAdapter(fragmentManager, lifecycle) {
+class LibraryFragmentAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
   override fun getItemCount(): Int {
     return 2

@@ -12,5 +12,7 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment(){
         super.onCreate(savedInstanceState)
     }
 
-    abstract fun doFragmentInjection()
+    open fun doFragmentInjection(){
+
+    }
 }

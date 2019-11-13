@@ -18,8 +18,14 @@ import javax.inject.Inject
 class BookDownloadService : Service() {
 
   private lateinit var book: Book
-  @Inject lateinit var viewModel: BookCatalogViewModel
-  @Inject lateinit var libraryDao: LibraryDao
+
+  @Inject
+  lateinit var viewModel: BookCatalogViewModel
+
+  @Inject
+  lateinit var libraryDao: LibraryDao
+
+  private val maxProgress = 100
 
   override fun onBind(intent: Intent?): IBinder? {
     return null
@@ -41,13 +47,13 @@ class BookDownloadService : Service() {
         .setPriority(NotificationCompat.PRIORITY_HIGH)
         .setOngoing(true)
         .setOnlyAlertOnce(true)
-        .setProgress(100, 0, false)
+        .setProgress(maxProgress, 0, false)
 
     val notificationManager = NotificationManagerCompat.from(this.applicationContext)
     notificationManager.notify(downloadNotifId, notification.build())
 
     viewModel.downloadBook(book).subscribe({
-      if (it == 100) {
+      if (it == maxProgress) {
         Log.d("book", "update percentage complete $it")
         notification
             .setContentText("Download finished")
