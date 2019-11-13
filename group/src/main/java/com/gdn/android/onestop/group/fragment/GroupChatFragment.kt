@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseFullSceenFragment
+import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
 import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class GroupChatFragment : BaseFullSceenFragment<FragmentChatRoomBinding>(){
+class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
 
     override fun doFragmentInjection() {
         GroupComponent.getInstance().inject(this)

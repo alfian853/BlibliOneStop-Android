@@ -11,22 +11,12 @@
         android:name="com.gdn.android.onestop.group.fragment.GroupFragment"
         android:label="@string/groups"
         tools:layout="@layout/fragment_group" >
-        <action
-            android:id="@+id/action_groupFragment_to_groupCreateFragment"
-            app:destination="@id/groupCreateFragment" />
-        <action
-            android:id="@+id/action_groupFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment" />
-
     </fragment>
     <fragment
         android:id="@+id/groupCreateFragment"
         android:name="com.gdn.android.onestop.group.fragment.GroupCreateFragment"
         android:label="fragment_group_create"
         tools:layout="@layout/fragment_group_create" >
-        <action
-            android:id="@+id/action_groupCreateFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment" />
     </fragment>
     <fragment
         android:id="@+id/groupChatFragment"

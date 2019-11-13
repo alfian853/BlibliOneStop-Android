@@ -12,7 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.paging.PagedList
 import com.bumptech.glide.Glide
-import com.gdn.android.onestop.base.BaseFullSceenFragment
+import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.DefaultContextWrapper
 import com.gdn.android.onestop.base.util.toDateString
@@ -27,7 +27,7 @@ import com.gdn.android.onestop.ideation.viewmodel.IdeaDetailViewModel
 import javax.inject.Inject
 
 
-class IdeaDetailFragment : BaseFullSceenFragment<FragmentIdeaDetailBinding>(){
+class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
 
     companion object{
         private const val TAG = "ideaDetailFragment"

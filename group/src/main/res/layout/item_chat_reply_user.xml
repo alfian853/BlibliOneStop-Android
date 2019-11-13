@@ -1,83 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="8dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <LinearLayout
-        android:id="@+id/ll_chat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/chat_tip_blue"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="vertical"
-        android:padding="10dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="8dp">
 
         <LinearLayout
-            android:id="@+id/ll_reply_container"
-            android:orientation="vertical"
+            android:id="@+id/ll_chat"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/chat_tip"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp"
-            android:paddingTop="4dp"
-            android:paddingBottom="8dp">
+            android:background="@drawable/chat_tip_blue"
+            android:orientation="vertical"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_reply_username"
+            <LinearLayout
+                android:id="@+id/ll_reply_container"
+                android:orientation="vertical"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:maxLines="1"
-                android:text="@string/username"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:background="@drawable/chat_tip"
+                android:paddingStart="10dp"
+                android:paddingEnd="10dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:id="@+id/tv_reply_username"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="@string/username"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tv_reply_message"
+                    android:layout_marginTop="6dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="Hello My name is alfian"
+                    android:textColor="@color/black"
+                    app:layout_constraintStart_toStartOf="@+id/tv_reply_username"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_reply_username" />
+
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tv_reply_message"
-                android:layout_marginTop="6dp"
+                android:id="@+id/tv_message"
+                android:layout_marginTop="10dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:includeFontPadding="false"
-                android:text="Hello My name is alfian"
-                android:textColor="@color/black"
-                app:layout_constraintStart_toStartOf="@+id/tv_reply_username"
-                app:layout_constraintTop_toBottomOf="@+id/tv_reply_username" />
+                android:text="Hello alfian"
+                android:textColor="@color/white" />
 
         </LinearLayout>
 
         <TextView
-            android:id="@+id/tv_message"
-            android:layout_marginTop="10dp"
+            android:id="@+id/tv_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello alfian"
-            android:textColor="@color/white" />
+            android:layout_marginEnd="4dp"
+            android:includeFontPadding="false"
+            android:gravity="end"
+            android:text="@string/time"
+            android:textSize="@dimen/size_text_h6"
+            android:visibility="visible"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
+            app:layout_constraintEnd_toStartOf="@+id/ll_chat" />
 
-    </LinearLayout>
+        <ProgressBar
+            android:id="@+id/pb_sending"
+            android:layout_width="@dimen/size_img_6"
+            android:layout_height="@dimen/size_img_6"
+            android:layout_gravity="bottom"
+            app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
+            app:layout_constraintEnd_toStartOf="@+id/tv_date" />
 
-    <TextView
-        android:id="@+id/tv_date"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="4dp"
-        android:includeFontPadding="false"
-        android:gravity="end"
-        android:text="@string/time"
-        android:textSize="@dimen/size_text_h6"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
-        app:layout_constraintEnd_toStartOf="@+id/ll_chat" />
-
-    <ProgressBar
-        android:id="@+id/pb_sending"
-        android:layout_width="@dimen/size_img_6"
-        android:layout_height="@dimen/size_img_6"
-        android:layout_gravity="bottom"
-        app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
-        app:layout_constraintEnd_toStartOf="@+id/tv_date" />
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -9,9 +9,10 @@ android {
 
 
     defaultConfig {
-        minSdkVersion 22
+        minSdkVersion 16
         targetSdkVersion 29
         versionCode 1
+        multiDexEnabled true
         versionName "1.0"
         javaCompileOptions {
             annotationProcessorOptions {
@@ -102,13 +103,15 @@ dependencies {
     api "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     api "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
-    api "org.springframework:spring-websocket:$websocket_version"
-    api "org.springframework:spring-messaging:$websocket_version"
-
     api "com.google.code.gson:gson:2.8.6"
-    api "org.glassfish.tyrus.bundles:tyrus-standalone-client:1.15"
     api "com.fasterxml.jackson.core:jackson-databind:2.10.0"
 
+    // Firebase messaging
     api "com.google.firebase:firebase-messaging:20.0.0"
     api "com.google.firebase:firebase-analytics:17.2.1"
+
+
+
+    api 'androidx.multidex:multidex:2.0.1'
+
 }

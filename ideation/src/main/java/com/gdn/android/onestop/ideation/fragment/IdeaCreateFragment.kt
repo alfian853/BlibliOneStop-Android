@@ -8,7 +8,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.gdn.android.onestop.base.BaseFullSceenFragment
+import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.ideation.R
@@ -19,7 +19,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class IdeaCreateFragment : BaseFullSceenFragment<FragmentIdeaCreateBinding>() {
+class IdeaCreateFragment : BaseFullScreenFragment<FragmentIdeaCreateBinding>() {
 
     @Inject
     lateinit var viewModelProviderFactory : ViewModelProviderFactory

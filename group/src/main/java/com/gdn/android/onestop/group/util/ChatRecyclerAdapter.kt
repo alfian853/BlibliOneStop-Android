@@ -14,177 +14,219 @@ import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.base.util.toTimeString
+import com.gdn.android.onestop.group.databinding.ItemChatBinding
+import com.gdn.android.onestop.group.databinding.ItemChatReplyBinding
+import com.gdn.android.onestop.group.databinding.ItemChatReplyUserBinding
+import com.gdn.android.onestop.group.databinding.ItemChatUserBinding
 import java.util.*
 
 
-class ChatRecyclerAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
+class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatViewHolder>(){
 
-    var chatList : List<GroupChat> = LinkedList()
-        set(value){
-            field = value
-        }
-
-    var itemViewArray : SparseArray<View> = SparseArray()
-
-    lateinit var repliedClickCallback : ItemClickCallback<GroupChat>
-
-    var layoutWidth : Int = 0
-        set(value) {
-            field = value
-            chatMaxWidth = (layoutWidth.toDouble() * MSG_MAXW_RATIO).toInt()
-            myChatMaxWidth = (layoutWidth.toDouble() * MY_MSG_MAXW_RATIO).toInt()
-        }
-
-    var chatMaxWidth : Int = 0
-    var myChatMaxWidth : Int = 0
-
-    class ItemAnimationTask(
-        var position : Int = 0,
-        var animator : ValueAnimator
-    ){
-        fun animate(itemView : View){
-            animator.addUpdateListener {
-                itemView.setBackgroundColor(it.animatedValue as Int)
-            }
-            animator.start()
-        }
+  var chatList : List<GroupChat> = LinkedList()
+    set(value){
+      field = value
     }
 
-    var pendingReplyShowAnimation : ItemAnimationTask? = null
+  var itemViewArray : SparseArray<View> = SparseArray()
 
-    companion object {
-        private const val MESSAGE_TYPE = 0
-        private const val MY_MESSAGE_TYPE = 1
-        private const val REPLY_TYPE = 2
-        private const val MY_REPLY_TYPE = 3
-        val MSG_MAXW_RATIO = 0.65
-        val MY_MSG_MAXW_RATIO = 0.75
+  lateinit var repliedClickCallback : ItemClickCallback<GroupChat>
+
+  var layoutWidth : Int = 0
+    set(value) {
+      field = value
+      chatMaxWidth = (layoutWidth.toDouble() * MSG_MAXW_RATIO).toInt()
+      myChatMaxWidth = (layoutWidth.toDouble() * MY_MSG_MAXW_RATIO).toInt()
     }
 
-    fun updateChatList(chatList : List<GroupChat>){
-        this.chatList = chatList
-        notifyDataSetChanged()
+  var chatMaxWidth : Int = 0
+  var myChatMaxWidth : Int = 0
+
+  class ItemAnimationTask(
+      var position : Int = 0,
+      var animator : ValueAnimator
+  ){
+    fun animate(itemView : View){
+      animator.addUpdateListener {
+        itemView.setBackgroundColor(it.animatedValue as Int)
+      }
+      animator.start()
+    }
+  }
+
+  var pendingReplyShowAnimation : ItemAnimationTask? = null
+
+  companion object {
+    private const val MESSAGE_TYPE = 0
+    private const val MY_MESSAGE_TYPE = 1
+    private const val REPLY_TYPE = 2
+    private const val MY_REPLY_TYPE = 3
+    private const val MSG_MAXW_RATIO = 0.65
+    private const val MY_MSG_MAXW_RATIO = 0.75
+  }
+
+  fun updateChatList(chatList : List<GroupChat>){
+    this.chatList = chatList
+    notifyDataSetChanged()
+  }
+
+  override fun getItemViewType(position: Int): Int {
+    val chat = chatList[position]
+    return if(chat.isMe){
+      if(chat.isReply) MY_REPLY_TYPE
+      else MY_MESSAGE_TYPE
+    }
+    else {
+      if(chat.isReply) REPLY_TYPE
+      else MESSAGE_TYPE
+    }
+  }
+
+  override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseChatViewHolder {
+    val layoutInflater = LayoutInflater.from(parent.context)
+    when(viewType){
+      MESSAGE_TYPE -> return ChatViewHolder(
+          ItemChatBinding.inflate(layoutInflater, parent, false)
+      )
+      MY_MESSAGE_TYPE -> return MyChatViewHolder(
+          ItemChatUserBinding.inflate(layoutInflater, parent, false)
+      )
+      REPLY_TYPE -> return ChatReplyViewHolder(
+          ItemChatReplyBinding.inflate(layoutInflater, parent, false)
+      )
+      MY_REPLY_TYPE -> return MyChatReplyViewHolder(
+          ItemChatReplyUserBinding.inflate(layoutInflater, parent, false)
+      )
+    }
+    return ChatViewHolder(
+        ItemChatBinding.inflate(layoutInflater, parent, false)
+    )
+  }
+
+  override fun getItemCount(): Int {
+    return chatList.size
+  }
+
+  override fun onBindViewHolder(holder: BaseChatViewHolder, position: Int) {
+
+    val chat = chatList[position]
+    itemViewArray.put(position, holder.itemView)
+    pendingReplyShowAnimation?.let {
+      if(it.position == position){
+        pendingReplyShowAnimation?.animate(holder.itemView)
+      }
+      pendingReplyShowAnimation = null
     }
 
-    override fun getItemViewType(position: Int): Int {
-        val chat = chatList[position]
-        return if(chat.isMe){
-            if(chat.isReply) MY_REPLY_TYPE
-            else MY_MESSAGE_TYPE
-        }
-        else {
-            if(chat.isReply) REPLY_TYPE
-            else MESSAGE_TYPE
-        }
-    }
+    holder.onBindViewHolder(chat, position)
+  }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+  abstract class BaseChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-        when(viewType){
-            MESSAGE_TYPE -> return ChatViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false)
-            )
-            MY_MESSAGE_TYPE -> return MyChatViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_chat_user, parent, false)
-            )
-            REPLY_TYPE -> return ChatReplyViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_chat_reply, parent, false)
-            )
-            MY_REPLY_TYPE -> return MyChatReplyViewHolder(
-                LayoutInflater.from(parent.context).inflate(R.layout.item_chat_reply_user, parent, false)
-            )
-        }
-        return ChatViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_chat, parent, false)
-        )
-    }
+    abstract fun onBindViewHolder(chat: GroupChat, position: Int)
+  }
 
-    override fun getItemCount(): Int {
-        return chatList.size
-    }
+  inner class ChatViewHolder(binding: ItemChatBinding) : BaseChatViewHolder(binding.root){
+    private val tvName: TextView = binding.tvUsername
+    private val tvMessage: TextView = binding.tvMessage
+    private val tvDate: TextView = binding.tvDate
+    private val tvNamePict: TextView = binding.ivUser
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(chat: GroupChat, position: Int){
+      tvName.text = chat.username
+      tvName.setTextColor(chat.nameColor)
+      tvDate.text = chat.createdAt.toTimeString()
+      tvMessage.text = chat.text
+      val nameAlias = chat.username.toAliasName()
+      tvNamePict.text = nameAlias
+      tvNamePict.setBackgroundColor(chat.nameColor)
 
-        val chat = chatList[position]
-        itemViewArray.put(position, holder.itemView)
-        pendingReplyShowAnimation?.let {
-            if(it.position == position){
-                pendingReplyShowAnimation?.animate(holder.itemView)
-            }
-            pendingReplyShowAnimation = null
-        }
-
-        if(holder is ChatViewHolder){
-            holder.tvName.text = chat.username
-            holder.tvName.setTextColor(chat.nameColor)
-            holder.tvDate.text = chat.createdAt.toTimeString()
-            holder.tvMessage.text = chat.text
-            val nameAlias = chat.username.toAliasName()
-            holder.tvNamePict.text = nameAlias
-            holder.tvNamePict.setBackgroundColor(chat.nameColor)
-
-            if(chat.isReply){
-                holder as ChatReplyViewHolder
-                holder.tvReplyName.text = chat.repliedUsername
-                holder.tvReplyText.text = chat.repliedText
-                holder.tvReplyName.setTextColor(chat.repliedNameColor)
-                holder.clReplyContainer.setOnClickListener{
-                    repliedClickCallback.onItemClick(chat, position)
-                }
-            }
-            holder.tvMessage.maxWidth = chatMaxWidth
-        }
-        else if(holder is MyChatViewHolder){
-            holder.tvMessage.text = chat.text
-            holder.tvDate.text = chat.createdAt.toTimeString()
-
-            if(chat.isSending){
-                holder.tvDate.visibility = View.GONE
-                holder.pbSending.visibility = View.VISIBLE
-            }
-            else{
-                holder.tvDate.visibility = View.VISIBLE
-                holder.pbSending.visibility = View.GONE
-            }
-
-            if(chat.isReply){
-                holder as MyChatReplyViewHolder
-                holder.tvReplyName.text = chat.repliedUsername
-                holder.tvReplyText.text = chat.repliedText
-                holder.tvReplyName.setTextColor(chat.repliedNameColor)
-                holder.clReplyContainer.setOnClickListener{
-                    repliedClickCallback.onItemClick(chat, position)
-                }
-            }
-            holder.tvMessage.maxWidth = myChatMaxWidth
-        }
+      tvMessage.maxWidth = chatMaxWidth
 
     }
+  }
 
+  inner class MyChatViewHolder(binding: ItemChatUserBinding) : BaseChatViewHolder(binding.root){
+    private val tvMessage: TextView = binding.tvMessage
+    private val tvDate: TextView = binding.tvDate
+    private val pbSending: ProgressBar = binding.pbSending
 
-    open inner class ChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val tvName : TextView = itemView.findViewById(R.id.tv_username)
-        val tvMessage : TextView =itemView.findViewById(R.id.tv_message)
-        val tvDate : TextView = itemView.findViewById(R.id.tv_date)
-        val tvNamePict : TextView = itemView.findViewById(R.id.iv_user)
+    override fun onBindViewHolder(chat: GroupChat, position: Int) {
+      tvMessage.text = chat.text
+      tvDate.text = chat.createdAt.toTimeString()
+
+      if(chat.isSending){
+        tvDate.visibility = View.GONE
+        pbSending.visibility = View.VISIBLE
+      }
+      else{
+        tvDate.visibility = View.VISIBLE
+        pbSending.visibility = View.GONE
+      }
+
+      tvMessage.maxWidth = myChatMaxWidth
+    }
+  }
+
+  inner class ChatReplyViewHolder(binding: ItemChatReplyBinding) : BaseChatViewHolder(binding.root){
+    private val tvName: TextView = binding.tvUsername
+    private val tvMessage: TextView = binding.tvMessage
+    private val tvDate: TextView = binding.tvDate
+    private val tvNamePict: TextView = binding.ivUser
+    private val tvReplyName: TextView = binding.tvReplyUsername
+    private val tvReplyText: TextView = binding.tvReplyMessage
+    private val llReplyContainer: LinearLayout = binding.llReplyContainer
+
+    override fun onBindViewHolder(chat: GroupChat, position: Int){
+      tvName.text = chat.username
+      tvName.setTextColor(chat.nameColor)
+      tvDate.text = chat.createdAt.toTimeString()
+      tvMessage.text = chat.text
+      val nameAlias = chat.username.toAliasName()
+      tvNamePict.text = nameAlias
+      tvNamePict.setBackgroundColor(chat.nameColor)
+
+      tvReplyName.text = chat.repliedUsername
+      tvReplyText.text = chat.repliedText
+      tvReplyName.setTextColor(chat.repliedNameColor)
+      llReplyContainer.setOnClickListener{
+        repliedClickCallback.onItemClick(chat, position)
+      }
+
+      tvMessage.maxWidth = chatMaxWidth
     }
 
-    open inner class MyChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val tvMessage : TextView =itemView.findViewById(R.id.tv_message)
-        val tvDate : TextView = itemView.findViewById(R.id.tv_date)
-        val pbSending : ProgressBar = itemView.findViewById(R.id.pb_sending)
-    }
+  }
 
-    inner class ChatReplyViewHolder(itemView: View) : ChatViewHolder(itemView){
-        val tvReplyName : TextView = itemView.findViewById(R.id.tv_reply_username)
-        val tvReplyText : TextView = itemView.findViewById(R.id.tv_reply_message)
-        val clReplyContainer : LinearLayout = itemView.findViewById(R.id.ll_reply_container)
-    }
+  inner class MyChatReplyViewHolder(binding: ItemChatReplyUserBinding) : BaseChatViewHolder(binding.root){
+    private val tvMessage: TextView = binding.tvMessage
+    private val tvDate: TextView = binding.tvDate
+    private val pbSending: ProgressBar = itemView.findViewById(R.id.pb_sending)
+    private val tvReplyName: TextView = binding.tvReplyUsername
+    private val tvReplyText: TextView = binding.tvReplyMessage
+    private val llReplyContainer: LinearLayout = binding.llReplyContainer
 
-    inner class MyChatReplyViewHolder(itemView: View) : MyChatViewHolder(itemView){
-        val tvReplyName : TextView = itemView.findViewById(R.id.tv_reply_username)
-        val tvReplyText : TextView = itemView.findViewById(R.id.tv_reply_message)
-        val clReplyContainer : LinearLayout = itemView.findViewById(R.id.ll_reply_container)
+    override fun onBindViewHolder(chat: GroupChat, position: Int) {
+      tvMessage.text = chat.text
+      tvDate.text = chat.createdAt.toTimeString()
+
+      if(chat.isSending){
+        tvDate.visibility = View.GONE
+        pbSending.visibility = View.VISIBLE
+      }
+      else{
+        tvDate.visibility = View.VISIBLE
+        pbSending.visibility = View.GONE
+      }
+
+      tvReplyName.text = chat.repliedUsername
+      tvReplyText.text = chat.repliedText
+      tvReplyName.setTextColor(chat.repliedNameColor)
+      llReplyContainer.setOnClickListener{
+        repliedClickCallback.onItemClick(chat, position)
+      }
+      tvMessage.maxWidth = myChatMaxWidth
     }
+  }
 
 }

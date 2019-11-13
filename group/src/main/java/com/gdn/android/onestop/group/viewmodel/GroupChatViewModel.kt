@@ -90,14 +90,6 @@ constructor(
         }
     }
 
-    fun loadMoreChatAfter(){
-        if(!ChatSocketClient.isConnected()){
-            viewModelScope.launch {
-                groupChatRepository.loadMoreChatAfter(activeGroupId)
-            }
-        }
-    }
-
     fun setOnReplyChat(
         repliedChatId: String,
         repliedUsername: String,

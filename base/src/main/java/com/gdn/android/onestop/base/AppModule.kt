@@ -31,11 +31,11 @@ class AppModule{
     @Provides
     @Singleton
     fun provideRetrofit(sessionManager: SessionManager, context: Context): Retrofit {
-        val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BODY
+//        val logger = HttpLoggingInterceptor()
+//        logger.level = HttpLoggingInterceptor.Level.BODY
         val clientBuilder = OkHttpClient.Builder()
 
-        clientBuilder.addInterceptor(logger)
+//        clientBuilder.addInterceptor(logger)
         clientBuilder.addInterceptor { chain ->
 
             var request = chain.request()

@@ -28,6 +28,7 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
     fun getIdeaLiveData() : LiveData<List<IdeaPost>> = ideaLiveData
 
     suspend fun reloadIdeaChannelData() {
+        Log.d("idea","reload channel")
         lastPageRequest = 1
         allFetched = false
         this.fetchMoreData().let {
