@@ -2,13 +2,13 @@ package com.gdn.android.onestop.ideation.viewmodel
 
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
-import com.gdn.android.onestop.base.ObservableViewModel
+import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.ideation.data.IdeaChannelRepository
 import javax.inject.Inject
 
 
 class IdeaCreateViewModel
-@Inject constructor(private val ideaChannelRepository: IdeaChannelRepository) : ObservableViewModel() {
+@Inject constructor(private val ideaChannelRepository: IdeaChannelRepository) : BaseViewModel() {
 
     var ideaContent : String = ""
     @Bindable

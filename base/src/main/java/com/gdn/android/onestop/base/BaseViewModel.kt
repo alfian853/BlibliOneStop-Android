@@ -5,8 +5,12 @@ import androidx.databinding.Observable
 import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlin.coroutines.CoroutineContext
 
-abstract class ObservableViewModel : ViewModel(), Observable {
+abstract class BaseViewModel : ViewModel(), Observable, CoroutineScope {
 
     @Transient
     private var mCallbacks: PropertyChangeRegistry? = null
@@ -55,6 +59,23 @@ abstract class ObservableViewModel : ViewModel(), Observable {
             }
         }
         mCallbacks!!.notifyCallbacks(this, fieldId, null)
+    }
+
+
+
+    private var job = SupervisorJob()
+        get() {
+            if(field.isCancelled){
+                field = SupervisorJob()
+            }
+            return field
+        }
+    override val coroutineContext: CoroutineContext
+        get() = job + Dispatchers.Main
+
+    override fun onCleared() {
+        super.onCleared()
+        job.cancel()
     }
 
 }

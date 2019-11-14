@@ -1,14 +1,17 @@
 package com.gdn.android.onestop.group.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.gdn.android.onestop.base.ObservableViewModel
-import com.gdn.android.onestop.group.data.*
+import com.gdn.android.onestop.base.BaseViewModel
+import com.gdn.android.onestop.group.data.ChatSendRequest
+import com.gdn.android.onestop.group.data.GroupChat
+import com.gdn.android.onestop.group.data.GroupChatRepository
+import com.gdn.android.onestop.group.data.GroupDao
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -18,12 +21,12 @@ class GroupChatViewModel
 constructor(
     private val groupDao: GroupDao,
     private val groupChatRepository: GroupChatRepository
-) : ObservableViewModel(){
+) : BaseViewModel(){
 
   private var pendingMsgList: LinkedList<GroupChat> = LinkedList()
   private var pendingMessage: MutableLiveData<List<GroupChat>> = MutableLiveData()
 
-  private lateinit var realData : LiveData<List<GroupChat>>
+
 
   private suspend fun loadData(groupId: String){
     val groupInfo = groupDao.getGroupInfo(groupId)
@@ -39,22 +42,21 @@ constructor(
     activeGroupId = groupId
     pendingMsgList = LinkedList()
     pendingMessage.postValue(pendingMsgList)
-    realData = groupChatRepository.getChatLiveData(groupId)
     chatText = ""
     chat = ChatSendRequest()
-    viewModelScope.launch {
+    launch {
       loadData(groupId)
     }
     return MediatorLiveData<List<GroupChat>>().apply {
-      var realDataSize = 0
-      this.addSource(realData) {chatList ->
-        realDataSize = chatList.size
+      val concreteLiveData = groupChatRepository.getChatLiveData(groupId)
+      var concreteData: List<GroupChat> = emptyList()
+
+      this.addSource(concreteLiveData) {chatList ->
+        concreteData = chatList
         this.value = chatList.plus(pendingMsgList)
       }
       this.addSource(pendingMessage) {pendingMsgLd ->
-        this.value?.let {
-          this.value = it.subList(0, realDataSize-1).plus(pendingMsgLd)
-        }
+        this.value = concreteData.plus(pendingMsgLd)
       }
 
     }
@@ -85,7 +87,7 @@ constructor(
 
 
   fun loadMoreChatBefore(){
-    viewModelScope.launch {
+    launch {
       groupChatRepository.loadMoreChatBefore(activeGroupId)
     }
   }
@@ -127,8 +129,9 @@ constructor(
   }
 
   fun sendChat(){
-    viewModelScope.launch {
+    launch {
       if(chat.text == "")return@launch
+      if(chatText == "" && !chat.isMeeting)return@launch
       val requestChat = chat
       chat = ChatSendRequest()
       chatText = ""

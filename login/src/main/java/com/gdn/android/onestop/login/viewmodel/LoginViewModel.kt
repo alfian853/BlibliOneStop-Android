@@ -4,7 +4,7 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import com.gdn.android.onestop.login.data.AuthClient
 import com.gdn.android.onestop.login.data.LoginRequest
-import com.gdn.android.onestop.base.ObservableViewModel
+import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.base.util.DefaultContextWrapper
 import com.gdn.android.onestop.base.util.SessionManager
 import javax.inject.Inject
@@ -15,7 +15,7 @@ constructor(
     private val authClient: AuthClient,
     private val sessionManager: SessionManager
 )
-    : ObservableViewModel() {
+    : BaseViewModel() {
 
     var contextWrapper: DefaultContextWrapper? = null
 
