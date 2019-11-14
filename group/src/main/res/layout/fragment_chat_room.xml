@@ -60,8 +60,6 @@
             android:layout_height="match_parent"
             android:layout_below="@id/ll_toolbar"
             android:layout_above="@id/ll_chat_box"
-            android:layout_weight="1"
-            android:nestedScrollingEnabled="true"
             tools:itemCount="10"
             tools:listitem="@layout/item_chat" />
 
@@ -72,10 +70,13 @@
             android:orientation="vertical"
             android:layout_below="@id/ll_toolbar"
             android:background="@color/white"
+            android:clickable="true"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:focusable="true">
 
             <LinearLayout
+                android:id="@+id/ll_member"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal"
                 android:layout_width="match_parent"
@@ -102,6 +103,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_meeting_list"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:layout_marginTop="18dp"
@@ -109,7 +111,7 @@
                 android:layout_height="wrap_content">
 
                 <ImageView
-                    android:id="@+id/iv_meeting"
+                    android:id="@+id/iv_meeting_list"
                     android:layout_gravity="center"
                     android:background="@drawable/ic_datetime"
                     android:gravity="end"
@@ -117,7 +119,7 @@
                     android:layout_height="@dimen/size_text_h2"/>
 
                 <TextView
-                    android:id="@+id/tv_meeting"
+                    android:id="@+id/tv_meeting_list"
                     android:layout_gravity="center"
                     android:layout_marginLeft="12dp"
                     android:layout_width="wrap_content"

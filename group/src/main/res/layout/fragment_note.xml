@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.gdn.android.onestop.ideation.fragment.IdeaCreateFragment">
+    tools:context="com.gdn.android.onestop.group.fragment.MeetingNoteFragment">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.gdn.android.onestop.group.viewmodel.MeetingNoteViewModel" />
+    </data>
 
     <LinearLayout
         android:orientation="vertical"
@@ -9,16 +15,19 @@
         android:layout_height="match_parent">
 
         <include
-            layout="@layout/component_basic_toolbar"/>
+            android:id="@+id/ll_toolbar"
+            layout="@layout/component_basic_toolbar"
+            android:layout_height="@dimen/toolbar_height"
+            android:layout_width="match_parent"/>
 
         <EditText
             android:id="@+id/et_content"
             android:gravity="top|start"
             android:layout_weight="1"
-            android:text=""
+            android:text="@={viewmodel.noteText}"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:hint="@string/write_meeting_note"
+            android:hint="@string/write_the_note"
             android:background="@null"
             tools:layout_editor_absoluteX="-16dp"
             tools:layout_editor_absoluteY="101dp"

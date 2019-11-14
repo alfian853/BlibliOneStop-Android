@@ -84,7 +84,6 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
 
     private val observer = Observer<List<Group>> {
-        Log.d("group",it.size.toString())
         if(it.isNotEmpty()){
             when(it[0].type){
                 Group.Type.GUILD -> guildRvAdapter
@@ -164,7 +163,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
         databinding.swipeLayout.setOnRefreshListener {
             databinding.swipeLayout.isRefreshing = true
-            viewModel.viewModelScope.launch {
+            viewModel.launch {
                 viewModel.refreshData(true)
                 databinding.swipeLayout.isRefreshing = false
             }

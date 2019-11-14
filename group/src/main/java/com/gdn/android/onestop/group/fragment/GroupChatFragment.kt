@@ -9,9 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -28,7 +26,7 @@ import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.*
 import com.gdn.android.onestop.group.injection.GroupComponent
-import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -46,7 +44,7 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
   lateinit var sessionManager: SessionManager
 
   @Inject
-  lateinit var viewModelProvierFactory : ViewModelProviderFactory
+  lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
   @Inject
   lateinit var viewmodel : GroupChatViewModel
@@ -54,7 +52,7 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
   @Inject
   lateinit var groupClient: GroupClient
 
-  private var chatRvAdapter = ChatRecyclerAdapter()
+  lateinit var chatRvAdapter: ChatRecyclerAdapter
 
   val group : Group by lazy {
     val tmp : GroupChatFragmentArgs by navArgs()
@@ -92,10 +90,18 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
   @Inject
   lateinit var groupChatRepository: GroupChatRepository
 
+  private val toMeetingNoteClick = object : ItemClickCallback<GroupChat> {
+    override fun onItemClick(item: GroupChat, position: Int) {
+      val fragment = MeetingNoteListFragment()
+      fragment.arguments = MeetingNoteListFragmentArgs(group, item.id).toBundle()
+      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting note list fragment")
+    }
+  }
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    ViewModelProvider(this, viewModelProvierFactory)
-        .get(GroupChatViewModel::class.java)
+    viewmodel = ViewModelProvider(this, viewModelProviderFactory)
+      .get(GroupChatViewModel::class.java)
   }
 
   override fun onCreateView(
@@ -105,24 +111,29 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
   ): View? {
 
     databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
+
     chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
     chatLiveData.observe(this, chatObserver)
+
     chatRvAdapter = ChatRecyclerAdapter()
-    databinding.tvGroupName.text = group.name
-    databinding.viewmodel = viewmodel
+    chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
+
     val point = Point()
     activity!!.windowManager.defaultDisplay.getSize(point)
     chatRvAdapter.layoutWidth = point.x
+
+
+    databinding.tvGroupName.text = group.name
+    databinding.viewmodel = viewmodel
+
 
     databinding.ivBack.setOnClickListener {
       fragmentManager!!.beginTransaction().remove(this).commit()
     }
 
     databinding.btnChatSend.setOnClickListener {
-      GlobalScope.launch {
-        Log.d("chat","send")
+      viewmodel.launch(Dispatchers.IO) {
         viewmodel.sendChat()
-        Log.d("chat","complete")
       }
     }
 
@@ -152,6 +163,12 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
             }
           }
       ).show(fragmentManager!!,null)
+    }
+
+    databinding.llMeetingList.setOnClickListener {
+      val fragment = MeetingNoteListFragment()
+      fragment.arguments = MeetingNoteListFragmentArgs(group, null).toBundle()
+      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting list fragment")
     }
 
     return databinding.root

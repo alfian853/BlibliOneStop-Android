@@ -64,7 +64,6 @@ class MeetingCreateFragment(
     }
 
     databinding.btnSubmit.setOnClickListener {
-      Log.d("chat-0","result : ${meetingCreateData.description}")
       meetingCreateData.datetime = calender.timeInMillis
       fragmentActionCallback.onActionSuccess(meetingCreateData)
       fragmentManager!!.beginTransaction().remove(this).commit()

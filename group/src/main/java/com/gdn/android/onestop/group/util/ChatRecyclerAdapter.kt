@@ -29,7 +29,8 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
 
   var itemViewArray : SparseArray<View> = SparseArray()
 
-  lateinit var repliedClickCallback : ItemClickCallback<GroupChat>
+  lateinit var repliedClickCallback: ItemClickCallback<GroupChat>
+  lateinit var meetingNoteClickCallback: ItemClickCallback<GroupChat>
 
   var layoutWidth : Int = 0
     set(value) {
@@ -248,8 +249,8 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val tvNamePict: TextView = binding.ivUser
-    private val tvMeetingDate: TextView = itemView.findViewById(R.id.tv_meeting_date)
-    private val btnSeeNote: MaterialButton = itemView.findViewById(R.id.btn_see_note)
+    private val tvMeetingDate: TextView = binding.tvMeetingDate
+    private val btnSeeNote: MaterialButton = binding.btnSeeNote
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvName.text = chat.username
@@ -261,6 +262,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       tvNamePict.setBackgroundColor(chat.nameColor)
 
       tvMeetingDate.text = "Date: "+chat.meetingDate?.toDateTime24String()
+      btnSeeNote.setOnClickListener {
+        meetingNoteClickCallback.onItemClick(chat, position)
+      }
 
       tvMessage.maxWidth = chatMaxWidth
     }
@@ -271,8 +275,8 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = binding.pbSending
-    private val tvMeetingDate: TextView = itemView.findViewById(R.id.tv_meeting_date)
-    private val btnSeeNote: MaterialButton = itemView.findViewById(R.id.btn_see_note)
+    private val tvMeetingDate: TextView = binding.tvMeetingDate
+    private val btnSeeNote: MaterialButton = binding.btnSeeNote
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvMessage.text = chat.text
@@ -288,6 +292,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       }
 
       tvMeetingDate.text = "Date: "+chat.meetingDate?.toDateTime24String()
+      btnSeeNote.setOnClickListener {
+        meetingNoteClickCallback.onItemClick(chat, position)
+      }
 
       tvMessage.maxWidth = myChatMaxWidth
     }

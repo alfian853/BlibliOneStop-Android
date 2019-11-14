@@ -6,6 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.paging.LivePagedListBuilder
 import androidx.paging.PagedList
 import com.gdn.android.onestop.base.util.SessionManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
@@ -30,14 +33,16 @@ class IdeaCommentRepository @Inject constructor(
     private lateinit var commentLiveData : LiveData<PagedList<IdeaComment>>
     private lateinit var ideaId : String
 
-    suspend fun setIdeaPost(ideaId: String){
+    fun setIdeaPost(ideaId: String){
         this.ideaId = ideaId
         lastPageRequest = 1
         commentLiveData = LivePagedListBuilder(
             ideaDao.getCommentsByPostId(ideaId), ITEM_PER_PAGE
         ).build()
-        getMoreDataByPost().apply {
-            ideaDao.insertComment(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            getMoreDataByPost().apply {
+                ideaDao.insertComment(this)
+            }
         }
     }
 

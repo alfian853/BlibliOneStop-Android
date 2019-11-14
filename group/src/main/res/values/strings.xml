@@ -39,5 +39,6 @@
     <string name="meeting_description">Meeting Description</string>
     <string name="write_meeting_note">Write meeting note…</string>
     <string name="done">DONE</string>
+    <string name="write_the_note">Write the note…</string>
 
 </resources>
