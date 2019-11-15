@@ -36,8 +36,10 @@
                 android:id="@+id/iv_create"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_checked"
-                android:layout_width="@dimen/size_img_4"
-                android:layout_height="@dimen/size_img_4" />
+                android:scaleX="0.6"
+                android:scaleY="0.6"
+                android:layout_width="@dimen/size_img_1"
+                android:layout_height="@dimen/size_img_1" />
         </LinearLayout>
 
         <View

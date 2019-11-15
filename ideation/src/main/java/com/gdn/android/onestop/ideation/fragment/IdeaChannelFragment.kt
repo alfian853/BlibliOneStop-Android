@@ -101,7 +101,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
         this.databinding.swipeLayout.isRefreshing = false
         this.databinding.swipeLayout.setOnRefreshListener {
-            viewmodel.viewModelScope.launch {
+            viewmodel.launch {
                 viewmodel.refreshIdeaChannelData()
                 databinding.swipeLayout.isRefreshing = false
             }

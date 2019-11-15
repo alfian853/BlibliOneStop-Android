@@ -5,11 +5,10 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagedList
 import com.gdn.android.onestop.base.util.DefaultContextWrapper
 import com.gdn.android.onestop.base.util.NetworkUtil
-import com.gdn.android.onestop.base.ObservableViewModel
+import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.ideation.data.IdeaComment
 import com.gdn.android.onestop.ideation.data.IdeaCommentRepository
 import kotlinx.coroutines.launch
@@ -18,7 +17,7 @@ import javax.inject.Inject
 class IdeaDetailViewModel @Inject constructor(
     private val ideaCommentRepository: IdeaCommentRepository,
     private val networkUtil: NetworkUtil
-) : ObservableViewModel() {
+) : BaseViewModel() {
 
     private val commentLiveData : LiveData<PagedList<IdeaComment>> by lazy { ideaCommentRepository.getCommentLiveData() }
 
@@ -41,9 +40,7 @@ class IdeaDetailViewModel @Inject constructor(
     }
 
     fun setIdeaPostId(postId : String){
-        viewModelScope.launch {
-            ideaCommentRepository.setIdeaPost(postId)
-        }
+        ideaCommentRepository.setIdeaPost(postId)
     }
 
     fun getPagedCommentLiveData() : LiveData<PagedList<IdeaComment>> {
@@ -65,7 +62,7 @@ class IdeaDetailViewModel @Inject constructor(
     fun loadMoreComment() {
         if(!isNotLoading)return
         executeIfOnline {
-            viewModelScope.launch {
+            launch {
                 isNotLoading = false
                 ideaCommentRepository.loadMoreComment()
                 isNotLoading = true
@@ -75,7 +72,7 @@ class IdeaDetailViewModel @Inject constructor(
 
     fun submitComment(block : IdeaDetailViewModel.() -> Unit) {
         executeIfOnline {
-            viewModelScope.launch {
+            launch {
                 val isSuccess = ideaCommentRepository.submitComment(commentInput).apply{
                     commentInput = ""
                 }

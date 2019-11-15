@@ -11,13 +11,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.base.util.toAliasName
+import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.base.util.toTimeString
-import com.gdn.android.onestop.group.databinding.ItemChatBinding
-import com.gdn.android.onestop.group.databinding.ItemChatReplyBinding
-import com.gdn.android.onestop.group.databinding.ItemChatReplyUserBinding
-import com.gdn.android.onestop.group.databinding.ItemChatUserBinding
+import com.gdn.android.onestop.group.databinding.*
+import com.google.android.material.button.MaterialButton
 import java.util.*
 
 
@@ -30,7 +29,8 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
 
   var itemViewArray : SparseArray<View> = SparseArray()
 
-  lateinit var repliedClickCallback : ItemClickCallback<GroupChat>
+  lateinit var repliedClickCallback: ItemClickCallback<GroupChat>
+  lateinit var meetingNoteClickCallback: ItemClickCallback<GroupChat>
 
   var layoutWidth : Int = 0
     set(value) {
@@ -61,6 +61,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
     private const val MY_MESSAGE_TYPE = 1
     private const val REPLY_TYPE = 2
     private const val MY_REPLY_TYPE = 3
+    private const val MEETING_TYPE = 4
+    private const val MY_MEETING_TYPE = 5
+
     private const val MSG_MAXW_RATIO = 0.65
     private const val MY_MSG_MAXW_RATIO = 0.75
   }
@@ -73,12 +76,18 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
   override fun getItemViewType(position: Int): Int {
     val chat = chatList[position]
     return if(chat.isMe){
-      if(chat.isReply) MY_REPLY_TYPE
-      else MY_MESSAGE_TYPE
+      when {
+        chat.isReply -> MY_REPLY_TYPE
+        chat.isMeeting -> MY_MEETING_TYPE
+        else -> MY_MESSAGE_TYPE
+      }
     }
     else {
-      if(chat.isReply) REPLY_TYPE
-      else MESSAGE_TYPE
+      when {
+        chat.isReply -> REPLY_TYPE
+        chat.isMeeting -> MEETING_TYPE
+        else -> MESSAGE_TYPE
+      }
     }
   }
 
@@ -97,6 +106,13 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       MY_REPLY_TYPE -> return MyChatReplyViewHolder(
           ItemChatReplyUserBinding.inflate(layoutInflater, parent, false)
       )
+      MEETING_TYPE -> return MeetingViewHolder(
+          ItemChatMeetingBinding.inflate(layoutInflater, parent, false)
+      )
+      MY_MEETING_TYPE -> return MyMeetingViewHolder(
+          ItemChatMeetingUserBinding.inflate(layoutInflater, parent, false)
+      )
+
     }
     return ChatViewHolder(
         ItemChatBinding.inflate(layoutInflater, parent, false)
@@ -142,7 +158,6 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       tvNamePict.setBackgroundColor(chat.nameColor)
 
       tvMessage.maxWidth = chatMaxWidth
-
     }
   }
 
@@ -228,5 +243,62 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       tvMessage.maxWidth = myChatMaxWidth
     }
   }
+
+  inner class MeetingViewHolder(binding: ItemChatMeetingBinding) : BaseChatViewHolder(binding.root){
+    private val tvName: TextView = binding.tvUsername
+    private val tvMessage: TextView = binding.tvMessage
+    private val tvDate: TextView = binding.tvDate
+    private val tvNamePict: TextView = binding.ivUser
+    private val tvMeetingDate: TextView = binding.tvMeetingDate
+    private val btnSeeNote: MaterialButton = binding.btnSeeNote
+
+    override fun onBindViewHolder(chat: GroupChat, position: Int) {
+      tvName.text = chat.username
+      tvName.setTextColor(chat.nameColor)
+      tvDate.text = chat.createdAt.toTimeString()
+      tvMessage.text = chat.text
+      val nameAlias = chat.username.toAliasName()
+      tvNamePict.text = nameAlias
+      tvNamePict.setBackgroundColor(chat.nameColor)
+
+      tvMeetingDate.text = "Date: "+chat.meetingDate?.toDateTime24String()
+      btnSeeNote.setOnClickListener {
+        meetingNoteClickCallback.onItemClick(chat, position)
+      }
+
+      tvMessage.maxWidth = chatMaxWidth
+    }
+
+  }
+
+  inner class MyMeetingViewHolder(binding: ItemChatMeetingUserBinding) : BaseChatViewHolder(binding.root){
+    private val tvMessage: TextView = binding.tvMessage
+    private val tvDate: TextView = binding.tvDate
+    private val pbSending: ProgressBar = binding.pbSending
+    private val tvMeetingDate: TextView = binding.tvMeetingDate
+    private val btnSeeNote: MaterialButton = binding.btnSeeNote
+
+    override fun onBindViewHolder(chat: GroupChat, position: Int) {
+      tvMessage.text = chat.text
+      tvDate.text = chat.createdAt.toTimeString()
+
+      if(chat.isSending){
+        tvDate.visibility = View.GONE
+        pbSending.visibility = View.VISIBLE
+      }
+      else{
+        tvDate.visibility = View.VISIBLE
+        pbSending.visibility = View.GONE
+      }
+
+      tvMeetingDate.text = "Date: "+chat.meetingDate?.toDateTime24String()
+      btnSeeNote.setOnClickListener {
+        meetingNoteClickCallback.onItemClick(chat, position)
+      }
+
+      tvMessage.maxWidth = myChatMaxWidth
+    }
+  }
+
 
 }

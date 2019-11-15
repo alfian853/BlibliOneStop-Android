@@ -27,4 +27,26 @@
             android:name="groupModel"
             app:argType="com.gdn.android.onestop.group.data.Group" />
     </fragment>
+    <fragment
+        android:id="@+id/meetingNoteListFragment"
+        android:name="com.gdn.android.onestop.group.fragment.MeetingNoteListFragment"
+        android:label="MeetingNoteListFragment"
+        tools:layout="@layout/fragment_note_list">
+        <argument
+            android:name="group"
+            app:argType="com.gdn.android.onestop.group.data.Group" />
+        <argument
+            android:name="scrollTargetId"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/meetingNoteFragment"
+        android:name="com.gdn.android.onestop.group.fragment.MeetingNoteFragment"
+        android:label="MeetingNoteFragment"
+        tools:layout="@layout/fragment_note">
+        <argument
+            android:name="meetingNoteId"
+            app:argType="string" />
+    </fragment>
 </navigation>

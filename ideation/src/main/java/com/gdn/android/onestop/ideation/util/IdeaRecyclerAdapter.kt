@@ -9,7 +9,7 @@ import com.gdn.android.onestop.base.FaSolidTextView
 import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toAliasName
-import com.gdn.android.onestop.base.util.toDateString
+import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import java.util.*
@@ -50,7 +50,7 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
         setVoteText(ideaPost, holder)
 
         holder.tvUsername.text = ideaPost.username
-        holder.tvDate.text = ideaPost.createdAt.toDateString()
+        holder.tvDate.text = ideaPost.createdAt.toDateTime24String()
 
         holder.tvContent.text = ideaPost.content
         holder.tvContent.measure(0,0)
