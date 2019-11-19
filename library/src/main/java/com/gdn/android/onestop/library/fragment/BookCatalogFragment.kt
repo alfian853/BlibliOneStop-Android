@@ -9,7 +9,6 @@ import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
@@ -66,7 +65,7 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
         val file = item.getFile(context!!)
         if(!file.exists()){
           item.isDownloaded = false
-          viewModel.viewModelScope.launch {
+          viewModel.launch {
             libraryDao.insertBook(item)
           }
           Toast.makeText(context, "File not found, please redownload the book", Toast.LENGTH_SHORT).show()
