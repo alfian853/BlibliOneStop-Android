@@ -79,11 +79,11 @@ class FirebaseChatService : FirebaseMessagingService() {
       username = data["username"]!!
       createdAt = data["createdAt"]!!.toLong()
       isMeeting = data["isMeeting"]!!.toBoolean()
-      meetingDate = data.getOrDefault("meetingDate",null)?.toLong()
+      meetingDate = data.getOrElse("meetingDate",{null})?.toLong()
       isReply = data["isReply"]!!.toBoolean()
-      repliedId = data.getOrDefault("repliedId",null)
-      repliedText = data.getOrDefault("repliedText",null)
-      isMe = username == username
+      repliedId = data.getOrElse("repliedId",{null})
+      repliedText = data.getOrElse("repliedText",{null})
+      isMe = username == this@FirebaseChatService.username
     }
     CoroutineScope(Dispatchers.IO).launch {
       groupDao.insertGroupChat(chat)

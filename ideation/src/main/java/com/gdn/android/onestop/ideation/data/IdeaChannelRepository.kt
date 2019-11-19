@@ -28,7 +28,6 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
     fun getIdeaLiveData() : LiveData<List<IdeaPost>> = ideaLiveData
 
     suspend fun reloadIdeaChannelData() {
-        Log.d("idea","reload channel")
         lastPageRequest = 1
         allFetched = false
         this.fetchMoreData().let {
@@ -58,27 +57,20 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
     }
 
     private suspend fun fetchMoreData() : List<IdeaPost> {
-        if(isFetching || allFetched){
-            return emptyList()
+        val response = ideaClient.getIdeaPosts(lastPageRequest, ITEM_PER_PAGE)
+
+        if(response.isSuccessful && response.body()?.data != null){
+
+            val ideaList : List<IdeaPost> = response.body()?.data!!.map(this::mapIdeaPostResponseToModel)
+
+            ideaDao.insertIdea(ideaList)
+            lastPageRequest++
+            isFetching = false
+            allFetched = ideaList.isEmpty()
+            return ideaList
         }
         else{
-            isFetching = true
-            Log.d(TAG, "page : $lastPageRequest")
-            val response = ideaClient.getIdeaPosts(lastPageRequest, ITEM_PER_PAGE)
-            isFetching = false
-            if(response.isSuccessful && response.body()?.data != null){
-
-                val ideaList : List<IdeaPost> = response.body()?.data!!.map(this::mapIdeaPostResponseToModel)
-
-                ideaDao.insertIdea(ideaList)
-                lastPageRequest++
-                isFetching = false
-                allFetched = ideaList.isEmpty()
-                return ideaList
-            }
-            else{
-                return emptyList()
-            }
+            return emptyList()
         }
     }
 
