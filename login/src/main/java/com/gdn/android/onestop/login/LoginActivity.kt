@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.login.databinding.ActivityLoginBinding
 import com.gdn.android.onestop.login.injection.DaggerLoginComponent
 import com.gdn.android.onestop.login.viewmodel.LoginViewModel
@@ -54,7 +53,7 @@ class LoginActivity : BaseActivity<LoginActivity, ActivityLoginBinding>(){
         databinding.viewmodel = loginViewModel
 
         databinding.btnLogin.setOnClickListener {
-            loginViewModel.viewModelScope.launch {
+            loginViewModel.launch {
 
                 if(loginViewModel.doLogin()){
                     val intent = Navigator.getIntent(Navigator.Destination.MAIN_ACTIVITY)

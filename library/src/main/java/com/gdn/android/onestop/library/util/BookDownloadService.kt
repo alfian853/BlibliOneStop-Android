@@ -6,7 +6,6 @@ import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.data.LibraryDao
@@ -60,7 +59,7 @@ class BookDownloadService : Service() {
             .setProgress(0, 0, false).setOngoing(false)
         notificationManager.notify(downloadNotifId, notification.build())
 
-        viewModel.viewModelScope.launch {
+        viewModel.launch {
           book.isDownloaded = true
           libraryDao.insertBook(book)
         }

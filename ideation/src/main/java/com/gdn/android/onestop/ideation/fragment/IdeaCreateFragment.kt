@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.SessionManager
@@ -48,7 +47,7 @@ class IdeaCreateFragment : BaseFullScreenFragment<FragmentIdeaCreateBinding>() {
 
 
         databinding.btnIdeaSubmit.setOnClickListener {
-            viewmodel.viewModelScope.launch {
+            viewmodel.launch {
                 viewmodel.postIdea()
                 fragmentManager!!.beginTransaction().remove(this@IdeaCreateFragment).commit()
             }
