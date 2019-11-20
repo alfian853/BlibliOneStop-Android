@@ -16,11 +16,8 @@
         android:label="@string/label_idea_channel"
         tools:layout="@layout/fragment_group" >
         <action
-            android:id="@+id/action_groupFragment_to_groupCreateFragment"
-            app:destination="@id/groupCreateFragment" />
-        <action
-            android:id="@+id/action_groupFragment_to_groupChatFragment"
-            app:destination="@id/groupChatFragment" />
+            android:id="@+id/action_groupFragment_to_groupActivity"
+            app:destination="@id/groupActivity" />
 
     </fragment>
     <activity
@@ -31,5 +28,12 @@
     <fragment
         android:id="@+id/libraryFragment"
         android:name="com.gdn.android.onestop.library.fragment.LibraryFragment"
-        android:label="LibraryFragment" />
+        android:label="LibraryFragment"
+        tools:layout="@layout/layout_page_book"/>
+    <activity
+        android:id="@+id/groupActivity"
+        android:name="com.gdn.android.onestop.group.GroupActivity"
+        android:label="GroupActivity"
+        tools:layout="@layout/activity_group">
+    </activity>
 </navigation>

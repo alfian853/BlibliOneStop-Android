@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_navigation"
-    app:startDestination="@id/groupFragment"
+    app:startDestination="@id/groupChatFragment"
     tools:ignore="UnusedNavigation">
 
     <fragment
@@ -26,6 +26,9 @@
         <argument
             android:name="groupModel"
             app:argType="com.gdn.android.onestop.group.data.Group" />
+        <action
+            android:id="@+id/to_meetingNoteListFragment"
+            app:destination="@id/meetingNoteListFragment" />
     </fragment>
     <fragment
         android:id="@+id/meetingNoteListFragment"
@@ -39,6 +42,9 @@
             android:name="scrollTargetId"
             app:argType="string"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_meetingNoteListFragment_to_meetingNoteFragment"
+            app:destination="@id/meetingNoteFragment" />
     </fragment>
     <fragment
         android:id="@+id/meetingNoteFragment"
@@ -49,4 +55,12 @@
             android:name="meetingNoteId"
             app:argType="string" />
     </fragment>
+    <activity
+        android:id="@+id/groupActivity"
+        android:name="com.gdn.android.onestop.group.GroupActivity"
+        android:label="GroupActivity">
+        <argument
+            android:name="groupModel"
+            app:argType="com.gdn.android.onestop.group.data.Group" />
+    </activity>
 </navigation>

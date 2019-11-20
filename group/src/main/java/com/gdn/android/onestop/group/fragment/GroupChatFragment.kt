@@ -4,34 +4,35 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.Point
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
+import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
-import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.*
+import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
+import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
+import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
-class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
+class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   override fun doFragmentInjection() {
     GroupComponent.getInstance().inject(this)
@@ -58,8 +59,6 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
     val tmp : GroupChatFragmentArgs by navArgs()
     tmp.groupModel
   }
-
-
 
   private val chatObserver = Observer<List<GroupChat>> {
     if(it.isNotEmpty()){
@@ -92,9 +91,9 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
 
   private val toMeetingNoteClick = object : ItemClickCallback<GroupChat> {
     override fun onItemClick(item: GroupChat, position: Int) {
-      val fragment = MeetingNoteListFragment()
-      fragment.arguments = MeetingNoteListFragmentArgs(group, item.id).toBundle()
-      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting note list fragment")
+      findNavController().navigate(
+        GroupChatFragmentDirections.toMeetingNoteListFragment(group, item.id)
+      )
     }
   }
 
@@ -128,7 +127,7 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
 
 
     databinding.ivBack.setOnClickListener {
-      fragmentManager!!.beginTransaction().remove(this).commit()
+      activity!!.finish()
     }
 
     databinding.btnChatSend.setOnClickListener {
@@ -166,9 +165,12 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
     }
 
     databinding.llMeetingList.setOnClickListener {
-      val fragment = MeetingNoteListFragment()
-      fragment.arguments = MeetingNoteListFragmentArgs(group, null).toBundle()
-      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting list fragment")
+//      val fragment = MeetingNoteListFragment()
+//      fragment.arguments = MeetingNoteListFragmentArgs(group, null).toBundle()
+//      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting list fragment")
+      findNavController().navigate(
+        GroupChatFragmentDirections.toMeetingNoteListFragment(group, null)
+      )
     }
 
     return databinding.root

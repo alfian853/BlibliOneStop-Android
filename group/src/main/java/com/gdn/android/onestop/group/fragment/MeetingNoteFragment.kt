@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.gdn.android.onestop.base.BaseFullScreenFragment
+import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.group.databinding.FragmentNoteBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
@@ -15,7 +16,7 @@ import com.gdn.android.onestop.group.viewmodel.MeetingNoteViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class MeetingNoteFragment : BaseFullScreenFragment<FragmentNoteBinding>(){
+class MeetingNoteFragment : BaseFragment<FragmentNoteBinding>(){
   override fun doFragmentInjection() {
     GroupComponent.getInstance().inject(this)
   }
@@ -57,7 +58,7 @@ class MeetingNoteFragment : BaseFullScreenFragment<FragmentNoteBinding>(){
 
 
     databinding.llToolbar.ivToolbarBack.setOnClickListener {
-      fragmentManager!!.beginTransaction().remove(this).commit()
+      findNavController().navigateUp()
     }
 
     return databinding.root
