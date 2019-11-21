@@ -109,6 +109,8 @@ class FirebaseChatService : FirebaseMessagingService() {
 
       val group = groupDao.getGroupById(chat.groupId)
 
+      if(group.isMute)return@launch
+      
       val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != group.id
 
       if(isNotInChatRoom) {

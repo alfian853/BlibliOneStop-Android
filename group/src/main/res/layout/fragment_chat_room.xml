@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/ll_toolbar"
             android:orientation="horizontal"
             android:background="@color/white"
@@ -29,30 +29,51 @@
                 android:layout_marginLeft="@dimen/toolbar_horizontal_margin"
                 android:layout_width="@dimen/size_img_1"
                 android:layout_height="@dimen/size_img_1"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/ic_left_row" />
 
             <TextView
                 android:id="@+id/tv_group_name"
-                android:layout_weight="1"
+                android:layout_toRightOf="@id/iv_back"
                 android:layout_marginLeft="@dimen/toolbar_horizontal_margin"
                 android:layout_gravity="center"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/black"
+                android:includeFontPadding="false"
                 android:textSize="@dimen/size_text_h3"
-                android:text="Group"
-                android:layout_marginStart="@dimen/toolbar_horizontal_margin" />
+                android:maxLines="1"
+                android:layout_centerVertical="true"
+                android:text="asdasd"
+                android:layout_marginStart="@dimen/toolbar_horizontal_margin"
+                android:layout_toEndOf="@id/iv_back" />
+
+            <ImageView
+                android:id="@+id/iv_mute"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="4dp"
+                android:layout_toRightOf="@id/tv_group_name"
+                android:background="@drawable/ic_sound_disable"
+                android:layout_width="@dimen/size_img_4"
+                android:layout_height="@dimen/size_img_4"
+                android:layout_toEndOf="@id/tv_group_name"
+                android:layout_marginStart="4dp" />
 
             <ImageView
                 android:id="@+id/iv_option"
+                android:layout_alignParentEnd="true"
                 android:layout_gravity="center"
                 android:background="@drawable/ic_ellipsis"
-                android:layout_width="@dimen/size_img_4"
-                android:layout_height="@dimen/size_img_4"
+                android:layout_centerVertical="true"
+                android:layout_width="@dimen/size_img_1"
+                android:layout_height="@dimen/size_img_1"
+                android:scaleX="0.6"
+                android:scaleY="0.6"
                 android:layout_marginEnd="@dimen/toolbar_horizontal_margin"
-                android:layout_marginRight="@dimen/toolbar_horizontal_margin" />
-        </LinearLayout>
+                android:layout_marginRight="@dimen/toolbar_horizontal_margin"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
@@ -131,6 +152,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/ll_mute"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
                 android:layout_marginTop="18dp"
@@ -140,7 +162,7 @@
                 <ImageView
                     android:id="@+id/iv_notification"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_alarm_disable"
+                    android:background="@drawable/ic_sound_disable"
                     android:gravity="end"
                     android:layout_width="@dimen/size_text_h2"
                     android:layout_height="@dimen/size_text_h2"/>

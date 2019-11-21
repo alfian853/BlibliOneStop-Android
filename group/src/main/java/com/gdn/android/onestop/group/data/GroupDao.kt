@@ -25,7 +25,7 @@ interface GroupDao {
     @Query("select * from `Group`")
     suspend fun getAllGroup(): List<Group>
 
-    @Query("select * from `Group` where type = :groupType")
+    @Query("select * from `Group` where type = :groupType order by name")
     fun getGroupByType(groupType: Int): LiveData<List<Group>>
 
     @Query("delete from `Group`")

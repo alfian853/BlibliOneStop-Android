@@ -36,6 +36,8 @@ import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.gdn.android.onestop.group.fragment.GroupSettingFragment
+import kotlinx.coroutines.CoroutineScope
 
 class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
@@ -64,12 +66,12 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   lateinit var chatRvAdapter: ChatRecyclerAdapter
 
-  lateinit var lateGroup: Group
-
-  val group : Group by lazy {
-    val tmp : GroupChatFragmentArgs by navArgs()
+  val group: Group by lazy {
+    val tmp: GroupChatFragmentArgs by navArgs()
     tmp.groupModel
   }
+
+  lateinit var groupInfo: GroupInfo
 
   private val chatObserver = Observer<List<GroupChat>> {
     if(it.isNotEmpty()){
@@ -132,8 +134,6 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     super.onCreate(savedInstanceState)
     viewmodel = ViewModelProvider(this, viewModelProviderFactory)
       .get(GroupChatViewModel::class.java)
-
-
   }
 
   override fun onCreateView(
@@ -145,35 +145,30 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
     databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
     databinding.viewmodel = viewmodel
-    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
-    lateGroup = group
 
     handleReplyIntent()
+    setupChatRecyclerView()
+    setupToolbar()
+    setupBottomLayout()
+    setupOptionLayout()
 
-    chatLiveData.observe(this, chatObserver)
 
-    chatRvAdapter = ChatRecyclerAdapter()
-    chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
+    CoroutineScope(Dispatchers.Main).launch {
+      groupInfo = groupDao.getGroupInfo(group.id)
+    }
 
-    val point = Point()
-    activity!!.windowManager.defaultDisplay.getSize(point)
-    chatRvAdapter.layoutWidth = point.x
+    return databinding.root
+  }
 
+  private fun setupToolbar(){
+    databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
+                                    else View.GONE
 
     databinding.tvGroupName.text = group.name
-
 
     databinding.ivBack.setOnClickListener {
       activity!!.finish()
     }
-
-    databinding.btnChatSend.setOnClickListener {
-      viewmodel.launch(Dispatchers.IO) {
-        viewmodel.sendChat()
-      }
-    }
-
-    setupChatRecyclerView()
 
     val optionClick = View.OnClickListener {
       val isVisible = databinding.llChatOption.visibility == View.VISIBLE
@@ -190,24 +185,47 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     databinding.llShadow.setOnClickListener(optionClick)
 
 
+  }
 
-    databinding.btnMeeting.setOnClickListener {
-      MeetingCreateFragment(
-          object : FragmentActionCallback<MeetingCreateData>{
-            override fun onActionSuccess(data: MeetingCreateData) {
-              viewmodel.sendMeetingSchedule(data.datetime, data.description)
-            }
-          }
-      ).show(fragmentManager!!,null)
-    }
-
+  private fun setupOptionLayout(){
     databinding.llMeetingList.setOnClickListener {
       findNavController().navigate(
         GroupChatFragmentDirections.toMeetingNoteListFragment(group, null)
       )
     }
 
-    return databinding.root
+    databinding.llMute.setOnClickListener {
+      group.isMute = !group.isMute
+
+      databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
+                                      else View.GONE
+
+      GroupUtil.setSoundIcon(databinding.ivNotification, group.isMute)
+      GroupUtil.setSoundIconLabel(databinding.tvNotification, group.isMute)
+
+      CoroutineScope(Dispatchers.IO).launch {
+        groupInfo.isMute = group.isMute
+        groupDao.insertGroup(group)
+        groupDao.insertGroupInfo(groupInfo)
+      }
+    }
+  }
+
+  private fun setupBottomLayout(){
+    databinding.btnChatSend.setOnClickListener {
+      viewmodel.launch(Dispatchers.IO) {
+        viewmodel.sendChat()
+      }
+    }
+    databinding.btnMeeting.setOnClickListener {
+      MeetingCreateFragment(
+        object : FragmentActionCallback<MeetingCreateData>{
+          override fun onActionSuccess(data: MeetingCreateData) {
+            viewmodel.sendMeetingSchedule(data.datetime, data.description)
+          }
+        }
+      ).show(fragmentManager!!,null)
+    }
   }
 
   override fun onDestroy() {
@@ -218,6 +236,15 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
 
   private fun setupChatRecyclerView(){
+    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
+    chatLiveData.observe(this, chatObserver)
+    chatRvAdapter = ChatRecyclerAdapter()
+    chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
+
+    val point = Point()
+    activity!!.windowManager.defaultDisplay.getSize(point)
+    chatRvAdapter.layoutWidth = point.x
+
     val chatLayoutManager = LinearLayoutManager(this.context)
 
     // init reply click callback

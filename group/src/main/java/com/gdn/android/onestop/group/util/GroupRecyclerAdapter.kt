@@ -3,11 +3,15 @@ package com.gdn.android.onestop.group.util
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.group.databinding.FragmentGroupBinding
+import com.gdn.android.onestop.group.databinding.ItemGroupBinding
 import kotlin.collections.ArrayList
 
 class GroupRecyclerAdapter : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
@@ -22,9 +26,9 @@ class GroupRecyclerAdapter : RecyclerView.Adapter<GroupRecyclerAdapter.GroupView
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_group, parent, false)
-
-        return GroupViewHolder(view)
+        return GroupViewHolder(ItemGroupBinding.inflate(
+            LayoutInflater.from(parent.context), parent, false
+        ))
     }
 
     override fun getItemCount(): Int {
@@ -39,16 +43,20 @@ class GroupRecyclerAdapter : RecyclerView.Adapter<GroupRecyclerAdapter.GroupView
         holder.tvName.setOnClickListener{
             nameClickCallback.onItemClick(group, position)
         }
-        holder.tvOption.setOnClickListener {
+        holder.ivOption.setOnClickListener {
             optionClickCallback.onItemClick(group, position)
         }
+
+        holder.ivMute.visibility = if(group.isMute)View.VISIBLE
+                                   else View.GONE
     }
 
 
-    inner class GroupViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class GroupViewHolder(databinding: ItemGroupBinding) : RecyclerView.ViewHolder(databinding.root) {
 
-        val tvName: TextView = itemView.findViewById(R.id.tv_group_name)
-        val tvOption: TextView = itemView.findViewById(R.id.tv_option)
+        val tvName: TextView = databinding.tvGroupName
+        val ivOption: ImageView = databinding.ivOption
+        val ivMute: ImageView = databinding.ivMute
     }
 
 }
