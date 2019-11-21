@@ -1,12 +1,25 @@
 package com.gdn.android.onestop.group
 
+import android.app.PendingIntent
+import android.content.Context
+import android.content.Intent
 import android.util.Log
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.app.RemoteInput
+import androidx.core.content.ContextCompat
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.gdn.android.onestop.base.Constant
+import com.gdn.android.onestop.base.Constant.KEY_TEXT_REPLY
+import com.gdn.android.onestop.base.Constant.NOTIF_CHAT_ID
 import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.data.GroupClient
 import com.gdn.android.onestop.group.data.GroupDao
+import com.gdn.android.onestop.group.fragment.GroupChatFragment
 import com.gdn.android.onestop.group.injection.GroupComponent
+import com.gdn.android.onestop.group.util.GroupUtil
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -28,6 +41,9 @@ class FirebaseChatService : FirebaseMessagingService() {
   @Inject
   lateinit var groupClient: GroupClient
 
+  @Inject
+  lateinit var context: Context
+
   private val username : String by lazy { sessionManager.user!!.username }
 
   private val objectMapper = ObjectMapper()
@@ -40,6 +56,7 @@ class FirebaseChatService : FirebaseMessagingService() {
 
   override fun onCreate() {
     GroupComponent.getInstance().inject(this)
+    Log.d("chat-onestop","iahsidhas")
     if(!hasBeenSubscribed){
       GlobalScope.launch {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(
@@ -72,6 +89,7 @@ class FirebaseChatService : FirebaseMessagingService() {
     Log.d("chat-onestop-firebase",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(message.data))
     val data = message.data
     if(data["username"]!! == username)return
+
     val chat = GroupChat().apply {
       id = data["id"]!!
       groupId = data["groupId"]!!
@@ -85,9 +103,20 @@ class FirebaseChatService : FirebaseMessagingService() {
       repliedText = data.getOrElse("repliedText",{null})
       isMe = username == this@FirebaseChatService.username
     }
+
     CoroutineScope(Dispatchers.IO).launch {
       groupDao.insertGroupChat(chat)
+
+      val group = groupDao.getGroupById(chat.groupId)
+
+      val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != group.id
+
+      if(isNotInChatRoom) {
+        GroupUtil.notifyingChat(context, resources, chat.username, chat.text, group)
+      }
     }
+
+
   }
 
   override fun onDestroy() {

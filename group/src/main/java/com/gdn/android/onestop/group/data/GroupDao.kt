@@ -1,9 +1,7 @@
 package com.gdn.android.onestop.group.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.selects.select
 
 @Dao
 interface GroupDao {
@@ -20,6 +18,9 @@ interface GroupDao {
             insertGroup(it)
         }
     }
+
+    @Query("select * from `Group` where id = :groupId")
+    suspend fun getGroupById(groupId: String): Group
 
     @Query("select * from `Group`")
     suspend fun getAllGroup(): List<Group>

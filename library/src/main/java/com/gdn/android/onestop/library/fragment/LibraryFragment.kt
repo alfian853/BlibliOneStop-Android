@@ -8,10 +8,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.NotificationManagerCompat
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.databinding.LayoutLibraryBinding
-import com.gdn.android.onestop.library.util.Constant
+import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.library.util.LibraryFragmentAdapter
 import com.google.android.material.tabs.TabLayoutMediator
 
@@ -45,9 +46,10 @@ class LibraryFragment : BaseFragment<LayoutLibraryBinding>() {
     tabLayoutMediator.attach()
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-      val downloadNotifChannel = NotificationChannel(Constant.NOTIF_DOWNLOAD_ID, "download",
+      val downloadNotifChannel = NotificationChannel(
+        Constant.NOTIF_DOWNLOAD_CHANNEL_ID, "download",
           NotificationManager.IMPORTANCE_HIGH)
-      val notificationManager = this.activity!!.getSystemService(NotificationManager::class.java)!!
+      val notificationManager = NotificationManagerCompat.from(this.context!!)
       notificationManager.createNotificationChannel(downloadNotifChannel)
     }
 
