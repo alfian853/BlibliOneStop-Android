@@ -19,6 +19,7 @@ interface GroupComponent {
 
     fun inject(groupCreateFragment: GroupCreateFragment)
     fun inject(groupChatFragment: GroupChatFragment)
+    fun inject(groupSettingFragment: GroupSettingFragment)
     fun inject(groupFragment: GroupFragment)
     fun inject(meetingNoteFragment: MeetingNoteListFragment)
     fun inject(meetingNoteEditFragment: MeetingNoteFragment)

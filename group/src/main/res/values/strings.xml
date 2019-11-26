@@ -40,5 +40,8 @@
     <string name="write_meeting_note">Write meeting note…</string>
     <string name="done">DONE</string>
     <string name="write_the_note">Write the note…</string>
+    <string name="enter_reply">Reply</string>
+    <string name="mute_group">Mute Group</string>
+    <string name="unmute_group">Unmute Group</string>
 
 </resources>

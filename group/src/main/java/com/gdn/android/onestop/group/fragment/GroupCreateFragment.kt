@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.group.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullScreenFragment
+import com.gdn.android.onestop.group.GroupActivity
+import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.FragmentGroupCreateBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
@@ -60,12 +63,13 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
 
                     fragmentManager!!.beginTransaction().remove(this@GroupCreateFragment).commit()
 
-                    val chatFragment = GroupChatFragment()
-                    val args = GroupChatFragmentArgs(group!!)
-                    chatFragment.arguments = args.toBundle()
-                    chatFragment.show(
-                        fragmentManager!!, "group chat fragment"
-                    )
+                    group?.let {
+                        val arg = GroupActivityArgs(it)
+
+                        val intent = Intent(activity, GroupActivity::class.java)
+                        intent.putExtras(arg.toBundle())
+                        startActivity(intent)
+                    }
                 }
             }
             else{

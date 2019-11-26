@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.group.fragment
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
@@ -10,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.group.GroupActivity
+import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.FragmentGroupBinding
@@ -34,14 +37,11 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     private val groupClickCallback = object :
         ItemClickCallback<Group> {
         override fun onItemClick(item: Group, position: Int) {
-            val arg = GroupChatFragmentArgs(item)
+            val arg = GroupActivityArgs(item)
 
-            val groupChatFragment = GroupChatFragment()
-            groupChatFragment.arguments = arg.toBundle()
-
-            groupChatFragment.show(
-                this@GroupFragment.fragmentManager!!, "group chat fragment"
-            )
+            val intent = Intent(activity, GroupActivity::class.java)
+            intent.putExtras(arg.toBundle())
+            startActivity(intent)
         }
     }
 

@@ -128,10 +128,9 @@ constructor(
     }
   }
 
-  fun sendChat(){
-    launch {
-      if(chat.text == "")return@launch
-      if(chatText == "" && !chat.isMeeting)return@launch
+  suspend fun sendChat(){
+      if(chat.text == "")return
+      if(chatText == "" && !chat.isMeeting)return
       val requestChat = chat
       chat = ChatSendRequest()
       chatText = ""
@@ -144,7 +143,6 @@ constructor(
 
       pendingMsgList.pop()
       pendingMessage.postValue(pendingMsgList)
-    }
   }
 
 
@@ -152,7 +150,9 @@ constructor(
     chat.isMeeting = true
     chat.text = description
     chat.meetingDate = datetime
-    sendChat()
+    launch {
+      sendChat()
+    }
   }
 
 }

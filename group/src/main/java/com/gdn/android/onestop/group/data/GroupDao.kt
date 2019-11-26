@@ -1,9 +1,7 @@
 package com.gdn.android.onestop.group.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.selects.select
 
 @Dao
 interface GroupDao {
@@ -21,10 +19,13 @@ interface GroupDao {
         }
     }
 
+    @Query("select * from `Group` where id = :groupId")
+    suspend fun getGroupById(groupId: String): Group
+
     @Query("select * from `Group`")
     suspend fun getAllGroup(): List<Group>
 
-    @Query("select * from `Group` where type = :groupType")
+    @Query("select * from `Group` where type = :groupType order by name")
     fun getGroupByType(groupType: Int): LiveData<List<Group>>
 
     @Query("delete from `Group`")

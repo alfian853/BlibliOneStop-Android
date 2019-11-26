@@ -2,39 +2,51 @@ package com.gdn.android.onestop.group.fragment
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.content.Intent
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.app.RemoteInput
 import androidx.core.content.res.ResourcesCompat
-import androidx.lifecycle.*
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
+import com.gdn.android.onestop.base.BaseFragment
+import com.gdn.android.onestop.base.Constant.KEY_TEXT_REPLY
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
-import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.*
+import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
+import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
+import com.gdn.android.onestop.group.util.GroupUtil
+import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import com.gdn.android.onestop.group.fragment.GroupSettingFragment
+import kotlinx.coroutines.CoroutineScope
 
-
-class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
+class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   override fun doFragmentInjection() {
     GroupComponent.getInstance().inject(this)
+  }
+
+  companion object {
+    var instance: GroupChatFragment? = null
   }
 
   @Inject
@@ -54,12 +66,12 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
 
   lateinit var chatRvAdapter: ChatRecyclerAdapter
 
-  val group : Group by lazy {
-    val tmp : GroupChatFragmentArgs by navArgs()
+  val group: Group by lazy {
+    val tmp: GroupChatFragmentArgs by navArgs()
     tmp.groupModel
   }
 
-
+  lateinit var groupInfo: GroupInfo
 
   private val chatObserver = Observer<List<GroupChat>> {
     if(it.isNotEmpty()){
@@ -92,10 +104,30 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
 
   private val toMeetingNoteClick = object : ItemClickCallback<GroupChat> {
     override fun onItemClick(item: GroupChat, position: Int) {
-      val fragment = MeetingNoteListFragment()
-      fragment.arguments = MeetingNoteListFragmentArgs(group, item.id).toBundle()
-      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting note list fragment")
+      findNavController().navigate(
+        GroupChatFragmentDirections.toMeetingNoteListFragment(group, item.id)
+      )
     }
+  }
+
+  private fun handleReplyIntent(){
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
+      val intent: Intent = activity!!.intent
+      val remoteInput: Bundle? = RemoteInput.getResultsFromIntent(intent)
+
+      if (remoteInput != null) {
+        val replyText = remoteInput.getCharSequence(
+          KEY_TEXT_REPLY
+        ).toString()
+
+        viewmodel.chatText = replyText
+        viewmodel.launch {
+          viewmodel.sendChat()
+          GroupUtil.notifyingChat(context!!, resources, "You", replyText, group)
+        }
+      }
+    }
+
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
@@ -109,35 +141,34 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
       container: ViewGroup?,
       savedInstanceState: Bundle?
   ): View? {
+    instance = this
 
     databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
-
-    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
-    chatLiveData.observe(this, chatObserver)
-
-    chatRvAdapter = ChatRecyclerAdapter()
-    chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
-
-    val point = Point()
-    activity!!.windowManager.defaultDisplay.getSize(point)
-    chatRvAdapter.layoutWidth = point.x
-
-
-    databinding.tvGroupName.text = group.name
     databinding.viewmodel = viewmodel
 
+    handleReplyIntent()
+    setupChatRecyclerView()
+    setupToolbar()
+    setupBottomLayout()
+    setupOptionLayout()
+
+
+    CoroutineScope(Dispatchers.Main).launch {
+      groupInfo = groupDao.getGroupInfo(group.id)
+    }
+
+    return databinding.root
+  }
+
+  private fun setupToolbar(){
+    databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
+                                    else View.GONE
+
+    databinding.tvGroupName.text = group.name
 
     databinding.ivBack.setOnClickListener {
-      fragmentManager!!.beginTransaction().remove(this).commit()
+      activity!!.finish()
     }
-
-    databinding.btnChatSend.setOnClickListener {
-      viewmodel.launch(Dispatchers.IO) {
-        viewmodel.sendChat()
-      }
-    }
-
-    setupChatRecyclerView()
 
     val optionClick = View.OnClickListener {
       val isVisible = databinding.llChatOption.visibility == View.VISIBLE
@@ -154,33 +185,66 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
     databinding.llShadow.setOnClickListener(optionClick)
 
 
+  }
 
+  private fun setupOptionLayout(){
+    databinding.llMeetingList.setOnClickListener {
+      findNavController().navigate(
+        GroupChatFragmentDirections.toMeetingNoteListFragment(group, null)
+      )
+    }
+
+    databinding.llMute.setOnClickListener {
+      group.isMute = !group.isMute
+
+      databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
+                                      else View.GONE
+
+      GroupUtil.setSoundIcon(databinding.ivNotification, group.isMute)
+      GroupUtil.setSoundIconLabel(databinding.tvNotification, group.isMute)
+
+      CoroutineScope(Dispatchers.IO).launch {
+        groupInfo.isMute = group.isMute
+        groupDao.insertGroup(group)
+        groupDao.insertGroupInfo(groupInfo)
+      }
+    }
+  }
+
+  private fun setupBottomLayout(){
+    databinding.btnChatSend.setOnClickListener {
+      viewmodel.launch(Dispatchers.IO) {
+        viewmodel.sendChat()
+      }
+    }
     databinding.btnMeeting.setOnClickListener {
       MeetingCreateFragment(
-          object : FragmentActionCallback<MeetingCreateData>{
-            override fun onActionSuccess(data: MeetingCreateData) {
-              viewmodel.sendMeetingSchedule(data.datetime, data.description)
-            }
+        object : FragmentActionCallback<MeetingCreateData>{
+          override fun onActionSuccess(data: MeetingCreateData) {
+            viewmodel.sendMeetingSchedule(data.datetime, data.description)
           }
+        }
       ).show(fragmentManager!!,null)
     }
-
-    databinding.llMeetingList.setOnClickListener {
-      val fragment = MeetingNoteListFragment()
-      fragment.arguments = MeetingNoteListFragmentArgs(group, null).toBundle()
-      fragment.show(this@GroupChatFragment.fragmentManager!!,"meeting list fragment")
-    }
-
-    return databinding.root
   }
 
   override fun onDestroy() {
+    instance = null
     super.onDestroy()
     chatLiveData.removeObserver(chatObserver)
   }
 
 
   private fun setupChatRecyclerView(){
+    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
+    chatLiveData.observe(this, chatObserver)
+    chatRvAdapter = ChatRecyclerAdapter()
+    chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
+
+    val point = Point()
+    activity!!.windowManager.defaultDisplay.getSize(point)
+    chatRvAdapter.layoutWidth = point.x
+
     val chatLayoutManager = LinearLayoutManager(this.context)
 
     // init reply click callback
@@ -199,7 +263,7 @@ class GroupChatFragment : BaseFullScreenFragment<FragmentChatRoomBinding>(){
         val offset : Int = (databinding.rvChat.height*(0.3)).toInt()
         chatLayoutManager.scrollToPositionWithOffset(repliedPosition, offset)
 
-        val colorFrom = ResourcesCompat.getColor(resources,R.color.reply_color,null)
+        val colorFrom = ResourcesCompat.getColor(resources, R.color.reply_color,null)
         val animator = ValueAnimator.ofObject(ArgbEvaluator(), colorFrom, 0)
         animator.duration = 2000
 

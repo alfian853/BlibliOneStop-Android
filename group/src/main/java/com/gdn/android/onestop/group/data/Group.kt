@@ -11,8 +11,8 @@ class Group : Serializable {
     @PrimaryKey
     lateinit var id: String
     lateinit var name: String
-    lateinit var groupCode : String
-
+    lateinit var groupCode: String
+    var isMute: Boolean = false
 
     @TypeConverters(GroupTypeConverter::class)
     lateinit var type : Type
