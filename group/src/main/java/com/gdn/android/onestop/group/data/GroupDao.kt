@@ -67,14 +67,49 @@ interface GroupDao {
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroupChat(vararg groupChat: GroupChat)
+    suspend fun _insertGroupChat(vararg groupChat: GroupChat)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroupChat(groupChat: List<GroupChat>)
+    suspend fun _insertGroupChat(groupChat: List<GroupChat>)
+
+    private suspend fun mapChatToMeeting(groupChat: GroupChat): GroupMeeting {
+        val groupMeeting = GroupMeeting()
+        groupMeeting.chatId = groupChat.id
+        groupMeeting.groupId = groupChat.groupId
+        groupMeeting.meetingDate = groupChat.meetingDate!!
+        groupMeeting.meetingNo = groupChat.meetingNo!!
+        groupMeeting.groupName = getGroupById(groupChat.groupId).name
+
+        return groupMeeting
+    }
+
+    @Transaction
+    suspend fun insertGroupChat(groupChatList: List<GroupChat>){
+        _insertGroupChat(groupChatList)
+        val meetingList = groupChatList.filter { it.isMeeting }.map {mapChatToMeeting(it)}
+        insertGroupMeeting(meetingList)
+    }
+
+    @Transaction
+    suspend fun insertGroupChat(groupChat: GroupChat){
+        _insertGroupChat(groupChat)
+
+        if(groupChat.isMeeting){
+            insertGroupMeeting(mapChatToMeeting(groupChat))
+        }
+    }
 
     @Query("select * from GroupChat where groupId = :groupId order by createdAt asc")
     fun getGroupChatLiveData(groupId: String): LiveData<List<GroupChat>>
 
+    @Query("select * from GroupMeeting where meetingDate >= :currentTime order by meetingDate asc")
+    fun getAllNextMeeting(currentTime: Long): LiveData<List<GroupMeeting>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroupMeeting(meetingList: List<GroupMeeting>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroupMeeting(meeting: GroupMeeting)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertMeetingNote(vararg meetingNote: MeetingNote)

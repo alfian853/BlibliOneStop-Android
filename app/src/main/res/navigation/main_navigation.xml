@@ -36,4 +36,9 @@
         android:label="GroupActivity"
         tools:layout="@layout/activity_group">
     </activity>
+    <fragment
+        android:id="@+id/meetingListFragment"
+        android:name="com.gdn.android.onestop.group.fragment.MeetingListFragment"
+        android:label="MeetingListFragment"
+        tools:layout="@layout/fragment_meeting_list"/>
 </navigation>

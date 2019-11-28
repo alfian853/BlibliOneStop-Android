@@ -21,6 +21,7 @@ interface GroupComponent {
     fun inject(groupChatFragment: GroupChatFragment)
     fun inject(groupSettingFragment: GroupSettingFragment)
     fun inject(groupFragment: GroupFragment)
+    fun inject(meetingListFragment: MeetingListFragment)
     fun inject(meetingNoteFragment: MeetingNoteListFragment)
     fun inject(meetingNoteEditFragment: MeetingNoteFragment)
     fun inject(chatService: FirebaseChatService)

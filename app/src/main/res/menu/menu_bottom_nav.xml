@@ -14,4 +14,10 @@
         android:id="@+id/libraryFragment"
         android:title="@string/library"
         android:icon="@drawable/ic_book"/>
+
+    <item
+        android:id="@+id/meetingListFragment"
+        android:title="@string/next_meetings"
+        android:icon="@drawable/ic_calendar_with_ribon"
+        />
 </menu>
