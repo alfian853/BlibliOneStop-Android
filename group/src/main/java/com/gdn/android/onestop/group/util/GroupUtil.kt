@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.group.ChatReplyService
 import com.gdn.android.onestop.group.GroupActivity
 import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.R
@@ -56,8 +57,12 @@ object GroupUtil {
     val replyLabel = "Enter your reply here"
     val remoteInput: RemoteInput = RemoteInput.Builder(Constant.KEY_TEXT_REPLY).setLabel(replyLabel).build()
 
-    val replyPendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, mainIntent,
-      PendingIntent.FLAG_UPDATE_CURRENT)
+    val replyPendingIntent: PendingIntent = PendingIntent.getService(context, 0,
+      Intent(context, ChatReplyService::class.java).apply {
+        putExtra("group",group)
+      }
+      ,PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     val action: NotificationCompat.Action = NotificationCompat.Action.Builder(
       R.drawable.ic_send,
