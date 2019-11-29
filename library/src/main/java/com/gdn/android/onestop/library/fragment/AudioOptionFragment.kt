@@ -2,31 +2,32 @@ package com.gdn.android.onestop.library.fragment
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.gdn.android.onestop.base.BaseDialogFragment
 import com.gdn.android.onestop.library.R
-import com.gdn.android.onestop.library.data.Book
+import com.gdn.android.onestop.library.data.Audio
 import com.gdn.android.onestop.library.data.LibraryDao
-import com.gdn.android.onestop.library.databinding.DialogBookOptionBinding
+import com.gdn.android.onestop.library.databinding.DialogAudioOptionBinding
 import com.gdn.android.onestop.library.injection.LibraryComponent
-import com.gdn.android.onestop.library.util.BookDownloadService
+import com.gdn.android.onestop.library.util.AudioDownloadService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BookOptionFragment : BaseDialogFragment<DialogBookOptionBinding>(){
+class AudioOptionFragment : BaseDialogFragment<DialogAudioOptionBinding>(){
 
   override fun doFragmentInjection() {
     LibraryComponent.getInstance().inject(this)
   }
 
-  val book : Book by lazy {
-    val args : BookOptionFragmentArgs by navArgs()
-    args.book
+  val audio : Audio by lazy {
+    val args : AudioOptionFragmentArgs by navArgs()
+    args.audio
   }
 
   @Inject
@@ -38,32 +39,32 @@ class BookOptionFragment : BaseDialogFragment<DialogBookOptionBinding>(){
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
-    databinding = DialogBookOptionBinding.inflate(inflater, container, false)
-
-    databinding.tvTitle.text = book.title
+    databinding = DialogAudioOptionBinding.inflate(inflater, container, false)
+    Log.d("haihai","hey")
+    databinding.tvTitle.text = audio.title
 
     databinding.llDownload.setOnClickListener {
-      val file = book.getFile(context!!)
-      if(book.isDownloaded && !file.exists()){return@setOnClickListener}
-      val intent = Intent(context, BookDownloadService::class.java)
-      intent.putExtra("book", book)
+      val file = audio.getFile(context!!)
+      if(audio.isDownloaded && !file.exists()){return@setOnClickListener}
+      val intent = Intent(context, AudioDownloadService::class.java)
+      intent.putExtra("audio", audio)
       context!!.startService(intent)
       closeDialog()
     }
 
-    val bookmarkText = resources.getText(R.string.bookmark_this_book)
+    val bookmarkText = resources.getText(R.string.bookmark_this_audio)
     val deleteBookmarkText = resources.getText(R.string.delete_bookmark)
 
-    databinding.tvBookmark.text = if(book.isBookmarked){
+    databinding.tvBookmark.text = if(audio.isBookmarked){
       deleteBookmarkText
     } else{
       bookmarkText
     }
 
     databinding.llBookmark.setOnClickListener {
-      book.isBookmarked = !book.isBookmarked
+      audio.isBookmarked = !audio.isBookmarked
       CoroutineScope(Dispatchers.IO).launch {
-        libraryDao.insertBook(book)
+        libraryDao.insertAudio(audio)
       }
       closeDialog()
     }

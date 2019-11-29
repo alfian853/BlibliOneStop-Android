@@ -1,16 +1,17 @@
 package com.gdn.android.onestop.library.viewmodel
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.gdn.android.onestop.base.BaseViewModel
-import com.gdn.android.onestop.library.data.Book
-import com.gdn.android.onestop.library.data.BookRepository
+import com.gdn.android.onestop.library.data.Audio
+import com.gdn.android.onestop.library.data.AudioRepository
 import io.reactivex.rxjava3.core.Observable
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class BookCatalogViewModel
-@Inject constructor(private val bookRepository: BookRepository) : BaseViewModel() {
+class AudioCatalogViewModel
+@Inject constructor(private val audioRepository: AudioRepository) : BaseViewModel() {
 
   val bookmarkFilter : MutableLiveData<Boolean> = MutableLiveData()
   val titleFilter : MutableLiveData<String> = MutableLiveData()
@@ -20,22 +21,22 @@ class BookCatalogViewModel
     titleFilter.postValue("")
   }
 
-  fun getBooksLiveData(): MediatorLiveData<List<Book>>{
-    val livedata = MediatorLiveData<List<Book>>()
+  fun getAudiosLiveData(): LiveData<List<Audio>> {
+    val livedata = MediatorLiveData<List<Audio>>()
     livedata.postValue(emptyList())
 
-    val originalData = bookRepository.getBooksLiveData()
+    val originalData = audioRepository.getLibraryLiveData()
     livedata.addSource(originalData){
       bookmarkFilter.postValue(bookmarkFilter.value)
     }
 
-    val filteredData: MutableLiveData<List<Book>> = MutableLiveData()
+    val filteredData: MutableLiveData<List<Audio>> = MutableLiveData()
 
-    livedata.addSource(bookmarkFilter){isBookmarkOnly ->
-      val bookList = originalData.value
-      if(bookList != null){
-        var filteredValue = if(isBookmarkOnly){
-          bookList.filter { it.isBookmarked }
+    livedata.addSource(bookmarkFilter){isAudiomarkOnly ->
+      val AudioList = originalData.value
+      if(AudioList != null){
+        var filteredValue = if(isAudiomarkOnly){
+          AudioList.filter { it.isBookmarked }
         } else{
           originalData.value
         }
@@ -45,9 +46,9 @@ class BookCatalogViewModel
     }
 
     livedata.addSource(titleFilter){title ->
-      filteredData.value?.let {bookList ->
+      filteredData.value?.let {AudioList ->
         livedata.postValue(
-          bookList.filter { it.title.contains(title, true) }
+          AudioList.filter { it.title.contains(title, true) }
         )
       }
     }
@@ -57,12 +58,12 @@ class BookCatalogViewModel
 
   fun doFetchLatestData() {
     launch {
-      bookRepository.doFetchLatestData()
+      audioRepository.doFetchLatestData()
     }
   }
 
-  fun downloadBook(book: Book): Observable<Int> {
-    return bookRepository.downloadBook(book)
+  fun downloadAudio(Audio: Audio): Observable<Int> {
+    return audioRepository.downloadAudio(Audio)
   }
 
 }

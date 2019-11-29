@@ -18,16 +18,10 @@ import com.google.android.material.tabs.TabLayoutMediator
 
 class LibraryFragment : BaseFragment<LayoutLibraryBinding>() {
 
-  private val downloadNotifChannel = "onestop-book-download"
-
   override fun doFragmentInjection() {
   }
 
   lateinit var tabLayoutMediator: TabLayoutMediator
-
-  override fun onCreate(savedInstanceState: Bundle?) {
-    super.onCreate(savedInstanceState)
-  }
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {

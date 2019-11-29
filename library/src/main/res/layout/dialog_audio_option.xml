@@ -34,7 +34,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/bookmark_this_book"
+                android:text="@string/bookmark_this_audio"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_text_h4"
                 android:layout_marginStart="20dp" />
@@ -57,7 +57,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/download_this_book"
+                android:text="@string/download_this_audio"
                 android:layout_gravity="center"
                 android:textColor="@color/black"
                 android:textSize="@dimen/size_text_h4"

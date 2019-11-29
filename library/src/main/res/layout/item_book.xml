@@ -1,74 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    app:cardCornerRadius="6dp"
-    app:cardElevation="4dp"
-    android:orientation="vertical"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <RelativeLayout
+    <com.google.android.material.card.MaterialCardView
+        app:cardCornerRadius="6dp"
+        app:cardElevation="4dp"
+        android:orientation="vertical"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
 
-        <ImageView
-            android:id="@+id/iv_book_pict"
-            android:layout_width="@dimen/size_img_2_large"
-            android:layout_height="@dimen/size_img_2_large"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginTop="12dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:background="@android:drawable/ic_menu_report_image"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
-
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp"
-            android:text="@string/title"
-            android:textSize="@dimen/size_text_h5"
-            android:textColor="@color/black"
-            android:layout_below="@id/iv_book_pict"/>
-
-        <TextView
-            android:id="@+id/tv_read"
+        <RelativeLayout
+            android:padding="6dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:text="@string/page_read"
-            android:textColor="@color/black"
-            android:textSize="@dimen/size_text_h5"
-            android:layout_marginLeft="12dp"
-            android:layout_marginStart="12dp"
-            android:layout_marginRight="12dp"
-            android:layout_marginEnd="12dp"
-            android:layout_marginBottom="8dp"
-            android:layout_below="@id/tv_title" />
+            android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/iv_bookmark"
-            android:layout_width="@dimen/size_text_h2"
-            android:layout_height="@dimen/size_text_h2"
-            android:layout_marginStart="2dp"
-            android:layout_marginTop="2dp"
-            android:background="@drawable/ic_bookmark_red"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="2dp"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+            <ImageView
+                android:id="@+id/iv_book_pict"
+                android:layout_width="@dimen/size_img_2_large"
+                android:layout_height="@dimen/size_img_2_large"
+                android:layout_marginTop="12dp"
+                android:layout_centerHorizontal="true"
+                tools:background="@android:drawable/ic_menu_report_image" />
 
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_centerHorizontal="true"
+                android:text="@string/title"
+                android:textSize="@dimen/size_text_h5"
+                android:textColor="@color/black"
+                android:layout_below="@id/iv_book_pict" />
+
+            <TextView
+                android:id="@+id/tv_read"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:text="@string/page_read"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_text_h5"
+                android:layout_marginBottom="8dp"
+                android:layout_alignLeft="@id/tv_title"
+                android:layout_below="@id/tv_title" />
+
+            <ImageView
+                android:id="@+id/iv_bookmark"
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="2dp"
+                android:background="@drawable/ic_bookmark_red"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="2dp"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true" />
+
+        </RelativeLayout>
 
 
-</com.google.android.material.card.MaterialCardView>
+    </com.google.android.material.card.MaterialCardView>
+</layout>

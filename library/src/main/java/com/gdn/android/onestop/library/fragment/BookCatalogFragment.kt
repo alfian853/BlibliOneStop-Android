@@ -105,7 +105,7 @@ class BookCatalogFragment : BaseFragment<LayoutPageBookBinding>() {
     databinding.lifecycleOwner = this
     databinding.viewmodel = viewModel
     viewModel.doFetchLatestData()
-    bookLiveData = viewModel.getLibraryLiveData()
+    bookLiveData = viewModel.getBooksLiveData()
 
     bookLiveData.observe(this, observer)
 

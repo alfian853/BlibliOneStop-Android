@@ -15,7 +15,16 @@ interface LibraryDao {
   @Insert(onConflict = OnConflictStrategy.REPLACE)
   suspend fun insertBook(bookList: List<Book>)
 
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertAudio(vararg book: Audio)
+
+  @Insert(onConflict = OnConflictStrategy.REPLACE)
+  suspend fun insertAudio(bookList: List<Audio>)
+
   @Query("select * from Book order by isBookmarked DESC,title ASC")
-  fun getAllBook(): LiveData<List<Book>>
+  fun getBooksLiveData(): LiveData<List<Book>>
+
+  @Query("select * from Audio order by isBookmarked DESC,title ASC")
+  fun getAudiosLiveData(): LiveData<List<Audio>>
 
 }

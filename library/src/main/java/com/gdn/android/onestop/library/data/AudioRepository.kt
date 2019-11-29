@@ -12,41 +12,41 @@ import retrofit2.Response
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class BookRepository(
+class AudioRepository(
   private val context: Context,
   private val libraryDao: LibraryDao,
   private val libraryClient: LibraryClient,
-  private val bookUpdateManager: BookUpdateManager
+  private val AudioUpdateManager: AudioUpdateManager
 ) {
-  fun getBooksLiveData() = libraryDao.getBooksLiveData()
+  fun getLibraryLiveData() = libraryDao.getAudiosLiveData()
 
   suspend fun doFetchLatestData() {
 
-    val response = libraryClient.getBooks(bookUpdateManager.getLastUpdate())
+    val response = libraryClient.getAudios(AudioUpdateManager.getLastUpdate())
 
     if (response.isSuccessful) {
-      val books = response.body()!!.data!!
-      if (books.isNotEmpty()) {
-        libraryDao.insertBook(books)
-        val lastUpdate = books.maxBy { it.createdAt }!!.createdAt
-        bookUpdateManager.setLastUpdate(lastUpdate)
+      val Audios = response.body()!!.data!!
+      if (Audios.isNotEmpty()) {
+        libraryDao.insertAudio(Audios)
+        val lastUpdate = Audios.maxBy { it.createdAt }!!.createdAt
+        AudioUpdateManager.setLastUpdate(lastUpdate)
       }
     }
 
   }
 
-  fun downloadBook(book: Book): Observable<Int> {
+  fun downloadAudio(audio: Audio): Observable<Int> {
     var received = 0L
-    var fileSize = book.fileSize
+    var fileSize = audio.fileSize
     return Observable.create { s ->
-      libraryClient.downloadBook(book.fileUrl).enqueue(object : Callback<ResponseBody> {
+      libraryClient.downloadAudio(audio.fileUrl).enqueue(object : Callback<ResponseBody> {
         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
           t.printStackTrace()
         }
 
         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
           CoroutineScope(Dispatchers.IO).launch {
-            val apkFile = book.getFile(context)
+            val apkFile = audio.getFile(context)
             try {
               var outputStream: OutputStream? = null
               var inputStream = response.body()!!.byteStream()
@@ -69,8 +69,8 @@ class BookRepository(
                 inputStream.close()
                 outputStream.close()
                 s.onComplete()
-                book.isDownloaded = true
-                libraryDao.insertBook(book)
+                audio.isDownloaded = true
+                libraryDao.insertAudio(audio)
               } catch (e: Exception) {
                 e.printStackTrace()
                 inputStream.close()

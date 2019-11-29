@@ -19,4 +19,12 @@ interface LibraryClient {
   @Streaming
   fun downloadBook(@Url fileUrl: String): Call<ResponseBody>
 
+  @GET("/audio")
+  suspend fun getAudios(@Query("after_time")
+  afterTime: Long): Response<BaseResponse<List<Audio>>>
+
+  @GET
+  @Streaming
+  fun downloadAudio(@Url fileUrl: String): Call<ResponseBody>
+
 }
