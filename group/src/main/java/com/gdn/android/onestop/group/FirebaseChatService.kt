@@ -1,19 +1,9 @@
 package com.gdn.android.onestop.group
 
-import android.app.PendingIntent
 import android.content.Context
-import android.content.Intent
 import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
-import androidx.core.app.RemoteInput
-import androidx.core.content.ContextCompat
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.gdn.android.onestop.base.Constant
-import com.gdn.android.onestop.base.Constant.KEY_TEXT_REPLY
-import com.gdn.android.onestop.base.Constant.NOTIF_CHAT_ID
 import com.gdn.android.onestop.base.util.SessionManager
-import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.data.GroupClient
 import com.gdn.android.onestop.group.data.GroupDao

@@ -247,12 +247,14 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
   inner class MeetingViewHolder(binding: ItemChatMeetingBinding) : BaseChatViewHolder(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
+    private val tvTitle: TextView = binding.tvMeetingTitle
     private val tvDate: TextView = binding.tvDate
     private val tvNamePict: TextView = binding.ivUser
     private val tvMeetingDate: TextView = binding.tvMeetingDate
     private val btnSeeNote: MaterialButton = binding.btnSeeNote
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
+      tvTitle.text = "Meeting #${chat.meetingNo}"
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
       tvDate.text = chat.createdAt.toTimeString()
@@ -273,12 +275,14 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
 
   inner class MyMeetingViewHolder(binding: ItemChatMeetingUserBinding) : BaseChatViewHolder(binding.root){
     private val tvMessage: TextView = binding.tvMessage
+    private val tvTitle: TextView = binding.tvMeetingTitle
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = binding.pbSending
     private val tvMeetingDate: TextView = binding.tvMeetingDate
     private val btnSeeNote: MaterialButton = binding.btnSeeNote
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
+      tvTitle.text = "Meeting #${chat.meetingNo}"
       tvMessage.text = chat.text
       tvDate.text = chat.createdAt.toTimeString()
 

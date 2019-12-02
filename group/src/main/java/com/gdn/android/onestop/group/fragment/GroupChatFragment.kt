@@ -2,14 +2,11 @@ package com.gdn.android.onestop.group.fragment
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.content.Intent
 import android.graphics.Point
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.app.RemoteInput
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -20,7 +17,6 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
-import com.gdn.android.onestop.base.Constant.KEY_TEXT_REPLY
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.ItemClickCallback
@@ -33,11 +29,11 @@ import com.gdn.android.onestop.group.injection.GroupComponent
 import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
 import com.gdn.android.onestop.group.util.GroupUtil
 import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import com.gdn.android.onestop.group.fragment.GroupSettingFragment
-import kotlinx.coroutines.CoroutineScope
+
 
 class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
@@ -110,26 +106,6 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     }
   }
 
-  private fun handleReplyIntent(){
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT_WATCH) {
-      val intent: Intent = activity!!.intent
-      val remoteInput: Bundle? = RemoteInput.getResultsFromIntent(intent)
-
-      if (remoteInput != null) {
-        val replyText = remoteInput.getCharSequence(
-          KEY_TEXT_REPLY
-        ).toString()
-
-        viewmodel.chatText = replyText
-        viewmodel.launch {
-          viewmodel.sendChat()
-          GroupUtil.notifyingChat(context!!, resources, "You", replyText, group)
-        }
-      }
-    }
-
-  }
-
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewmodel = ViewModelProvider(this, viewModelProviderFactory)
@@ -146,7 +122,6 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
     databinding.viewmodel = viewmodel
 
-    handleReplyIntent()
     setupChatRecyclerView()
     setupToolbar()
     setupBottomLayout()

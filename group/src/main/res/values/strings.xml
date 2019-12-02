@@ -43,5 +43,7 @@
     <string name="enter_reply">Reply</string>
     <string name="mute_group">Mute Group</string>
     <string name="unmute_group">Unmute Group</string>
+    <string name="meeting_1">Meeting #1</string>
+    <string name="next_meetings">Next Meetings</string>
 
 </resources>

@@ -215,6 +215,7 @@
             android:id="@+id/cl_reply_container"
             android:paddingBottom="8dp"
             android:layout_above="@id/ll_chat_box"
+            android:clickable="true"
             android:background="@color/white"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">

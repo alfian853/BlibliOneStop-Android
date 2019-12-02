@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -14,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.group.ChatReplyService
 import com.gdn.android.onestop.group.GroupActivity
 import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.R
@@ -40,6 +40,7 @@ object GroupUtil {
     groupChat.repliedId = chatResponse.repliedId
     groupChat.repliedUsername = chatResponse. repliedUsername
     groupChat.repliedText = chatResponse.repliedText
+    groupChat.meetingNo = chatResponse.meetingNo
 
     return groupChat
   }
@@ -56,8 +57,12 @@ object GroupUtil {
     val replyLabel = "Enter your reply here"
     val remoteInput: RemoteInput = RemoteInput.Builder(Constant.KEY_TEXT_REPLY).setLabel(replyLabel).build()
 
-    val replyPendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, mainIntent,
-      PendingIntent.FLAG_UPDATE_CURRENT)
+    val replyPendingIntent: PendingIntent = PendingIntent.getService(context, 0,
+      Intent(context, ChatReplyService::class.java).apply {
+        putExtra("group",group)
+      }
+      ,PendingIntent.FLAG_UPDATE_CURRENT
+    )
 
     val action: NotificationCompat.Action = NotificationCompat.Action.Builder(
       R.drawable.ic_send,
@@ -67,7 +72,7 @@ object GroupUtil {
 
     val notificationManager =  NotificationManagerCompat.from(context)
 
-    val customNotif = NotificationCompat.Builder(context, Constant.NOTIF_CHAT_CHANNEL_ID)
+    val notification = NotificationCompat.Builder(context, Constant.NOTIF_CHAT_CHANNEL_ID)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
       .setSmallIcon(R.drawable.ic_group_thin)
       .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
@@ -75,13 +80,12 @@ object GroupUtil {
       .setContentText(username+": "+ Util.shrinkText(message))
       .setContentIntent(mainPIntent)
       .setGroup(group.id)
-      .setGroupSummary(true)
       .setAutoCancel(true)
       .addAction(action)
       .build()
 
 
-    notificationManager.notify(Constant.NOTIF_CHAT_ID, customNotif)
+    notificationManager.notify(Constant.NOTIF_CHAT_ID, notification)
   }
 
   fun setSoundIcon(view: View, isMute: Boolean){

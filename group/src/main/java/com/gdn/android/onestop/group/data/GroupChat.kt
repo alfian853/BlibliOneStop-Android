@@ -22,6 +22,7 @@ class GroupChat {
     var repliedUsername: String? = null
     var isMeeting : Boolean = false
     var meetingDate: Long? = null
+    var meetingNo: Int? = null
 
     @Ignore
     var isSending = false

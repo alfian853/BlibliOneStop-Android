@@ -31,6 +31,7 @@
         <activity android:name="com.gdn.android.onestop.group.GroupActivity">
             <nav-graph android:value="@navigation/group_navigation"/>
         </activity>
+        <service android:name="com.gdn.android.onestop.group.ChatReplyService" />
 
         <service
             android:name="com.gdn.android.onestop.group.FirebaseChatService"

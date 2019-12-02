@@ -18,5 +18,6 @@ class GroupChatResponse {
     @SerializedName("isMeeting")
     var isMeeting : Boolean = false
     var meetingDate: Long? = null
+    var meetingNo: Int? = null
 
 }
