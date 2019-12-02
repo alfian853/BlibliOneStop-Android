@@ -1,24 +1,23 @@
 package com.gdn.android.onestop.ideation.fragment
 
 import android.os.Bundle
-import android.se.omapi.Session
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.core.graphics.toColorInt
-import androidx.core.widget.NestedScrollView
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.util.*
+import com.gdn.android.onestop.base.util.DefaultContextWrapper
+import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.base.util.NetworkUtil
+import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.databinding.FragmentIdeaChannelBinding
 import com.gdn.android.onestop.ideation.injection.IdeaComponent
@@ -28,7 +27,6 @@ import com.gdn.android.onestop.ideation.util.VoteHelper
 import com.gdn.android.onestop.ideation.viewmodel.IdeaChannelViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
@@ -101,7 +99,8 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
         this.databinding.swipeLayout.isRefreshing = false
         this.databinding.swipeLayout.setOnRefreshListener {
-            viewmodel.viewModelScope.launch {
+            Log.d("http-req","refresh0")
+            viewmodel.launch {
                 viewmodel.refreshIdeaChannelData()
                 databinding.swipeLayout.isRefreshing = false
             }
@@ -136,7 +135,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if(!recyclerView.canScrollVertically(1)){
-                    viewmodel.viewModelScope.launch {
+                    viewmodel.launch {
                         databinding.pbLoadmore.visibility = View.VISIBLE
                         viewmodel.loadMoreData()
                         databinding.pbLoadmore.visibility = View.GONE
@@ -153,9 +152,6 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
         databinding.tvUser.text = user.alias
         databinding.tvUser.setBackgroundColor(user.color)
-
-        Log.d("secretxy","result :"+user.alias)
-        Log.d("secretx",user.color.toString())
 
         return databinding.root
     }

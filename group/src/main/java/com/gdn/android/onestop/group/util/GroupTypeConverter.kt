@@ -9,7 +9,6 @@ class GroupTypeConverter {
 
     @TypeConverter
     fun toType(type : Int) : Group.Type {
-        Log.d("group","called")
         return when(type){
             GUILD.code -> GUILD
             SQUAD.code -> SQUAD

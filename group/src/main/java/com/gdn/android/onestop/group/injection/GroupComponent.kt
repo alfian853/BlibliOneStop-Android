@@ -1,6 +1,7 @@
 package com.gdn.android.onestop.group.injection
 
 import com.gdn.android.onestop.base.BaseComponent
+import com.gdn.android.onestop.group.ChatReplyService
 import com.gdn.android.onestop.group.FirebaseChatService
 import com.gdn.android.onestop.group.fragment.*
 import dagger.Component
@@ -19,8 +20,13 @@ interface GroupComponent {
 
     fun inject(groupCreateFragment: GroupCreateFragment)
     fun inject(groupChatFragment: GroupChatFragment)
+    fun inject(groupSettingFragment: GroupSettingFragment)
     fun inject(groupFragment: GroupFragment)
+    fun inject(meetingListFragment: MeetingListFragment)
+    fun inject(meetingNoteFragment: MeetingNoteListFragment)
+    fun inject(meetingNoteEditFragment: MeetingNoteFragment)
     fun inject(chatService: FirebaseChatService)
+    fun inject(chatReplyService: ChatReplyService)
 
     companion object {
         private var instance : GroupComponent? = null

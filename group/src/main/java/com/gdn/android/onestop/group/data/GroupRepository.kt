@@ -41,14 +41,20 @@ class GroupRepository(
 
             it.guilds.forEach { group ->
                 group.type = Group.Type.GUILD
+                val info = groupDao.getGroupInfo(group.id)
+                group.isMute = info.isMute
             }
 
             it.squads.forEach {squad ->
                 squad.type = Group.Type.SQUAD
+                val info = groupDao.getGroupInfo(squad.id)
+                squad.isMute = info.isMute
             }
 
             it.tribes.forEach {tribe ->
                 tribe.type = Group.Type.TRIBE
+                val info = groupDao.getGroupInfo(tribe.id)
+                tribe.isMute = info.isMute
             }
 
             groupDao.deleteAllGroup()

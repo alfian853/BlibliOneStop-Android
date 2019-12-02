@@ -1,11 +1,7 @@
 package com.gdn.android.onestop.base.util
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Color
-import android.util.TypedValue
-import android.view.View.MeasureSpec
-import android.widget.TextView
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -16,18 +12,35 @@ val calender: Calendar = Calendar.getInstance()
 val dateTimeFormat = SimpleDateFormat("dd MMM yyyy HH:mm")
 
 @SuppressLint("SimpleDateFormat")
+val dateFormat = SimpleDateFormat("dd MMM yyyy")
+
+@SuppressLint("SimpleDateFormat")
 val timeFormat = SimpleDateFormat("HH:mm a")
 
+@SuppressLint("SimpleDateFormat")
+val time24Format = SimpleDateFormat("HH:mm")
+
+
+fun Long.toDateTime24String(): String {
+    calender.timeInMillis = this
+    return dateTimeFormat.format(calender.time)
+}
 
 fun Long.toDateString(): String {
     calender.timeInMillis = this
-    return dateTimeFormat.format(calender.time)
+    return dateFormat.format(calender.time)
 }
 
 fun Long.toTimeString(): String {
     calender.timeInMillis = this
     return timeFormat.format(calender.time)
 }
+
+fun Long.toTime24String(): String {
+    calender.timeInMillis = this
+    return time24Format.format(calender.time)
+}
+
 
 fun String.toAliasName(): String {
     val len = this.length

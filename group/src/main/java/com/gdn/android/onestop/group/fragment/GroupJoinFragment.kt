@@ -1,11 +1,13 @@
 package com.gdn.android.onestop.group.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.viewModelScope
+import com.gdn.android.onestop.group.GroupActivity
+import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.databinding.FragmentPdGroupJoinBinding
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
 import kotlinx.coroutines.launch
@@ -29,17 +31,18 @@ class GroupJoinFragment(private val groupViewModel: GroupViewModel) : DialogFrag
         }
 
         databinding.btnJoin.setOnClickListener {
-            groupViewModel.viewModelScope.launch {
+            groupViewModel.launch {
                 val group = groupViewModel.joinGroup(databinding.etCode.text.toString())
 
                 fragmentManager!!.beginTransaction().remove(this@GroupJoinFragment).commit()
 
-                val chatFragment = GroupChatFragment()
-                val args = GroupChatFragmentArgs(group!!)
-                chatFragment.arguments = args.toBundle()
-                chatFragment.show(
-                    fragmentManager!!, "group chat fragment"
-                )
+                group?.let {
+                    val arg = GroupActivityArgs(it)
+
+                    val intent = Intent(activity, GroupActivity::class.java)
+                    intent.putExtras(arg.toBundle())
+                    startActivity(intent)
+                }
             }
         }
         return databinding.root

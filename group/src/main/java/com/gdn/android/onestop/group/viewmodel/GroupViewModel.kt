@@ -1,7 +1,6 @@
 package com.gdn.android.onestop.group.viewmodel
 
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupRepository
 import kotlinx.coroutines.launch
@@ -11,7 +10,7 @@ class GroupViewModel
 @Inject
 constructor(
     private val groupRepository: GroupRepository
-) : ViewModel() {
+) : BaseViewModel() {
 
 
     fun guildLiveData() = groupRepository.guildLiveData
@@ -19,7 +18,7 @@ constructor(
     fun tribeLiveData() = groupRepository.tribeLiveData
 
     fun refreshData(isForceUpdate : Boolean = false){
-        viewModelScope.launch {
+        launch {
             groupRepository.reloadGroup(isForceUpdate)
         }
     }

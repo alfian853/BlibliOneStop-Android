@@ -1,9 +1,7 @@
 package com.gdn.android.onestop.group.data
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface GroupDao {
@@ -15,23 +13,26 @@ interface GroupDao {
     suspend fun insertGroup(groupList: List<Group>)
 
     @Transaction
-    suspend fun insertGroups(vararg groupList : List<Group>){
+    suspend fun insertGroups(vararg groupList: List<Group>){
         groupList.forEach {
             insertGroup(it)
         }
     }
 
-    @Query("select * from `Group`")
-    suspend fun getAllGroup() : List<Group>
+    @Query("select * from `Group` where id = :groupId")
+    suspend fun getGroupById(groupId: String): Group
 
-    @Query("select * from `Group` where type = :groupType")
-    fun getGroupByType(groupType : Int) :  LiveData<List<Group>>
+    @Query("select * from `Group`")
+    suspend fun getAllGroup(): List<Group>
+
+    @Query("select * from `Group` where type = :groupType order by name")
+    fun getGroupByType(groupType: Int): LiveData<List<Group>>
 
     @Query("delete from `Group`")
     suspend fun deleteAllGroup()
 
     @Query("delete from `Group` where id = :groupId")
-    fun deleteGroupById(groupId : String)
+    fun deleteGroupById(groupId: String)
 
     @Query("delete from GroupInfo where id = :groupId")
     suspend fun deleteGroupInfoById(groupId: String)
@@ -52,27 +53,81 @@ interface GroupDao {
     suspend fun insertGroupInfo(groupInfo: GroupInfo)
 
     @Query("select * from GroupInfo where id = :groupId")
-    suspend fun _getGroupInfo(groupId: String) : GroupInfo?
+    suspend fun _getGroupInfo(groupId: String): GroupInfo?
 
     @Transaction
     suspend fun getGroupInfo(groupId: String): GroupInfo {
-        var groupInfo : GroupInfo? = _getGroupInfo(groupId)
+        var groupInfo: GroupInfo? = _getGroupInfo(groupId)
         if(groupInfo == null){
             groupInfo = GroupInfo()
             groupInfo.id = groupId
             insertGroupInfo(groupInfo)
-            Log.d("chat-onestop","create new info")
         }
         return groupInfo
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroupChat(vararg groupChat: GroupChat)
+    suspend fun _insertGroupChat(vararg groupChat: GroupChat)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroupChat(groupChat: List<GroupChat>)
+    suspend fun _insertGroupChat(groupChat: List<GroupChat>)
+
+    private suspend fun mapChatToMeeting(groupChat: GroupChat): GroupMeeting {
+        val groupMeeting = GroupMeeting()
+        groupMeeting.chatId = groupChat.id
+        groupMeeting.groupId = groupChat.groupId
+        groupMeeting.meetingDate = groupChat.meetingDate!!
+        groupMeeting.meetingNo = groupChat.meetingNo!!
+        groupMeeting.groupName = getGroupById(groupChat.groupId).name
+
+        return groupMeeting
+    }
+
+    @Transaction
+    suspend fun insertGroupChat(groupChatList: List<GroupChat>){
+        _insertGroupChat(groupChatList)
+        val meetingList = groupChatList.filter { it.isMeeting }.map {mapChatToMeeting(it)}
+        insertGroupMeeting(meetingList)
+    }
+
+    @Transaction
+    suspend fun insertGroupChat(groupChat: GroupChat){
+        _insertGroupChat(groupChat)
+
+        if(groupChat.isMeeting){
+            insertGroupMeeting(mapChatToMeeting(groupChat))
+        }
+    }
 
     @Query("select * from GroupChat where groupId = :groupId order by createdAt asc")
-    fun getGroupChatLiveData(groupId: String) : LiveData<List<GroupChat>>
+    fun getGroupChatLiveData(groupId: String): LiveData<List<GroupChat>>
+
+    @Query("select * from GroupMeeting where meetingDate >= :currentTime order by meetingDate asc")
+    fun getAllNextMeeting(currentTime: Long): LiveData<List<GroupMeeting>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroupMeeting(meetingList: List<GroupMeeting>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertGroupMeeting(meeting: GroupMeeting)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMeetingNote(vararg meetingNote: MeetingNote)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertMeetingNote(meetingNote: List<MeetingNote>)
+
+    @Query("select * from MeetingNote where groupId = :groupId order by meetingNumber desc")
+    fun getMeetingNoteLiveData(groupId: String): LiveData<List<MeetingNote>>
+
+    @Query("select * from MeetingNote where id = :noteId limit 1")
+    suspend fun getMeetingNoteById(noteId: String): MeetingNote
+
+    @Query("select * from MeetingNote where id = :noteId limit 1")
+    suspend fun getMeetingNoteLiveDataById(noteId: String): MeetingNote
+
+    @Query("select * from MeetingNote where groupId = :groupId and meetingNumber = :meetingNumber limit 1")
+    suspend fun getMeetingNote(groupId: String, meetingNumber: Int): MeetingNote
+
 
 }

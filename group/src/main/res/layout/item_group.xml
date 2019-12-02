@@ -1,26 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <TextView
-        android:id="@+id/tv_group_name"
-        android:text="@string/group_name"
-        android:textSize="@dimen/size_text_h3"
-        android:layout_weight="1"
-        android:textColor="@color/black"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content" />
+    <RelativeLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="5dp">
 
-    <com.gdn.android.onestop.base.FaSolidTextView
-        android:id="@+id/tv_option"
-        android:layout_gravity="center"
-        android:layout_marginRight="10dp"
-        android:textSize="@dimen/size_text_h5"
-        android:background="@drawable/ic_ellipsis"
-        android:textAlignment="center"
-        android:layout_width="20sp"
-        android:layout_height="20sp"
-        android:layout_marginEnd="10dp" />
-</LinearLayout>
+        <TextView
+            android:id="@+id/tv_group_name"
+            android:text="@string/group_name"
+            android:textSize="@dimen/size_text_h3"
+            android:includeFontPadding="false"
+            android:textColor="@color/black"
+            android:layout_alignParentStart="true"
+            android:layout_centerHorizontal="false"
+            android:layout_toLeftOf="@id/iv_mute"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toStartOf="@id/iv_mute"
+            android:layout_alignParentLeft="true" />
+
+        <ImageView
+            android:id="@+id/iv_mute"
+            android:layout_width="@dimen/size_img_5"
+            android:layout_height="@dimen/size_img_4"
+            android:layout_toLeftOf="@id/iv_option"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_sound_disable"
+            android:layout_marginRight="8dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="8dp"
+            android:layout_toStartOf="@id/iv_option" />
+
+        <ImageView
+            android:id="@+id/iv_option"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_ellipsis"
+            android:layout_width="@dimen/size_img_5"
+            android:layout_height="@dimen/size_img_5"
+            android:scaleY="0.7"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="4dp"
+            android:layout_alignTop="@id/tv_group_name"
+            android:layout_alignBottom="@id/tv_group_name"
+            android:layout_marginEnd="4dp" />
+
+    </RelativeLayout>
+</layout>

@@ -1,17 +1,18 @@
 package com.gdn.android.onestop.group.fragment
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.group.GroupActivity
+import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.FragmentGroupBinding
@@ -36,14 +37,11 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     private val groupClickCallback = object :
         ItemClickCallback<Group> {
         override fun onItemClick(item: Group, position: Int) {
-            val arg = GroupChatFragmentArgs(item)
+            val arg = GroupActivityArgs(item)
 
-            val groupChatFragment = GroupChatFragment()
-            groupChatFragment.arguments = arg.toBundle()
-
-            groupChatFragment.show(
-                this@GroupFragment.fragmentManager!!, "group chat fragment"
-            )
+            val intent = Intent(activity, GroupActivity::class.java)
+            intent.putExtras(arg.toBundle())
+            startActivity(intent)
         }
     }
 
@@ -84,7 +82,6 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
 
     private val observer = Observer<List<Group>> {
-        Log.d("group",it.size.toString())
         if(it.isNotEmpty()){
             when(it[0].type){
                 Group.Type.GUILD -> guildRvAdapter
@@ -164,7 +161,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
         databinding.swipeLayout.setOnRefreshListener {
             databinding.swipeLayout.isRefreshing = true
-            viewModel.viewModelScope.launch {
+            viewModel.launch {
                 viewModel.refreshData(true)
                 databinding.swipeLayout.isRefreshing = false
             }

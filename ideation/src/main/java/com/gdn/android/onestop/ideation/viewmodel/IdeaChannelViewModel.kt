@@ -1,9 +1,7 @@
 package com.gdn.android.onestop.ideation.viewmodel
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagedList
+import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.base.util.NetworkUtil
 import com.gdn.android.onestop.ideation.data.IdeaChannelRepository
 import com.gdn.android.onestop.ideation.data.IdeaPost
@@ -13,12 +11,12 @@ import javax.inject.Inject
 class IdeaChannelViewModel @Inject constructor(
     private val ideaRepository: IdeaChannelRepository,
     private val networkUtil: NetworkUtil
-) : ViewModel() {
+) : BaseViewModel() {
 
     private val ideaLiveData : LiveData<List<IdeaPost>> = ideaRepository.getIdeaLiveData()
 
     fun getIdeaLiveData(): LiveData<List<IdeaPost>> {
-        viewModelScope.launch {
+        launch {
             if(networkUtil.isConnectedToNetwork()){
                 ideaRepository.reloadIdeaChannelData()
             }
@@ -27,7 +25,7 @@ class IdeaChannelViewModel @Inject constructor(
     }
 
     fun refreshIdeaChannelData() {
-        viewModelScope.launch {
+        launch {
             if(networkUtil.isConnectedToNetwork()){
                 ideaRepository.reloadIdeaChannelData()
             }
@@ -35,7 +33,7 @@ class IdeaChannelViewModel @Inject constructor(
     }
 
     fun loadMoreData(){
-        viewModelScope.launch {
+        launch {
             ideaRepository.loadMoreData()
         }
     }

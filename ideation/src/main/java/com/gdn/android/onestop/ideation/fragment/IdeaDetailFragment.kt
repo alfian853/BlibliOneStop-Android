@@ -15,7 +15,7 @@ import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.DefaultContextWrapper
-import com.gdn.android.onestop.base.util.toDateString
+import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaComment
 import com.gdn.android.onestop.ideation.data.IdeaPost
@@ -101,7 +101,7 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
 
         databinding.tvUsername.text = ideaPost.username
         databinding.tvContent.text = ideaPost.content
-        databinding.tvDate.text = ideaPost.createdAt.toDateString()
+        databinding.tvDate.text = ideaPost.createdAt.toDateTime24String()
         databinding.tvComment.text = ("${resources.getString(R.string.fa_comment)} ${ideaPost.commentCount}")
 
         databinding.etCommentInput.doOnTextChanged { text, _, _, _ ->

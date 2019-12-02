@@ -46,4 +46,22 @@ interface GroupClient{
     suspend fun subscribeGroupsByToken(
         @Query("token")token : String
     ) : Response<BaseResponse<Boolean>>
+
+    @GET("/group/{groupId}/meeting")
+    suspend fun getMeetingNoteList(
+        @Path("groupId") groupId: String
+    ) : Response<BaseResponse<List<MeetingNote>>>
+
+    @GET("/group/{groupId}/meeting/{meetingNo}")
+    suspend fun getMeetingNote(
+        @Path("groupId") groupId: String,
+        @Path("meetingNo") meetingNo: Int
+    ) : Response<BaseResponse<MeetingNote>>
+
+    @POST("/group/{groupId}/meeting/note")
+    suspend fun postMeetingNote(
+        @Path("groupId") groupId: String,
+        @Body notePostRequest: NotePostRequest
+    ) : Response<BaseResponse<NotePostResponse>>
+
 }

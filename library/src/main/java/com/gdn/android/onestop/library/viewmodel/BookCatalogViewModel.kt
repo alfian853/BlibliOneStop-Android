@@ -1,10 +1,8 @@
 package com.gdn.android.onestop.library.viewmodel
 
-import android.util.Log
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
-import com.gdn.android.onestop.base.ObservableViewModel
+import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.data.BookRepository
 import io.reactivex.rxjava3.core.Observable
@@ -12,7 +10,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class BookCatalogViewModel
-@Inject constructor(private val libraryRepository: BookRepository) : ObservableViewModel() {
+@Inject constructor(private val libraryRepository: BookRepository) : BaseViewModel() {
 
   val bookmarkFilter : MutableLiveData<Boolean> = MutableLiveData()
   val titleFilter : MutableLiveData<String> = MutableLiveData()
@@ -58,7 +56,7 @@ class BookCatalogViewModel
   }
 
   fun doFetchLatestData() {
-    viewModelScope.launch {
+    launch {
       libraryRepository.doFetchLatestData()
     }
   }

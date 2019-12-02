@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.group.databinding.FragmentPdGroupLeaveBinding
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
@@ -37,7 +36,7 @@ class GroupLeaveFragment
         }
 
         dataBinding.btnLeave.setOnClickListener {
-            groupViewModel.viewModelScope.launch {
+            groupViewModel.launch {
                 groupViewModel.leaveGroup(group.id)
                 Toast.makeText(this@GroupLeaveFragment.context, "You leave the group", Toast.LENGTH_SHORT).show()
                 leaveGroupCallback?.onSuccess()

@@ -30,5 +30,20 @@
     <string name="username">username</string>
     <string name="group_name">anti group-group club</string>
     <string name="time">10:10 PM</string>
+    <string name="create_meeting_schedule">Create Meeting Schedule</string>
+    <string name="_04_nov_2019">04 Nov 2019</string>
+    <string name="enter_date">Enter date</string>
+    <string name="enter_time">Enter time</string>
+    <string name="description">Description</string>
+    <string name="meeting">Meeting</string>
+    <string name="meeting_description">Meeting Description</string>
+    <string name="write_meeting_note">Write meeting note…</string>
+    <string name="done">DONE</string>
+    <string name="write_the_note">Write the note…</string>
+    <string name="enter_reply">Reply</string>
+    <string name="mute_group">Mute Group</string>
+    <string name="unmute_group">Unmute Group</string>
+    <string name="meeting_1">Meeting #1</string>
+    <string name="next_meetings">Next Meetings</string>
 
 </resources>

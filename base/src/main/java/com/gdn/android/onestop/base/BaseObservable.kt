@@ -6,7 +6,7 @@ import androidx.databinding.Observable.OnPropertyChangedCallback
 import androidx.databinding.PropertyChangeRegistry
 import androidx.lifecycle.ViewModel
 
-abstract class ObservableViewModel : ViewModel(), Observable {
+abstract class BaseObservable : Observable {
 
     @Transient
     private var mCallbacks: PropertyChangeRegistry? = null

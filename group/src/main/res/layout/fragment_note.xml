@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.gdn.android.onestop.group.fragment.MeetingNoteFragment">
+
+    <data>
+        <variable
+            name="viewmodel"
+            type="com.gdn.android.onestop.group.viewmodel.MeetingNoteViewModel" />
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/ll_toolbar"
+            layout="@layout/component_basic_toolbar"
+            android:layout_height="@dimen/toolbar_height"
+            android:layout_width="match_parent"/>
+
+        <EditText
+            android:id="@+id/et_content"
+            android:gravity="top|start"
+            android:layout_weight="1"
+            android:text="@={viewmodel.noteText}"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:hint="@string/write_the_note"
+            android:background="@null"
+            tools:layout_editor_absoluteX="-16dp"
+            tools:layout_editor_absoluteY="101dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginStart="16dp" />
+
+        <TextView
+            android:id="@+id/btn_idea_submit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|end"
+            android:text="@string/done"
+            android:textSize="@dimen/size_text_h3"
+            android:textColor="@color/colorPrimary"
+            android:layout_marginRight="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="16dp"/>
+
+    </LinearLayout>
+</layout>

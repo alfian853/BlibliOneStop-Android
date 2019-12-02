@@ -1,20 +1,23 @@
 package com.gdn.android.onestop.group.fragment
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullScreenFragment
+import com.gdn.android.onestop.group.GroupActivity
+import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.FragmentGroupCreateBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -55,20 +58,18 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
                 }
 
                 val groupName = databinding.etGroupName.text.toString()
-
-                viewModel.viewModelScope.launch {
+                CoroutineScope(Dispatchers.IO).launch {
                     val group: Group? = viewModel.createGroup(groupName, groupType)
-                    Log.d("idea",group.toString())
 
                     fragmentManager!!.beginTransaction().remove(this@GroupCreateFragment).commit()
 
-                    val chatFragment = GroupChatFragment()
-                    val args = GroupChatFragmentArgs(group!!)
-                    chatFragment.arguments = args.toBundle()
-                    chatFragment.show(
-                        fragmentManager!!, "group chat fragment"
-                    )
+                    group?.let {
+                        val arg = GroupActivityArgs(it)
 
+                        val intent = Intent(activity, GroupActivity::class.java)
+                        intent.putExtras(arg.toBundle())
+                        startActivity(intent)
+                    }
                 }
             }
             else{
