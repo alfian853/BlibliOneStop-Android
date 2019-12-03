@@ -10,7 +10,11 @@
     <fragment
         android:id="@+id/bookCatalogFragment"
         android:name="com.gdn.android.onestop.library.fragment.BookCatalogFragment"
-        android:label="BookCatalogFragment" />
+        android:label="BookCatalogFragment" >
+        <action
+            android:id="@+id/action_bookCatalogFragment_to_bookReaderFragment"
+            app:destination="@id/bookReaderFragment" />
+    </fragment>
     <fragment
         android:id="@+id/bookReaderFragment"
         android:name="com.gdn.android.onestop.library.fragment.BookReaderFragment"
@@ -27,4 +31,16 @@
             android:name="book"
             app:argType="com.gdn.android.onestop.library.data.Book" />
     </fragment>
+    <fragment
+        android:id="@+id/audioOptionFragment"
+        android:name="com.gdn.android.onestop.library.fragment.AudioOptionFragment"
+        android:label="AudioOptionFragment" >
+        <argument
+            android:name="audio"
+            app:argType="com.gdn.android.onestop.library.data.Audio" />
+    </fragment>
+    <fragment
+        android:id="@+id/audioCatalogFragment"
+        android:name="com.gdn.android.onestop.library.fragment.AudioCatalogFragment"
+        android:label="AudioCatalogFragment" />
 </navigation>

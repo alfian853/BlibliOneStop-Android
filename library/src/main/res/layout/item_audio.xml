@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        app:cardCornerRadius="6dp"
+        app:cardElevation="2dp"
+        android:orientation="vertical"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:padding="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_audio"
+                android:background="@drawable/ic_audio"
+                android:layout_width="32dp"
+                android:layout_height="32dp" />
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:maxLines="1"
+                android:layout_marginLeft="4dp"
+                android:layout_marginStart="4dp"
+                android:layout_toEndOf="@id/iv_bookmark"
+                android:layout_toLeftOf="@+id/iv_control"
+                android:layout_toRightOf="@id/iv_bookmark"
+                android:layout_toStartOf="@+id/iv_control"
+                android:includeFontPadding="false"
+                android:text="@string/howtobasic_1"
+                android:textColor="@color/black" />
+
+            <ImageView
+                android:id="@+id/iv_control"
+                android:background="@drawable/ic_play"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_width="@dimen/size_img_4"
+                android:layout_height="@dimen/size_img_4"
+                android:layout_alignParentRight="true" />
+
+            <ImageView
+                android:id="@+id/iv_bookmark"
+                android:background="@drawable/ic_bookmark_red"
+                android:layout_toRightOf="@id/iv_audio"
+                android:layout_marginLeft="8dp"
+                android:layout_alignTop="@id/tv_title"
+                android:layout_width="@dimen/size_img_6"
+                android:layout_height="@dimen/size_img_6"
+                android:layout_marginStart="8dp" />
+
+            <TextView
+                android:id="@+id/tv_duration"
+                android:textColor="@color/black"
+                android:text="05:30"
+                android:layout_below="@id/tv_title"
+                android:layout_alignLeft="@id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/tv_title" />
+        </RelativeLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>

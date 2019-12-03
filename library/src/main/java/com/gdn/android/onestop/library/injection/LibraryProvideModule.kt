@@ -45,4 +45,18 @@ class LibraryProvideModule {
     return BookUpdateManager(application, sessionManager)
   }
 
+  @LibraryScope
+  @Provides
+  fun provideAudioRepository(context: Context, libraryClient: LibraryClient,
+      libraryDao: LibraryDao, audioUpdateManager: AudioUpdateManager): AudioRepository {
+    return AudioRepository(context, libraryDao, libraryClient, audioUpdateManager)
+  }
+
+  @LibraryScope
+  @Provides
+  fun provideAudioUpdateManager(application: Application,
+      sessionManager: SessionManager): AudioUpdateManager {
+    return AudioUpdateManager(application, sessionManager)
+  }
+
 }

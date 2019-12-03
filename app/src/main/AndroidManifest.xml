@@ -43,6 +43,9 @@
 
         <service android:name="com.gdn.android.onestop.library.util.BookDownloadService"
             android:exported="false"/>
+
+        <service android:name="com.gdn.android.onestop.library.util.AudioDownloadService"
+            android:exported="false"/>
     </application>
 
 </manifest>

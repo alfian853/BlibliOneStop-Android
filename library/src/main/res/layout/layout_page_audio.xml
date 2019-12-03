@@ -1,21 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context="com.gdn.android.onestop.library.fragment.AudioCatalogFragment">
 
     <data>
+        <variable
+            name="viewmodel"
+            type="com.gdn.android.onestop.library.viewmodel.AudioCatalogViewModel" />
 
     </data>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:gravity="center_vertical"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
 
-        <TextView
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Under construction"
-            android:textSize="@dimen/size_text_h1" />
+            android:drawableStart="@android:drawable/ic_menu_search"
+            android:hint="@string/type_to_search"
+            android:text="@={viewmodel.titleFilter}"
+            android:gravity="center_vertical"
+            android:textSize="@dimen/size_text_h3"
+            android:padding="4dp"
+            android:background="@drawable/round_border"
+            android:drawableLeft="@android:drawable/ic_menu_search" />
+
+        <CheckBox
+            android:id="@+id/cb_saved_audio"
+            android:layout_marginTop="8dp"
+            android:text="@string/bookmarked_only"
+            android:checked="@={viewmodel.bookmarkFilter}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_audio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:listitem="@layout/item_audio"
+            android:clipToPadding="false"
+            android:padding="2dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:itemCount="20" />
+
     </LinearLayout>
 </layout>

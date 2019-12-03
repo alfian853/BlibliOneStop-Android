@@ -11,4 +11,7 @@
     <string name="bookmark_this_book">Bookmark this book</string>
     <string name="delete_bookmark">Delete bookmark</string>
     <string name="page_n_a">Page : N/A</string>
+    <string name="bookmark_this_audio">Bookmark this audio</string>
+    <string name="download_this_audio">Download this audio</string>
+    <string name="howtobasic_1">HowToBasic #1</string>
 </resources>
