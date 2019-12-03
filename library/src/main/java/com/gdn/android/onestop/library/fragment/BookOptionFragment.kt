@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.gdn.android.onestop.base.BaseDialogFragment
+import com.gdn.android.onestop.library.LibraryConstant.BOOK
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.data.LibraryDao
@@ -46,7 +47,7 @@ class BookOptionFragment : BaseDialogFragment<DialogBookOptionBinding>(){
       val file = book.getFile(context!!)
       if(book.isDownloaded && !file.exists()){return@setOnClickListener}
       val intent = Intent(context, BookDownloadService::class.java)
-      intent.putExtra("book", book)
+      intent.putExtra(BOOK, book)
       context!!.startService(intent)
       closeDialog()
     }

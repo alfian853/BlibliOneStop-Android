@@ -7,6 +7,7 @@ import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.gdn.android.onestop.base.Constant
+import com.gdn.android.onestop.library.LibraryConstant
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Audio
 import com.gdn.android.onestop.library.data.LibraryDao
@@ -38,7 +39,7 @@ class AudioDownloadService : Service() {
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     val randomId = Math.random().toInt()
-    audio = intent!!.getSerializableExtra("audio") as Audio
+    audio = intent!!.getSerializableExtra(LibraryConstant.AUDIO) as Audio
     val notification = NotificationCompat.Builder(applicationContext,
         Constant.NOTIF_DOWNLOAD_CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_default_user).setContentTitle("Downloading audio ${audio.title}")

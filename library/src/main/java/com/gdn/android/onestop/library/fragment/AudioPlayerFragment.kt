@@ -11,6 +11,9 @@ import android.widget.SeekBar
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.net.toUri
 import androidx.fragment.app.DialogFragment
+import com.gdn.android.onestop.library.LibraryConstant.HOUR_IN_MS
+import com.gdn.android.onestop.library.LibraryConstant.MINUTE_IN_MS
+import com.gdn.android.onestop.library.LibraryConstant.SECOND_IN_MS
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Audio
 import com.gdn.android.onestop.library.databinding.FragmentAudioPlayerBinding
@@ -22,16 +25,16 @@ class AudioPlayerFragment(val audio: Audio) : DialogFragment(){
 
   lateinit var mediaPlayer: MediaPlayer
 
-  val twoDigitFormater = DecimalFormat("00")
+  private val twoDigitFormater = DecimalFormat("00")
 
   private fun Int.twoDIgit(): String = twoDigitFormater.format(this)
 
   fun Int.toMinuteString(): String {
     val ms = this
 
-    val minutes = ms/60000
-    val seconds = (ms%60000)/1000
-    val hours = ms / 3600000
+    val minutes = ms/MINUTE_IN_MS
+    val seconds = (ms% MINUTE_IN_MS) / SECOND_IN_MS
+    val hours = ms / HOUR_IN_MS
     if(hours > 0){
       return "${hours.twoDIgit()}:${minutes.twoDIgit()}:${seconds.twoDIgit()}"
     }
@@ -72,7 +75,7 @@ class AudioPlayerFragment(val audio: Audio) : DialogFragment(){
           binding.sbProgress.progress = ((mediaPlayer.currentPosition.toDouble()/mediaPlayer.duration.toDouble())*100).toInt()
           binding.tvDuration.text = (mediaPlayer.duration - mediaPlayer.currentPosition).toMinuteString()
         }
-        handler.postDelayed(this, 1000)
+        handler.postDelayed(this, SECOND_IN_MS as Long)
       }
     })
 

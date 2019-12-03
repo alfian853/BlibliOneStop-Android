@@ -6,6 +6,7 @@ import android.os.IBinder
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.gdn.android.onestop.base.Constant
+import com.gdn.android.onestop.library.LibraryConstant
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.data.LibraryDao
@@ -37,7 +38,7 @@ class BookDownloadService : Service() {
 
   override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
     val randomId = Math.random().toInt()
-    book = intent!!.getSerializableExtra("book") as Book
+    book = intent!!.getSerializableExtra(LibraryConstant.BOOK) as Book
     val notification = NotificationCompat.Builder(applicationContext,
         Constant.NOTIF_DOWNLOAD_CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_default_user).setContentTitle("Downloading book ${book.title}")

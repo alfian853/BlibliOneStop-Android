@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.gdn.android.onestop.base.BaseDialogFragment
+import com.gdn.android.onestop.library.LibraryConstant
 import com.gdn.android.onestop.library.R
 import com.gdn.android.onestop.library.data.Audio
 import com.gdn.android.onestop.library.data.LibraryDao
@@ -47,7 +48,7 @@ class AudioOptionFragment : BaseDialogFragment<DialogAudioOptionBinding>(){
       val file = audio.getFile(context!!)
       if(audio.isDownloaded && !file.exists()){return@setOnClickListener}
       val intent = Intent(context, AudioDownloadService::class.java)
-      intent.putExtra("audio", audio)
+      intent.putExtra(LibraryConstant.AUDIO, audio)
       context!!.startService(intent)
       closeDialog()
     }

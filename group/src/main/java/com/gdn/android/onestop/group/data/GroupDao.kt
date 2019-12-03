@@ -73,14 +73,13 @@ interface GroupDao {
     suspend fun _insertGroupChat(groupChat: List<GroupChat>)
 
     private suspend fun mapChatToMeeting(groupChat: GroupChat): GroupMeeting {
-        val groupMeeting = GroupMeeting()
-        groupMeeting.chatId = groupChat.id
-        groupMeeting.groupId = groupChat.groupId
-        groupMeeting.meetingDate = groupChat.meetingDate!!
-        groupMeeting.meetingNo = groupChat.meetingNo!!
-        groupMeeting.groupName = getGroupById(groupChat.groupId).name
-
-        return groupMeeting
+        return GroupMeeting().apply {
+            chatId = groupChat.id
+            groupId = groupChat.groupId
+            meetingDate = groupChat.meetingDate!!
+            meetingNo = groupChat.meetingNo!!
+            groupName = getGroupById(groupChat.groupId).name
+        }
     }
 
     @Transaction
