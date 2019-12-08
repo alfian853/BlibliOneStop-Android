@@ -8,6 +8,7 @@ import androidx.navigation.fragment.navArgs
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.library.data.Book
 import com.gdn.android.onestop.library.databinding.LayoutBookReaderBinding
+import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
 
 class BookReaderFragment : BaseFullScreenFragment<LayoutBookReaderBinding>() {
 
@@ -21,8 +22,11 @@ class BookReaderFragment : BaseFullScreenFragment<LayoutBookReaderBinding>() {
     databinding = LayoutBookReaderBinding.inflate(inflater, container, false)
     val pdf = databinding.pdfView
 
-    pdf.fromFile(book.getFile(this.context!!)).spacing(4).onPageChange { page, pageCount ->
-          databinding.tvPage.text = "Page: $page/$pageCount"
+    pdf.fromFile(book.getFile(this.context!!))
+      .spacing(4)
+      .scrollHandle(DefaultScrollHandle(this.context))
+      .onPageChange { page, pageCount ->
+          databinding.tvPage.text = "Page: ${page+1}/$pageCount"
         }.load()
 
     return databinding.root
