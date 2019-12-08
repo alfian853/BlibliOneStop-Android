@@ -1,6 +1,6 @@
 package com.gdn.android.onestop.library.injection
 
-import com.gdn.android.onestop.base.BaseComponent
+import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.library.fragment.AudioCatalogFragment
 import com.gdn.android.onestop.library.fragment.AudioOptionFragment
 import com.gdn.android.onestop.library.fragment.BookCatalogFragment
@@ -13,7 +13,7 @@ import dagger.android.AndroidInjectionModule
 @LibraryScope
 @Component(
     modules = [AndroidInjectionModule::class, LibraryBindModule::class, LibraryProvideModule::class],
-    dependencies = [BaseComponent::class]
+    dependencies = [AppComponent::class]
 )
 interface LibraryComponent {
 
@@ -33,7 +33,7 @@ interface LibraryComponent {
         synchronized(LibraryComponent::class) {
           localInstance = instance
           if (localInstance == null) {
-            instance = DaggerLibraryComponent.factory().create(BaseComponent.getInstance()!!)
+            instance = DaggerLibraryComponent.factory().create(AppComponent.getInstance()!!)
             localInstance = instance
           }
         }
@@ -44,6 +44,6 @@ interface LibraryComponent {
 
   @Component.Factory
   interface Factory {
-    fun create(baseComponent: BaseComponent): LibraryComponent
+    fun create(appComponent: AppComponent): LibraryComponent
   }
 }

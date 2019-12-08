@@ -1,7 +1,7 @@
 package com.gdn.android.onestop.ideation.injection
 
 import androidx.fragment.app.Fragment
-import com.gdn.android.onestop.base.BaseComponent
+import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.ideation.fragment.IdeaChannelFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaCreateFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment
@@ -13,7 +13,7 @@ import dagger.android.AndroidInjector
 @IdeaScope
 @Component(
     modules = [AndroidInjectionModule::class, IdeaBindModule::class, IdeaProvideModule::class],
-    dependencies = [BaseComponent::class]
+    dependencies = [AppComponent::class]
 )
 interface IdeaComponent : AndroidInjector<Fragment> {
 
@@ -30,7 +30,7 @@ interface IdeaComponent : AndroidInjector<Fragment> {
                 synchronized(IdeaComponent::class){
                     localInstance = instance
                     if(localInstance == null){
-                        instance = DaggerIdeaComponent.factory().create(BaseComponent.getInstance()!!)
+                        instance = DaggerIdeaComponent.factory().create(AppComponent.getInstance()!!)
                         localInstance = instance
                     }
                 }
@@ -41,7 +41,7 @@ interface IdeaComponent : AndroidInjector<Fragment> {
 
     @Component.Factory
     interface Factory {
-        fun create(appComponent: BaseComponent) : IdeaComponent
+        fun create(appComponent: AppComponent) : IdeaComponent
     }
 
 }

@@ -1,6 +1,6 @@
 package com.gdn.android.onestop.group.injection
 
-import com.gdn.android.onestop.base.BaseComponent
+import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.group.ChatReplyService
 import com.gdn.android.onestop.group.FirebaseChatService
 import com.gdn.android.onestop.group.fragment.*
@@ -14,7 +14,7 @@ import dagger.android.AndroidInjectionModule
         GroupBindModule::class,
         GroupProvideModule::class
     ],
-    dependencies = [BaseComponent::class]
+    dependencies = [AppComponent::class]
 )
 interface GroupComponent {
 
@@ -37,7 +37,7 @@ interface GroupComponent {
                 synchronized(GroupComponent::class){
                     localInstance = instance
                     if(localInstance == null){
-                        instance = DaggerGroupComponent.factory().create(BaseComponent.getInstance()!!)
+                        instance = DaggerGroupComponent.factory().create(AppComponent.getInstance()!!)
                         localInstance = instance
                     }
                 }
@@ -48,7 +48,7 @@ interface GroupComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(baseComponent: BaseComponent) : GroupComponent
+        fun create(appComponent: AppComponent) : GroupComponent
     }
 
 

@@ -55,6 +55,12 @@ class MeetingListFragment : BaseFragment<FragmentMeetingListBinding>() {
     databinding = FragmentMeetingListBinding.inflate(inflater, container, false)
 
     groupDao.getAllNextMeeting(Date().time).observe(this,Observer {
+      if(it.isEmpty()){
+        databinding.llNoMeeting.visibility = View.VISIBLE
+      }
+      else{
+        databinding.llNoMeeting.visibility = View.GONE
+      }
       meetingRvAdapter.updateMeetingList(it)
     })
 

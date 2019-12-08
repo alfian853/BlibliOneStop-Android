@@ -5,19 +5,19 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
-import com.gdn.android.onestop.base.BaseComponent
+import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.base.Constant
-import com.gdn.android.onestop.base.DaggerBaseComponent
+import com.gdn.android.onestop.base.DaggerAppComponent
 import com.gdn.android.onestop.base.util.SessionManager
 
 class OneStopApplication : Application(){
 
-    val appComponent : BaseComponent by lazy { DaggerBaseComponent.factory()
+    val mAppComponent : AppComponent by lazy { DaggerAppComponent.factory()
         .create(this, SessionManager(this), baseContext) }
 
     override fun onCreate() {
-        appComponent.inject(this)
-        BaseComponent.setInstance(appComponent)
+        mAppComponent.inject(this)
+        AppComponent.setInstance(mAppComponent)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val notificationManager = NotificationManagerCompat.from(this)
 

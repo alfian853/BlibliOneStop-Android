@@ -4,21 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.gdn.android.onestop.group.R
-import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.group.databinding.FragmentGroupBinding
+import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.ItemGroupBinding
-import kotlin.collections.ArrayList
 
-class GroupRecyclerAdapter : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
+class GroupRecyclerAdapter(
+    private val optionClickCallback: ItemClickCallback<Group>,
+    private val nameClickCallback: ItemClickCallback<Group>
+    ) : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
 
     var groupList : List<Group> = ArrayList()
-    lateinit var nameClickCallback: ItemClickCallback<Group>
-    lateinit var optionClickCallback: ItemClickCallback<Group>
 
     fun updateList(groupList : List<Group>){
         this.groupList = groupList
