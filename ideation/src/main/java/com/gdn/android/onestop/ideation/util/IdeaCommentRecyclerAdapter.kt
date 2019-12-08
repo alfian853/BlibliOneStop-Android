@@ -1,61 +1,58 @@
 package com.gdn.android.onestop.ideation.util
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.paging.PagedListAdapter
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toAliasName
-import com.gdn.android.onestop.ideation.R
+import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.ideation.data.IdeaComment
+import com.gdn.android.onestop.ideation.databinding.ItemCommentBinding
+import java.util.*
 
 class IdeaCommentRecyclerAdapter :
-    PagedListAdapter<IdeaComment, IdeaCommentRecyclerAdapter.CommentViewHolder>(
-        COMMENT_COMPARATOR
-    ){
+    RecyclerView.Adapter<IdeaCommentRecyclerAdapter.CommentViewHolder>(){
 
+    private var commentList: List<IdeaComment> = LinkedList()
+
+    fun updateData(commentList: List<IdeaComment>){
+        this.commentList = commentList
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount(): Int {
+        return commentList.size
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CommentViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_comment, parent, false)
-        return CommentViewHolder(view)
+        return CommentViewHolder(
+            ItemCommentBinding.inflate(
+                LayoutInflater.from(parent.context), parent, false
+            )
+        )
     }
 
     override fun onBindViewHolder(holder: CommentViewHolder, position: Int) {
-        val ideaComment = getItem(position)
+        val ideaComment = commentList[position]
 
-        ideaComment?.let {
-            holder.tvUsername.text = it.username
-            holder.tvComment.text = it.text
-            holder.tvDate.text = it.date
+        ideaComment.apply {
+            holder.tvUsername.text = username
+            holder.tvComment.text = text
+            holder.tvDate.text = date.toDateTime24String()
             val nameAlias = ideaComment.username.toAliasName()
             holder.tvNamePict.text = nameAlias
-            holder.tvNamePict.setBackgroundColor(Util.getColorFromString(nameAlias))
+            holder.tvNamePict.setBackgroundColor(Util.getColorFromString(ideaComment.username))
         }
     }
 
-    inner class CommentViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val tvUsername : TextView = itemView.findViewById(R.id.tv_username)
-        val tvDate : TextView = itemView.findViewById(R.id.tv_date)
-        val tvComment : TextView = itemView.findViewById(R.id.tv_comment)
-        val tvNamePict : TextView = itemView.findViewById(R.id.iv_user)
+    inner class CommentViewHolder(binding: ItemCommentBinding) : RecyclerView.ViewHolder(binding.root) {
+        val tvUsername : TextView = binding.tvUsername
+        val tvDate : TextView = binding.tvDate
+        val tvComment : TextView = binding.tvComment
+        val tvNamePict : TextView = binding.ivUser
         init {
             tvComment.text = ""
-        }
-    }
-
-    companion object {
-        private val COMMENT_COMPARATOR = object : DiffUtil.ItemCallback<IdeaComment>() {
-            override fun areItemsTheSame(oldItem: IdeaComment, newItem: IdeaComment): Boolean {
-                return oldItem.hashCode() == newItem.hashCode()
-            }
-
-            override fun areContentsTheSame(oldItem: IdeaComment, newItem: IdeaComment): Boolean {
-                return oldItem.hashCode() == newItem.hashCode()
-            }
-
         }
     }
 }

@@ -20,7 +20,7 @@ class IdeaComment {
     lateinit var postId: String
     lateinit var username: String
     lateinit var text: String
-    lateinit var date: String
+    var date: Long = 0
 
     override fun hashCode(): Int {
         return username.hashCode() + date.hashCode() + postId.hashCode()

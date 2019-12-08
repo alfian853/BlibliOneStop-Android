@@ -5,7 +5,6 @@ import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.paging.PagedList
 import com.gdn.android.onestop.base.util.DefaultContextWrapper
 import com.gdn.android.onestop.base.util.NetworkUtil
 import com.gdn.android.onestop.base.BaseViewModel
@@ -19,7 +18,7 @@ class IdeaDetailViewModel @Inject constructor(
     private val networkUtil: NetworkUtil
 ) : BaseViewModel() {
 
-    private val commentLiveData : LiveData<PagedList<IdeaComment>> by lazy { ideaCommentRepository.getCommentLiveData() }
+    private val commentLiveData : LiveData<List<IdeaComment>> by lazy { ideaCommentRepository.getCommentsLiveData() }
 
     lateinit var contextWrapper : DefaultContextWrapper
 
@@ -43,7 +42,7 @@ class IdeaDetailViewModel @Inject constructor(
         ideaCommentRepository.setIdeaPost(postId)
     }
 
-    fun getPagedCommentLiveData() : LiveData<PagedList<IdeaComment>> {
+    fun getCommentsLiveData() : LiveData<List<IdeaComment>> {
         return commentLiveData
     }
 

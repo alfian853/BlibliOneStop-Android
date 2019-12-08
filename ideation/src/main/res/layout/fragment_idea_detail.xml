@@ -9,7 +9,7 @@
             name="viewmodel"
             type="com.gdn.android.onestop.ideation.viewmodel.IdeaDetailViewModel" />
     </data>
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -17,17 +17,19 @@
 
         <include
             android:id="@+id/toolbar"
+            android:layout_alignParentTop="true"
             layout="@layout/component_basic_toolbar"
             android:layout_height="@dimen/toolbar_height"
             android:layout_width="match_parent"/>
 
         <ScrollView
             android:id="@+id/scrollView"
+            android:layout_below="@id/toolbar"
             android:padding="10dp"
-            android:layout_weight="85"
+            android:layout_above="@id/ll_comment_input"
             android:layout_width="match_parent"
             android:scrollbars="none"
-            android:layout_height="0dp">
+            android:layout_height="match_parent">
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -134,21 +136,22 @@
         </ScrollView>
 
         <LinearLayout
-            android:layout_weight="15"
+            android:id="@+id/ll_comment_input"
+            android:layout_alignParentBottom="true"
             android:gravity="center|bottom"
             android:orientation="vertical"
+            android:padding="10dp"
+            android:background="@drawable/border_top_primary"
             android:layout_width="match_parent"
-            android:layout_height="0dp">
+            android:layout_height="wrap_content">
             <EditText
                 android:id="@+id/et_commentInput"
-                android:layout_marginLeft="3dp"
-                android:layout_marginRight="3dp"
                 android:maxLines="4"
                 android:text="@={viewmodel.commentInput}"
                 android:layout_gravity="center_horizontal|center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/comment_input_border"
+                android:background="@null"
                 android:hint="@string/comment_hint"
                 android:inputType="textMultiLine"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -161,13 +164,12 @@
                 android:layout_gravity="center_horizontal|end"
                 android:background="@color/white"
                 android:text="@string/post"
-                android:textSize="@dimen/size_text_h3"
+                android:textSize="@dimen/size_text_h4"
                 android:textColor="@color/faded_blue"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent" />
         </LinearLayout>
 
-
-    </LinearLayout>
+    </RelativeLayout>
 </layout>

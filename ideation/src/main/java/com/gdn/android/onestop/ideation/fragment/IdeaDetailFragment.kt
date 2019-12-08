@@ -10,7 +10,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
-import androidx.paging.PagedList
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
@@ -29,10 +28,6 @@ import javax.inject.Inject
 
 class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
 
-    companion object{
-        private const val TAG = "ideaDetailFragment"
-    }
-
     @Inject
     lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
@@ -46,10 +41,10 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
 
     lateinit var ideaPost : IdeaPost
 
-    lateinit var commentLiveData: LiveData<PagedList<IdeaComment>>
+    lateinit var commentLiveData: LiveData<List<IdeaComment>>
 
-    private val commentObserver: Observer<PagedList<IdeaComment>> = Observer {
-        ideaCommentRecyclerAdapter.submitList(it)
+    private val commentObserver: Observer<List<IdeaComment>> = Observer {
+        ideaCommentRecyclerAdapter.updateData(it)
     }
 
     private val contextWrapper : DefaultContextWrapper by lazy {
@@ -95,7 +90,7 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
         viewmodel.setIdeaPostId(ideaPost.id)
         databinding.rvComment.adapter = ideaCommentRecyclerAdapter
 
-        commentLiveData = viewmodel.getPagedCommentLiveData()
+        commentLiveData = viewmodel.getCommentsLiveData()
         commentLiveData.observe(this, commentObserver)
         viewmodel.loadMoreComment()
 
@@ -147,7 +142,7 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
 
     override fun onDestroy() {
         super.onDestroy()
-        viewmodel.getPagedCommentLiveData().removeObserver(commentObserver)
+        viewmodel.getCommentsLiveData().removeObserver(commentObserver)
     }
 
     private fun setVoteText(){

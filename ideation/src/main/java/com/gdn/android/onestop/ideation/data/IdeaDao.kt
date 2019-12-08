@@ -32,7 +32,7 @@ interface IdeaDao {
     suspend fun deleteAllIdeaPost()
 
     @Query("select * from IdeaComment where postId = :postId order by date ASC")
-    fun getCommentsByPostId(postId : String) : DataSource.Factory<Int, IdeaComment>
+    fun getCommentsByPostId(postId : String) : LiveData<List<IdeaComment>>
 
     @Query("delete from IdeaComment where postId = :postId")
     suspend fun deleteAllIdeaCommentById(postId : String)

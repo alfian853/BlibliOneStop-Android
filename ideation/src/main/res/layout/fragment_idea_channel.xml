@@ -48,7 +48,7 @@
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
                     android:layout_weight="1"
-                    android:background="@drawable/comment_input_border"
+                    android:background="@drawable/round_border_primary"
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:hint="@string/what_do_you_think"
