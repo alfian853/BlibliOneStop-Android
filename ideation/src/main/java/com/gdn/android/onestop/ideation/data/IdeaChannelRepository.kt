@@ -1,14 +1,8 @@
 package com.gdn.android.onestop.ideation.data
 
-import android.annotation.SuppressLint
-import android.util.Log
 import androidx.lifecycle.LiveData
-import java.text.SimpleDateFormat
 
 class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient: IdeaClient) {
-
-    @SuppressLint("SimpleDateFormat")
-    val simple = SimpleDateFormat("dd MMM yyyy HH:mm:ss")
 
     var lastPageRequest = 1
     var allFetched = false
@@ -19,9 +13,9 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
         private const val TAG = "ideaRepository"
     }
 
-    private var ideaLiveData :LiveData<List<IdeaPost>> = ideaDao.getIdeaLiveData()
+    private var ideaLiveData: LiveData<List<IdeaPost>> = ideaDao.getIdeaLiveData()
 
-    suspend fun update(ideaPost : IdeaPost){
+    suspend fun update(ideaPost: IdeaPost){
         ideaDao.updateIdea(ideaPost)
     }
 
@@ -36,9 +30,11 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
         }
     }
 
-    suspend fun loadMoreData() {
+    suspend fun loadMoreData(): Boolean {
         val ideaList = fetchMoreData()
         ideaDao.insertIdea(ideaList)
+
+        return ideaList.isEmpty()
     }
 
     private fun mapIdeaPostResponseToModel(response : IdeaPostResponse) : IdeaPost{

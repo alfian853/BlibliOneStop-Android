@@ -21,10 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
-
 
                 <TextView
                     android:id="@+id/tv_user"
@@ -35,36 +34,35 @@
                     android:background="@color/colorPrimary"
                     android:foreground="@drawable/border_round_image"
                     android:text="AL"
+                    android:textColor="@color/white"
                     android:gravity="center"
                     android:textSize="@dimen/size_text_h3"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_marginLeft="16dp" />
 
                 <EditText
                     android:id="@+id/et_idea"
-                    android:layout_width="0dp"
+                    android:layout_toRightOf="@id/tv_user"
+                    android:layout_alignTop="@id/tv_user"
+                    android:layout_alignBottom="@id/tv_user"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_marginStart="12dp"
                     android:layout_marginEnd="12dp"
-                    android:layout_weight="1"
                     android:background="@drawable/round_border_primary"
                     android:cursorVisible="false"
                     android:focusable="false"
                     android:hint="@string/what_do_you_think"
                     android:textSize="@dimen/size_text_h5"
-                    app:layout_constraintBottom_toBottomOf="@+id/tv_user"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@+id/tv_user"
-                    app:layout_constraintTop_toTopOf="@+id/tv_user" />
+                    android:layout_toEndOf="@id/tv_user" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_ideapost"
+                    android:layout_below="@id/et_idea"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_marginTop="6dp"
                     app:layoutManager="LinearLayoutManager"
-                    app:layout_constraintTop_toBottomOf="@+id/et_idea"
                     tools:itemCount="4"
                     tools:layout_editor_absoluteX="0dp"
                     tools:listitem="@layout/item_ideapost" />
@@ -79,12 +77,11 @@
                     android:layout_marginEnd="32dp"
                     android:layout_marginRight="32dp"
                     android:indeterminate="true"
-                    android:visibility="gone"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/rv_ideapost" />
+                    android:visibility="visible"
+                    android:layout_centerHorizontal="true"
+                    android:layout_below="@id/rv_ideapost"/>
 
-            </androidx.constraintlayout.widget.ConstraintLayout>
+            </RelativeLayout>
 
         </androidx.core.widget.NestedScrollView>
 

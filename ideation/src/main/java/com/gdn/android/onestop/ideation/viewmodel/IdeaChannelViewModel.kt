@@ -32,10 +32,8 @@ class IdeaChannelViewModel @Inject constructor(
         }
     }
 
-    fun loadMoreData(){
-        launch {
-            ideaRepository.loadMoreData()
-        }
+    suspend fun loadMoreData(): Boolean {
+        return ideaRepository.loadMoreData()
     }
 
 }

@@ -61,8 +61,17 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         )
     }
 
+    private var isLoading = false
+
+    private fun showLoading(){
+        databinding.pbLoadmore.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading(){
+        databinding.pbLoadmore.visibility = View.GONE
+    }
+
     private val observer = Observer<List<IdeaPost>> {
-        Log.d("idea","on submit list ${it.size}")
         ideaRecyclerAdapter.ideaList = it
         ideaRecyclerAdapter.notifyDataSetChanged()
         databinding.swipeLayout.isRefreshing = false
@@ -85,6 +94,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         viewmodel = ViewModelProvider(this, viewModelProviderFactory)
             .get(IdeaChannelViewModel::class.java)
 
+        isLoading = false
     }
 
     override fun onCreateView(
@@ -99,10 +109,14 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
         this.databinding.swipeLayout.isRefreshing = false
         this.databinding.swipeLayout.setOnRefreshListener {
-            Log.d("http-req","refresh0")
-            viewmodel.launch {
-                viewmodel.refreshIdeaChannelData()
-                databinding.swipeLayout.isRefreshing = false
+            if(!isLoading){
+                viewmodel.launch {
+                    showLoading()
+                    isLoading = true
+                    viewmodel.refreshIdeaChannelData()
+                    databinding.swipeLayout.isRefreshing = false
+                    isLoading = false
+                }
             }
         }
 
@@ -135,10 +149,15 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if(!recyclerView.canScrollVertically(1)){
-                    viewmodel.launch {
-                        databinding.pbLoadmore.visibility = View.VISIBLE
-                        viewmodel.loadMoreData()
-                        databinding.pbLoadmore.visibility = View.GONE
+                    if(!isLoading){
+                        isLoading = true
+                        viewmodel.launch {
+                            val isLast = viewmodel.loadMoreData()
+                            isLoading = false
+                            if(isLast){
+                                hideLoading()
+                            }
+                        }
                     }
                 }
             }

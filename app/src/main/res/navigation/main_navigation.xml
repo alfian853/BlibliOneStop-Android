@@ -41,4 +41,9 @@
         android:name="com.gdn.android.onestop.group.fragment.MeetingListFragment"
         android:label="MeetingListFragment"
         tools:layout="@layout/fragment_meeting_list"/>
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.gdn.android.onestop.profile.fragment.ProfileFragment"
+        tools:layout="@layout/fragment_profile"
+        android:label="ProfileFragment" />
 </navigation>

@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/ideaChannelFragment"
-        android:title="@string/label_idea_channel"
+        android:title="@string/ideation"
         android:icon="@drawable/ic_neural"/>
 
     <item
@@ -17,7 +17,11 @@
 
     <item
         android:id="@+id/meetingListFragment"
-        android:title="@string/next_meetings"
-        android:icon="@drawable/ic_calendar_with_ribon"
-        />
+        android:title="@string/meeting"
+        android:icon="@drawable/ic_calendar_with_ribon"/>
+
+    <item
+        android:id="@+id/profileFragment"
+        android:title="@string/profile"
+        android:icon="@drawable/ic_profile"/>
 </menu>

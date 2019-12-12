@@ -29,6 +29,11 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
     lateinit var voteClickCallback : VoteClickCallback
 
 
+    fun updateData(ideaList: List<IdeaPost>){
+        this.ideaList = ideaList
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IdeaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ideapost, parent, false)
         return IdeaViewHolder(view)

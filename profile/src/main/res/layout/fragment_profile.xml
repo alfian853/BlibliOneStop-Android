@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    tools:context="com.gdn.android.onestop.profile.fragment.ProfileFragment"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/tv_user"
+                android:layout_width="118dp"
+                android:layout_height="118dp"
+                android:layout_marginTop="48dp"
+                android:background="@color/colorPrimary"
+                android:foreground="@drawable/border_round_image"
+                android:text="AL"
+                android:textColor="@color/white"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:textSize="56dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:text="Alfian"
+                android:layout_below="@id/tv_user"
+                android:layout_alignLeft="@id/tv_user"
+                android:layout_alignRight="@id/tv_user"
+                android:textSize="@dimen/size_text_h2"
+                android:layout_marginTop="18dp"
+                android:textColor="@color/black"
+                android:gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignStart="@id/tv_user"
+                android:layout_alignEnd="@id/tv_user" />
+
+            <ProgressBar
+                android:id="@+id/pb_load"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="16dp"
+                android:layout_below="@id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <LinearLayout
+                android:id="@+id/ll_more_data"
+                android:layout_below="@id/tv_username"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <include
+                    android:id="@+id/user"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    layout="@layout/profile_detail"/>
+            </LinearLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+</layout>
