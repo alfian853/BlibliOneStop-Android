@@ -41,6 +41,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
 
         databinding = FragmentGroupCreateBinding.inflate(inflater, container, false)
 
+        databinding.etGroupName.setText("")
         databinding.ivBack.setOnClickListener {
             this.fragmentManager!!.beginTransaction().remove(this).commit()
         }
@@ -50,7 +51,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
 
 
         databinding.etGroupName.doOnTextChanged { text, start, count, after ->
-            if(text!!.isNotEmpty() && databinding.etGroupName.error.isNotEmpty()){
+            if(text != null && text.isNotEmpty()){
                 databinding.tilGroupName.error = null
             }
         }

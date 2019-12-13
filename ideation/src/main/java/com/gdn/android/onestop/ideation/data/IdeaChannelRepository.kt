@@ -9,7 +9,7 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
     var isFetching = false
 
     companion object {
-        private const val ITEM_PER_PAGE = 4
+        private const val ITEM_PER_PAGE = 6
         private const val TAG = "ideaRepository"
     }
 

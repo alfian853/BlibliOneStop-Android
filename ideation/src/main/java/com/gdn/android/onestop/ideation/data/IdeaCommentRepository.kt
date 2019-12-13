@@ -15,7 +15,7 @@ class IdeaCommentRepository @Inject constructor(
 ) {
 
     companion object {
-        private const val ITEM_PER_PAGE = 8
+        private const val ITEM_PER_PAGE = 6
     }
 
     var lastPageRequest = 1
@@ -28,11 +28,6 @@ class IdeaCommentRepository @Inject constructor(
         this.ideaId = ideaId
         lastPageRequest = 1
         commentLiveData = ideaDao.getCommentsByPostId(ideaId)
-        CoroutineScope(Dispatchers.IO).launch {
-            getMoreDataByPost().apply {
-                ideaDao.insertComment(this)
-            }
-        }
     }
 
     fun getCommentsLiveData() : LiveData<List<IdeaComment>> = commentLiveData
