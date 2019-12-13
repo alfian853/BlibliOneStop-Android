@@ -1,6 +1,5 @@
 package com.gdn.android.onestop.ideation.viewmodel
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import androidx.lifecycle.LiveData
@@ -72,10 +71,9 @@ class IdeaDetailViewModel @Inject constructor(
     fun submitComment(block : IdeaDetailViewModel.() -> Unit) {
         executeIfOnline {
             launch {
-                val isSuccess = ideaCommentRepository.submitComment(commentInput).apply{
-                    commentInput = ""
-                }
-                Log.d(TAG,"successs")
+                val tmp = commentInput
+                commentInput = ""
+                val isSuccess = ideaCommentRepository.submitComment(tmp)
                 if(isSuccess){
                     block()
                 }

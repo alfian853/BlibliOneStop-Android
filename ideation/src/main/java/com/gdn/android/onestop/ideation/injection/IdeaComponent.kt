@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.ideation.data.IdeaDao
 import com.gdn.android.onestop.ideation.fragment.IdeaChannelFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaCreateFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment
@@ -26,6 +27,7 @@ interface IdeaComponent : AndroidInjector<Fragment> {
     val sessionManager : SessionManager
     val voteHelper: VoteHelper
     val retrofit: Retrofit
+    val ideaDao: IdeaDao
 
     fun inject(ideaChannelFragment: IdeaChannelFragment)
     fun inject(ideaCreateFragment: IdeaCreateFragment)

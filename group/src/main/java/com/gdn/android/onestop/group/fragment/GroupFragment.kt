@@ -55,13 +55,13 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
     }
 
-    var guildRvAdapter : GroupRecyclerAdapter =
+    private var guildRvAdapter : GroupRecyclerAdapter =
         GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
 
-    var squadRvAdapter : GroupRecyclerAdapter =
+    private var squadRvAdapter : GroupRecyclerAdapter =
         GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
 
-    var tribeRvAdapter : GroupRecyclerAdapter =
+    private var tribeRvAdapter : GroupRecyclerAdapter =
         GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
 
     private val guildLiveData : LiveData<List<Group>> by lazy { viewModel.guildLiveData() }
