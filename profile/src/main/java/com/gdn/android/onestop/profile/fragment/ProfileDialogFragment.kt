@@ -1,14 +1,13 @@
 package com.gdn.android.onestop.profile.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.gdn.android.onestop.base.BaseFragment
-import com.gdn.android.onestop.base.User
+import com.gdn.android.onestop.base.BaseDialogFragment
+import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.ideation.data.IdeaPost
@@ -24,7 +23,7 @@ import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
+class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
 
   override fun doFragmentInjection() {
     ProfileComponent.getInstance().inject(this)
@@ -66,13 +65,13 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
   private fun loadUsername(): String {
 
-    val user = sessionManager.user!!
+    var username = arguments!!.getString("username", null)
 
-    databinding.tvUser.text = user.alias
-    databinding.tvUser.setBackgroundColor(user.color)
-    databinding.tvUsername.text = user.username
-
-    return user.username
+    databinding.tvUser.text = username.toAliasName()
+    databinding.tvUser.setBackgroundColor(Util.getColorFromString(username))
+    databinding.tvUsername.text = username
+    databinding.toolbar.tvToolbarTitle.text = username
+    return username
   }
 
   override fun onCreateView(
@@ -80,7 +79,10 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
   ): View? {
 
     databinding = FragmentProfileBinding.inflate(inflater, container, false)
-    databinding.toolbar.toolbar.visibility = View.GONE
+
+    databinding.toolbar.ivToolbarBack.setOnClickListener {
+      fragmentManager!!.beginTransaction().remove(this).commit()
+    }
 
     val username = loadUsername()
 
@@ -111,7 +113,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         itemContentClickCallback = object : ItemClickCallback<IdeaPost> {
           override fun onItemClick(item: IdeaPost, position: Int) {
             val args = IdeaDetailFragmentArgs(item)
-            val fm : FragmentManager = this@ProfileFragment.fragmentManager!!
+            val fm : FragmentManager = this@ProfileDialogFragment.fragmentManager!!
             val ideaDetailFragment = IdeaDetailFragment()
             ideaDetailFragment.arguments = args.toBundle()
             ideaDetailFragment.show(fm,"detail fragment")

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <RelativeLayout
+        android:id="@+id/detail"
         tools:context="com.gdn.android.onestop.profile.fragment.ProfileFragment"
         android:orientation="vertical"
         android:layout_width="match_parent"

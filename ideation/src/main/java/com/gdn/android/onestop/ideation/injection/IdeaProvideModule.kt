@@ -18,12 +18,6 @@ class IdeaProvideModule {
 
     @IdeaScope
     @Provides
-    fun provideIdeaRecyclerAdapter(voteHelper : VoteHelper): IdeaRecyclerAdapter {
-        return IdeaRecyclerAdapter(voteHelper)
-    }
-
-    @IdeaScope
-    @Provides
     fun provideIdeaCommentRecyclerAdapter(): IdeaCommentRecyclerAdapter {
         return IdeaCommentRecyclerAdapter()
     }

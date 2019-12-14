@@ -24,7 +24,7 @@ class SplashActivity : AppCompatActivity() {
       finish()
     }
     else{
-      val intent = Navigator.getIntent(Navigator.Destination.LOGIN)
+      val intent = Navigator.getIntent(Navigator.Destination.LOGIN_ACTIVITY)
       intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
       startActivity(intent)
       finish()
