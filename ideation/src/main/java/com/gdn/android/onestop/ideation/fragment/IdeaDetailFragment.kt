@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +15,8 @@ import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.DefaultContextWrapper
+import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaComment
@@ -32,9 +35,6 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
     lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
     @Inject
-    lateinit var ideaCommentRecyclerAdapter: IdeaCommentRecyclerAdapter
-
-    @Inject
     lateinit var voteHelper: VoteHelper
 
     lateinit var viewmodel: IdeaDetailViewModel
@@ -42,6 +42,19 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
     lateinit var ideaPost : IdeaPost
 
     lateinit var commentLiveData: LiveData<List<IdeaComment>>
+
+    private val profileClickCallback: ItemClickCallback<String> = object: ItemClickCallback<String> {
+        override fun onItemClick(item: String, position: Int) {
+            val fragment: DialogFragment = Navigator.getFragment(Navigator.Destination.PROFILE_DIALOG_FRAGMENT) as DialogFragment
+            val bundle = Bundle()
+            bundle.putString("username",item)
+            fragment.arguments = bundle
+            fragment.show(fragmentManager!!, "profile fragment")
+
+        }
+    }
+
+    val ideaCommentRecyclerAdapter: IdeaCommentRecyclerAdapter = IdeaCommentRecyclerAdapter(profileClickCallback)
 
     private val commentObserver: Observer<List<IdeaComment>> = Observer {
         ideaCommentRecyclerAdapter.updateData(it)

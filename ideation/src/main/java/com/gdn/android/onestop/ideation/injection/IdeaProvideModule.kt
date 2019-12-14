@@ -18,12 +18,6 @@ class IdeaProvideModule {
 
     @IdeaScope
     @Provides
-    fun provideIdeaCommentRecyclerAdapter(): IdeaCommentRecyclerAdapter {
-        return IdeaCommentRecyclerAdapter()
-    }
-
-    @IdeaScope
-    @Provides
     fun provideIdeaClient(retrofit: Retrofit) : IdeaClient {
         return retrofit.create(IdeaClient::class.java)
     }

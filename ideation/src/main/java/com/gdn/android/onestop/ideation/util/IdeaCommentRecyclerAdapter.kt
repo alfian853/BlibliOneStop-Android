@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.base.util.toDateTime24String
@@ -11,8 +12,9 @@ import com.gdn.android.onestop.ideation.data.IdeaComment
 import com.gdn.android.onestop.ideation.databinding.ItemCommentBinding
 import java.util.*
 
-class IdeaCommentRecyclerAdapter :
-    RecyclerView.Adapter<IdeaCommentRecyclerAdapter.CommentViewHolder>(){
+class IdeaCommentRecyclerAdapter(
+    private val profileClickCallback: ItemClickCallback<String>
+) : RecyclerView.Adapter<IdeaCommentRecyclerAdapter.CommentViewHolder>(){
 
     private var commentList: List<IdeaComment> = LinkedList()
 
@@ -43,6 +45,9 @@ class IdeaCommentRecyclerAdapter :
             val nameAlias = ideaComment.username.toAliasName()
             holder.tvNamePict.text = nameAlias
             holder.tvNamePict.setBackgroundColor(Util.getColorFromString(ideaComment.username))
+
+            holder.tvUsername.setOnClickListener { profileClickCallback.onItemClick(username, position) }
+            holder.tvNamePict.setOnClickListener { profileClickCallback.onItemClick(username, position) }
         }
     }
 
