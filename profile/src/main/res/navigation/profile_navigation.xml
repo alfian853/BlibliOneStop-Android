@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/idea_navigation"
+    app:startDestination="@id/ideaChannelFragment"
+    tools:ignore="UnusedNavigation">
+
+    <fragment
+        android:id="@+id/ideaChannelFragment"
+        android:name="com.gdn.android.onestop.ideation.fragment.IdeaChannelFragment"
+        android:label="@string/label_idea_channel"
+        tools:layout="@layout/fragment_idea_channel" >
+    </fragment>
+    <fragment
+        android:id="@+id/ideaDetailFragment"
+        android:name="com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment"
+        tools:layout="@layout/fragment_idea_detail"
+        android:label="@string/label_idea_channel" >
+        <argument
+            android:name="ideaPost"
+            app:argType="com.gdn.android.onestop.ideation.data.IdeaPost" />
+    </fragment>
+    <fragment
+        android:id="@+id/ideaCreateFragment"
+        android:name="com.gdn.android.onestop.ideation.fragment.IdeaCreateFragment"
+        android:label="@string/label_idea_channel"
+        tools:layout="@layout/fragment_idea_create" />
+</navigation>

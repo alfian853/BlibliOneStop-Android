@@ -194,6 +194,14 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
         groupDao.insertGroupInfo(groupInfo)
       }
     }
+
+    databinding.llMember.setOnClickListener {
+      val fragment = GroupMemberFragment()
+      fragment.arguments = GroupMemberFragmentArgs(group).toBundle()
+
+      fragment.show(fragmentManager!!,"member fragment")
+    }
+
   }
 
   private fun setupBottomLayout(){

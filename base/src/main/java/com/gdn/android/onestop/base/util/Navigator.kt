@@ -12,6 +12,10 @@ class Navigator {
         PROFILE_DIALOG_FRAGMENT("$PACKAGE_NAME.profile.fragment.ProfileDialogFragment")
     }
 
+    enum class Argument(val key: String) {
+        PROFILE_USERNAME("username")
+    }
+
     companion object {
 
         const val PACKAGE_NAME = "com.gdn.android.onestop"

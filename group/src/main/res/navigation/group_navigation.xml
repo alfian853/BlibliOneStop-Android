@@ -63,4 +63,13 @@
             android:name="groupModel"
             app:argType="com.gdn.android.onestop.group.data.Group" />
     </activity>
+    <dialog
+        android:id="@+id/groupMemberFragment"
+        android:name="com.gdn.android.onestop.group.fragment.GroupMemberFragment"
+        tools:layout="@layout/fragment_member_list"
+        android:label="GroupMemberFragment" >
+        <argument
+            android:name="group"
+            app:argType="com.gdn.android.onestop.group.data.Group" />
+    </dialog>
 </navigation>

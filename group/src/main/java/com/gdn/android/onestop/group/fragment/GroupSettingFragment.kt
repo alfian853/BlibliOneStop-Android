@@ -78,6 +78,13 @@ class GroupSettingFragment(
 
     }
 
+    binding.llMembers.setOnClickListener {
+      val fragment = GroupMemberFragment()
+      fragment.arguments = GroupMemberFragmentArgs(group).toBundle()
+
+      fragment.show(fragmentManager!!,"member fragment")
+    }
+
 
     return binding.root
   }

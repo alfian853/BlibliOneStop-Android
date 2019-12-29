@@ -2,10 +2,7 @@ package com.gdn.android.onestop.group.injection
 
 import androidx.lifecycle.ViewModel
 import com.gdn.android.onestop.base.ViewModelKey
-import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
-import com.gdn.android.onestop.group.viewmodel.MeetingNoteListViewModel
-import com.gdn.android.onestop.group.viewmodel.GroupViewModel
-import com.gdn.android.onestop.group.viewmodel.MeetingNoteViewModel
+import com.gdn.android.onestop.group.viewmodel.*
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
@@ -29,13 +26,21 @@ abstract class GroupBindModule {
     @GroupScope
     @Binds
     @IntoMap
-    @ViewModelKey((MeetingNoteListViewModel::class))
+    @ViewModelKey(MeetingNoteListViewModel::class)
     abstract fun bindMeetingNoteListViewModel(meetingNoteListViewModel: MeetingNoteListViewModel): ViewModel
 
     @GroupScope
     @Binds
     @IntoMap
-    @ViewModelKey((MeetingNoteViewModel::class))
+    @ViewModelKey(MeetingNoteViewModel::class)
     abstract fun bindMeetingNoteViewModel(meetingNoteViewModel: MeetingNoteViewModel): ViewModel
+
+    @GroupScope
+    @Binds
+    @IntoMap
+    @ViewModelKey(GroupMemberViewModel::class)
+    abstract fun bindGroupMemberViewModel(groupMemberViewModel: GroupMemberViewModel): ViewModel
+
+
 
 }
