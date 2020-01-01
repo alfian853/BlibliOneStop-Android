@@ -7,5 +7,6 @@ object LibraryConstant {
   const val SECOND_IN_MS = 1000
   const val MINUTE_IN_MS = 60000
   const val HOUR_IN_MS = 3600000
+  const val MAX_PROGRESS = 100
 
 }
