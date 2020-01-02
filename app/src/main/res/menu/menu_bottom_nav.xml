@@ -8,7 +8,7 @@
     <item
         android:id="@+id/groupFragment"
         android:title="@string/group"
-        android:icon="@drawable/ic_guild"/>
+        android:icon="@drawable/ic_team"/>
 
     <item
         android:id="@+id/libraryFragment"
