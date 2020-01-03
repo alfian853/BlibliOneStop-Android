@@ -138,8 +138,10 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     setupOptionLayout()
 
 
-    CoroutineScope(Dispatchers.Main).launch {
+    viewmodel.launch {
       groupInfo = groupDao.getGroupInfo(group.id)
+      groupInfo.unreadChat = 0
+      groupDao.insertGroupInfo(groupInfo)
     }
 
     return databinding.root

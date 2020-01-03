@@ -13,6 +13,7 @@ class Group : Serializable {
     lateinit var name: String
     lateinit var groupCode: String
     var isMute: Boolean = false
+    var unreadChat: Int = 0
 
     @TypeConverters(GroupTypeConverter::class)
     lateinit var type : Type
