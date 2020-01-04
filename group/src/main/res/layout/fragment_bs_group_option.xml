@@ -41,31 +41,6 @@
             android:layout_height="wrap_content">
 
             <ImageView
-                android:id="@+id/iv_browse_group"
-                android:layout_gravity="center"
-                android:background="@drawable/ic_group_thin"
-                android:layout_width="@dimen/size_text_h2"
-                android:layout_height="@dimen/size_text_h2"/>
-
-            <TextView
-                android:id="@+id/tv_browse_group"
-                android:layout_marginLeft="20dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/browse_groups"
-                android:layout_gravity="center"
-                android:textColor="@color/black"
-                android:textSize="@dimen/size_text_h4"
-                android:layout_marginStart="20dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="18dp"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <ImageView
                 android:id="@+id/iv_join"
                 android:gravity="end"
                 android:layout_gravity="center"
