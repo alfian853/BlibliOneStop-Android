@@ -6,7 +6,7 @@ import com.gdn.android.onestop.base.User
 import com.google.gson.Gson
 import java.util.*
 
-class SessionManager(private val context: Context) {
+open class SessionManager(private val context: Context) {
     private val preferences: SharedPreferences = context.getSharedPreferences("", Context.MODE_PRIVATE)
     private val editor: SharedPreferences.Editor = preferences.edit()
 
@@ -34,10 +34,6 @@ class SessionManager(private val context: Context) {
         editor.commit()
         observers.forEach { it.onSessionExpired() }
         observers.clear()
-//        val intent = Intent(context, LoginActivity::class.java)
-//        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-//        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK)
-//        context.startActivity(intent)
     }
 
     fun addObserver(sessionObserver: SessionObserver){
