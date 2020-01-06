@@ -51,6 +51,7 @@ android {
 
 dependencies {
     api project(':base')
+    testImplementation project(path: ':base', configuration: 'TestDependencies')
     kapt "com.google.dagger:dagger-android-processor:$dagger2_version"
     kapt "com.google.dagger:dagger-compiler:$dagger2_version"
     kapt "androidx.room:room-compiler:$room_version"
