@@ -1,4 +1,4 @@
-package com.gdn.android.onestop.ideation
+package com.gdn.android.onestop.ideation.viewmodel
 
 import com.gdn.android.onestop.base.util.NetworkUtil
 import com.gdn.android.onestop.ideation.data.IdeaChannelRepository

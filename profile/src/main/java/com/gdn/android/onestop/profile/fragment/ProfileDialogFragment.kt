@@ -93,7 +93,9 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
   private fun clickVote(ideaPost: IdeaPost,
     item: IdeaRecyclerAdapter.IdeaViewHolder,
     isVoteUp: Boolean){
-    voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
+    profileViewModel.launch {
+      voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
+    }
   }
 
   private fun loadProfile(){
