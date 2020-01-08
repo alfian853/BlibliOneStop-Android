@@ -23,50 +23,66 @@ class VoteHelper(
     private val ideaChannelRepository: IdeaChannelRepository,
     private val ideaClient: IdeaClient) {
 
-    private suspend fun voteIdeaPost(ideaPost: IdeaPost, isVoteUp : Boolean): Boolean {
-        val response = ideaClient.voteIdea(ideaPost.id, isVoteUp)
-        if(!response.isSuccessful){
-            return false
-        }
-        else{
-            if(isVoteUp){
-                if(ideaPost.isMeVoteUp){
-                    ideaPost.upVoteCount--
-                    ideaPost.isMeVoteUp = false
-                }
-                else{
-                    ideaPost.upVoteCount++
-                    ideaPost.isMeVoteUp = true
-                    if(ideaPost.isMeVoteDown){
-                        ideaPost.downVoteCount--
-                        ideaPost.isMeVoteDown = false
+    private fun voteIdeaPost(ideaPost: IdeaPost, isVoteUp : Boolean) : Single<Boolean> {
+        return Single.create{
+            ideaClient.voteIdea(ideaPost.id, isVoteUp)
+                .enqueue(object : Callback<BaseResponse<Boolean>> {
+                    override fun onFailure(call: Call<BaseResponse<Boolean>>, t: Throwable) {
+                        it.onSuccess(false)
                     }
-                }
-            }
-            else{
-                if(ideaPost.isMeVoteDown){
-                    ideaPost.downVoteCount--
-                    ideaPost.isMeVoteDown = false
-                }
-                else{
-                    ideaPost.downVoteCount++
-                    if(ideaPost.isMeVoteUp){
-                        ideaPost.upVoteCount--
-                        ideaPost.isMeVoteUp = false
+
+                    override fun onResponse(
+                        call: Call<BaseResponse<Boolean>>,
+                        response: Response<BaseResponse<Boolean>>
+                    ) {
+                        if(!response.isSuccessful){
+                            it.onSuccess(false)
+                        }
+                        else{
+                            if(isVoteUp){
+                                if(ideaPost.isMeVoteUp){
+                                    ideaPost.upVoteCount--
+                                    ideaPost.isMeVoteUp = false
+                                }
+                                else{
+                                    ideaPost.upVoteCount++
+                                    ideaPost.isMeVoteUp = true
+                                    if(ideaPost.isMeVoteDown){
+                                        ideaPost.downVoteCount--
+                                        ideaPost.isMeVoteDown = false
+                                    }
+                                }
+                            }
+                            else{
+                                if(ideaPost.isMeVoteDown){
+                                    ideaPost.downVoteCount--
+                                    ideaPost.isMeVoteDown = false
+                                }
+                                else{
+                                    ideaPost.downVoteCount++
+                                    if(ideaPost.isMeVoteUp){
+                                        ideaPost.upVoteCount--
+                                        ideaPost.isMeVoteUp = false
+                                    }
+                                    ideaPost.isMeVoteDown = true
+                                }
+                            }
+
+                        }
+
+                        CoroutineScope(Dispatchers.IO).launch {
+                            ideaChannelRepository.update(ideaPost)
+                        }
+
+                        it.onSuccess(true)
                     }
-                    ideaPost.isMeVoteDown = true
-                }
-            }
 
+                })
         }
-
-        ideaChannelRepository.update(ideaPost)
-
-        return true
     }
 
-    suspend fun clickVote(tvUpVote : FaSolidTextView, tvDownVote : FaSolidTextView,
-        contextWrapper: DefaultContextWrapper, ideaPost: IdeaPost, isVoteUp: Boolean){
+    fun clickVote(tvUpVote : FaSolidTextView, tvDownVote : FaSolidTextView,
+                  contextWrapper: DefaultContextWrapper, ideaPost: IdeaPost, isVoteUp: Boolean){
 
         val resources = contextWrapper.resources
 
@@ -81,21 +97,23 @@ class VoteHelper(
                 clickVoteUtil(tvUpVote, resources, true, ideaPost.upVoteCount, true)
         }
 
-        val voteSuccess = this.voteIdeaPost(ideaPost, isVoteUp)
-
-        if(!voteSuccess){
-            contextWrapper.toast("No Connection...")
-            if(isVoteUp){
-                clickVoteUtil(tvUpVote, resources, true, ideaPost.upVoteCount+1, true)
-                if(ideaPost.isMeVoteDown)
-                    clickVoteUtil(tvDownVote, resources, false, ideaPost.downVoteCount-1, false)
+        this.voteIdeaPost(ideaPost, isVoteUp)
+            .subscribeOn(Schedulers.single())
+            .subscribe { voteSuccess ->
+                if(!voteSuccess){
+                    contextWrapper.toast("No Connection...")
+                    if(isVoteUp){
+                        clickVoteUtil(tvUpVote, resources, true, ideaPost.upVoteCount+1, true)
+                        if(ideaPost.isMeVoteDown)
+                            clickVoteUtil(tvDownVote, resources, false, ideaPost.downVoteCount-1, false)
+                    }
+                    else{
+                        clickVoteUtil(tvDownVote, resources, false, ideaPost.downVoteCount+1, true)
+                        if(ideaPost.isMeVoteUp)
+                            clickVoteUtil(tvUpVote, resources, true, ideaPost.upVoteCount-1, false)
+                    }
+                }
             }
-            else{
-                clickVoteUtil(tvDownVote, resources, false, ideaPost.downVoteCount+1, true)
-                if(ideaPost.isMeVoteUp)
-                    clickVoteUtil(tvUpVote, resources, true, ideaPost.upVoteCount-1, false)
-            }
-        }
     }
 
 

@@ -18,7 +18,7 @@ interface IdeaClient {
     fun voteIdea(
         @Path("id") id: String,
         @Query("vote_up") isVoteUp: Boolean
-    ) : Response<BaseResponse<Boolean>>
+    ) : Call<BaseResponse<Boolean>>
 
     @GET("/idea/{id}/comment")
     suspend fun getComment(

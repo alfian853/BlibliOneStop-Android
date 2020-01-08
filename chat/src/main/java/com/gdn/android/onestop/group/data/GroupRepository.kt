@@ -9,10 +9,16 @@ class GroupRepository(
     private val groupUpdateManager: GroupUpdateManager
     ) {
 
-    val guildLiveData : LiveData<List<Group>> = groupDao.getGroupByType(Group.Type.GUILD.code)
-    val squadLiveData : LiveData<List<Group>> = groupDao.getGroupByType(Group.Type.SQUAD.code)
-    val tribeLiveData : LiveData<List<Group>> = groupDao.getGroupByType(Group.Type.TRIBE.code)
+    val guildLiveData : LiveData<List<Group>> = groupDao.getGroupByType(
+        Group.Type.GUILD.code)
+    val squadLiveData : LiveData<List<Group>> = groupDao.getGroupByType(
+        Group.Type.SQUAD.code)
+    val tribeLiveData : LiveData<List<Group>> = groupDao.getGroupByType(
+        Group.Type.TRIBE.code)
 
+    //TODO : add time limit to cache
+
+    // return true if updated, false if expired
     private suspend fun checkIfCurrentDataUpToDate() : Boolean{
         val response = groupClient.getLastUpdate()
         if(response.isSuccessful){
@@ -37,21 +43,18 @@ class GroupRepository(
                 group.type = Group.Type.GUILD
                 val info = groupDao.getGroupInfo(group.id)
                 group.isMute = info.isMute
-                group.unreadChat = info.unreadChat
             }
 
             it.squads.forEach {squad ->
                 squad.type = Group.Type.SQUAD
                 val info = groupDao.getGroupInfo(squad.id)
                 squad.isMute = info.isMute
-                squad.unreadChat = info.unreadChat
             }
 
             it.tribes.forEach {tribe ->
                 tribe.type = Group.Type.TRIBE
                 val info = groupDao.getGroupInfo(tribe.id)
                 tribe.isMute = info.isMute
-                tribe.unreadChat = info.unreadChat
             }
 
             groupDao.deleteAllGroup()

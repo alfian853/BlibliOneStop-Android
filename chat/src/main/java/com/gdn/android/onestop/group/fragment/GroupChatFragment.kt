@@ -108,7 +108,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     override fun onItemClick(item: String, position: Int) {
       val fragment: DialogFragment = Navigator.getFragment(Navigator.Destination.PROFILE_DIALOG_FRAGMENT) as DialogFragment
       val bundle = Bundle()
-      bundle.putString(Navigator.Argument.PROFILE_USERNAME.key, item)
+      bundle.putString("username",item)
       fragment.arguments = bundle
       fragment.show(fragmentManager!!, "profile fragment")
 
@@ -138,10 +138,8 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     setupOptionLayout()
 
 
-    viewmodel.launch {
+    CoroutineScope(Dispatchers.Main).launch {
       groupInfo = groupDao.getGroupInfo(group.id)
-      groupInfo.unreadChat = 0
-      groupDao.insertGroupInfo(groupInfo)
     }
 
     return databinding.root

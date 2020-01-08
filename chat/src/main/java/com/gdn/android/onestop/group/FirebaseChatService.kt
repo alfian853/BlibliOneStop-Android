@@ -96,9 +96,6 @@ class FirebaseChatService : FirebaseMessagingService() {
 
     CoroutineScope(Dispatchers.IO).launch {
       groupDao.insertGroupChat(chat)
-      val groupInfo = groupDao.getGroupInfo(chat.groupId)
-      groupInfo.unreadChat += 1
-      groupDao.insertGroupInfo(groupInfo)
 
       val group = groupDao.getGroupById(chat.groupId)
 

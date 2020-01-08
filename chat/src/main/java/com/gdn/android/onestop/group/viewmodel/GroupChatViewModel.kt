@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.group.viewmodel
 
+import android.util.Log
 import android.view.View
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
@@ -128,19 +129,20 @@ constructor(
   }
 
   suspend fun sendChat(){
-    if(chat.text == "")return
-    if(chatText == "" && !chat.isMeeting)return
-    val requestChat = chat
-    chat = ChatSendRequest()
-    chatText = ""
-    pendingMsgList.add(convertRequestChatToGroupChat(requestChat))
-    pendingMessage.postValue(pendingMsgList)
+      if(chat.text == "")return
+      if(chatText == "" && !chat.isMeeting)return
+      val requestChat = chat
+      chat = ChatSendRequest()
+      chatText = ""
+      pendingMsgList.add(convertRequestChatToGroupChat(requestChat))
+      pendingMessage.postValue(pendingMsgList)
 
-    replyVisibility = View.GONE
-    groupChatRepository.sendChat(activeGroupId, requestChat)
+      replyVisibility = View.GONE
 
-    pendingMsgList.pop()
-    pendingMessage.postValue(pendingMsgList)
+      groupChatRepository.sendChat(activeGroupId, requestChat)
+
+      pendingMsgList.pop()
+      pendingMessage.postValue(pendingMsgList)
   }
 
 

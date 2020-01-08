@@ -41,10 +41,16 @@ class IdeaDetailViewModel @Inject constructor(
         ideaCommentRepository.setIdeaPost(postId)
     }
 
-    fun getCommentsLiveData() : LiveData<List<IdeaComment>> = commentLiveData
+    fun getCommentsLiveData() : LiveData<List<IdeaComment>> {
+        return commentLiveData
+    }
 
-    private fun executeIfOnline(block : Any.() -> Unit){
-        if(!networkUtil.isConnectedToNetwork()){
+    private fun isNotOnline(): Boolean {
+        return !networkUtil.isConnectedToNetwork()
+    }
+
+    private fun executeIfOnline(block : IdeaDetailViewModel.() -> Unit){
+        if(isNotOnline()){
             _reportLiveData.postValue("No Connection...")
             return
         }
@@ -62,14 +68,14 @@ class IdeaDetailViewModel @Inject constructor(
         }
     }
 
-    fun submitComment(onSuccess : Any.() -> Unit) {
+    fun submitComment(block : IdeaDetailViewModel.() -> Unit) {
         executeIfOnline {
             launch {
                 val tmp = commentInput
                 commentInput = ""
                 val isSuccess = ideaCommentRepository.submitComment(tmp)
                 if(isSuccess){
-                    onSuccess()
+                    block()
                 }
             }
         }

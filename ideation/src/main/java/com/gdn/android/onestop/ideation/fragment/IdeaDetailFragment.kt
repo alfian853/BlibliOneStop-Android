@@ -26,7 +26,6 @@ import com.gdn.android.onestop.ideation.injection.IdeaComponent
 import com.gdn.android.onestop.ideation.util.IdeaCommentRecyclerAdapter
 import com.gdn.android.onestop.ideation.util.VoteHelper
 import com.gdn.android.onestop.ideation.viewmodel.IdeaDetailViewModel
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
@@ -165,15 +164,7 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
     }
 
     private fun clickVote(ideaPost: IdeaPost, isVoteUp: Boolean){
-        viewmodel.launch {
-            voteHelper.clickVote(
-                databinding.tvUpVote,
-                databinding.tvDownVote,
-                contextWrapper,
-                ideaPost,
-                isVoteUp
-            )
-        }
+        voteHelper.clickVote(databinding.tvUpVote, databinding.tvDownVote, contextWrapper, ideaPost, isVoteUp)
     }
 
 }

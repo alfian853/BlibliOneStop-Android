@@ -192,9 +192,7 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
     private fun clickVote(ideaPost: IdeaPost,
                           item: IdeaRecyclerAdapter.IdeaViewHolder,
                           isVoteUp: Boolean){
-        viewmodel.launch {
-            voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
-        }
+        voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
     }
 
 

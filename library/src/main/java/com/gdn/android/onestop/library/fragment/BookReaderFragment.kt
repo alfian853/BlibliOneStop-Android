@@ -7,14 +7,8 @@ import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.library.data.Book
-import com.gdn.android.onestop.library.data.LibraryClient
 import com.gdn.android.onestop.library.databinding.LayoutBookReaderBinding
-import com.gdn.android.onestop.library.injection.LibraryComponent
 import com.github.barteksc.pdfviewer.scroll.DefaultScrollHandle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class BookReaderFragment : BaseFullScreenFragment<LayoutBookReaderBinding>() {
 
@@ -22,13 +16,6 @@ class BookReaderFragment : BaseFullScreenFragment<LayoutBookReaderBinding>() {
     val args: BookReaderFragmentArgs by navArgs()
     args.book
   }
-
-  override fun doFragmentInjection() {
-    LibraryComponent.getInstance().inject(this)
-  }
-
-  @Inject
-  lateinit var libraryClient: LibraryClient
 
   override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
       savedInstanceState: Bundle?): View? {
@@ -40,14 +27,7 @@ class BookReaderFragment : BaseFullScreenFragment<LayoutBookReaderBinding>() {
       .scrollHandle(DefaultScrollHandle(this.context))
       .onPageChange { page, pageCount ->
           databinding.tvPage.text = "Page: ${page+1}/$pageCount"
-
-        if(page+1 == pageCount){
-          CoroutineScope(Dispatchers.IO).launch {
-            libraryClient.postBookFinished(book.id)
-          }
-        }
-
-      }.load()
+        }.load()
 
     return databinding.root
   }

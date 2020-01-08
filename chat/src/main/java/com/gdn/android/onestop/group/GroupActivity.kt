@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
-import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.ActivityGroupBinding
 import com.gdn.android.onestop.group.fragment.GroupChatFragment
@@ -39,11 +38,6 @@ class GroupActivity : AppCompatActivity(){
   override fun onBackPressed() {
     if(hostFragment.childFragmentManager.fragments[0] is GroupChatFragment){
       finish()
-
-      if(isTaskRoot){
-        val intent = Navigator.getIntent(Navigator.Destination.MAIN_ACTIVITY)
-        startActivity(intent)
-      }
     }
     else{
       hostFragment.navController.navigateUp()

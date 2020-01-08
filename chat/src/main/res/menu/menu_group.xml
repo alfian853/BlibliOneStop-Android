@@ -8,4 +8,10 @@
         android:icon="@drawable/ic_group_add"
         app:showAsAction="ifRoom"/>
 
+    <item
+        android:id="@+id/item_group_option"
+        android:title=""
+        android:icon="@drawable/ic_group_setting"
+        app:showAsAction="ifRoom"/>
+
 </menu>

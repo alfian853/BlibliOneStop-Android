@@ -4,7 +4,10 @@ import com.gdn.android.onestop.base.BaseResponse
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Query
+import retrofit2.http.Streaming
+import retrofit2.http.Url
 
 interface LibraryClient {
 
@@ -23,11 +26,5 @@ interface LibraryClient {
   @GET
   @Streaming
   fun downloadAudio(@Url fileUrl: String): Call<ResponseBody>
-
-  @POST("/book/{id}/finish")
-  suspend fun postBookFinished(@Path("id") bookId: String)
-
-  @POST("/audio/{id}/finish")
-  suspend fun postAudioFinished(@Path("id") audioId: String)
 
 }

@@ -12,7 +12,6 @@ class GroupInfo {
     var hasFetchFirstChat = false
     var upperBoundTimeStamp : Long = Long.MIN_VALUE
     var isMute = false
-    var unreadChat = 0
 
     @Ignore
     fun isNeverFetched(): Boolean {
