@@ -17,8 +17,6 @@ constructor(
 )
     : BaseViewModel() {
 
-    var contextWrapper: DefaultContextWrapper? = null
-
     var username : String = "user"
         @Bindable
         get(){return field}

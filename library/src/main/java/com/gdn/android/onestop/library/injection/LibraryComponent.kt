@@ -1,10 +1,7 @@
 package com.gdn.android.onestop.library.injection
 
 import com.gdn.android.onestop.base.AppComponent
-import com.gdn.android.onestop.library.fragment.AudioCatalogFragment
-import com.gdn.android.onestop.library.fragment.AudioOptionFragment
-import com.gdn.android.onestop.library.fragment.BookCatalogFragment
-import com.gdn.android.onestop.library.fragment.BookOptionFragment
+import com.gdn.android.onestop.library.fragment.*
 import com.gdn.android.onestop.library.util.AudioDownloadService
 import com.gdn.android.onestop.library.util.BookDownloadService
 import dagger.Component
@@ -20,6 +17,8 @@ interface LibraryComponent {
   fun inject(bookListFragment: BookCatalogFragment)
   fun inject(audioListFragment: AudioCatalogFragment)
   fun inject(bookOptionFragment: BookOptionFragment)
+  fun inject(bookReaderFragment: BookReaderFragment)
+  fun inject(audioPlayerFragment: AudioPlayerFragment)
   fun inject(audioOptionFragment: AudioOptionFragment)
   fun inject(bookDownloadService: BookDownloadService)
   fun inject(audioDownloadService: AudioDownloadService)

@@ -5,9 +5,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.group.data.Group
+import com.gdn.android.onestop.group.data.GroupDao
+import com.gdn.android.onestop.group.data.GroupInfo
 import com.gdn.android.onestop.group.databinding.ItemGroupBinding
 
 class GroupRecyclerAdapter(
@@ -15,9 +18,9 @@ class GroupRecyclerAdapter(
     private val nameClickCallback: ItemClickCallback<Group>
     ) : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
 
-    var groupList : List<Group> = ArrayList()
+    private var groupList: List<Group> = ArrayList()
 
-    fun updateList(groupList : List<Group>){
+    fun updateList(groupList: List<Group>){
         this.groupList = groupList
         notifyDataSetChanged()
     }
@@ -46,6 +49,16 @@ class GroupRecyclerAdapter(
 
         holder.ivMute.visibility = if(group.isMute)View.VISIBLE
                                    else View.GONE
+
+
+        if(group.unreadChat > 0){
+            holder.cvUnread.visibility = View.VISIBLE
+            holder.tvUnread.text = group.unreadChat.toString()
+        }
+        else{
+            holder.cvUnread.visibility = View.GONE
+        }
+
     }
 
 
@@ -54,6 +67,8 @@ class GroupRecyclerAdapter(
         val tvName: TextView = databinding.tvGroupName
         val ivOption: ImageView = databinding.ivOption
         val ivMute: ImageView = databinding.ivMute
+        val cvUnread: CardView = databinding.cvUnread
+        val tvUnread: TextView = databinding.tvUnread
     }
 
 }

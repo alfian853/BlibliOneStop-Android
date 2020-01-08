@@ -40,7 +40,6 @@ interface GroupDao {
     @Query("delete from GroupChat where id = :groupId")
     suspend fun deleteGroupChatById(groupId: String)
 
-
     @Transaction
     suspend fun deleteGroupData(groupId: String){
         deleteGroupById(groupId)
@@ -48,9 +47,16 @@ interface GroupDao {
         deleteGroupInfoById(groupId)
     }
 
-
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertGroupInfo(groupInfo: GroupInfo)
+    suspend fun _insertGroupInfo(groupInfo: GroupInfo)
+
+    @Transaction
+    suspend fun insertGroupInfo(groupInfo: GroupInfo){
+        _insertGroupInfo(groupInfo)
+        val group = getGroupById(groupInfo.id)
+        group.unreadChat = groupInfo.unreadChat
+        insertGroup(group)
+    }
 
     @Query("select * from GroupInfo where id = :groupId")
     suspend fun _getGroupInfo(groupId: String): GroupInfo?
@@ -61,7 +67,7 @@ interface GroupDao {
         if(groupInfo == null){
             groupInfo = GroupInfo()
             groupInfo.id = groupId
-            insertGroupInfo(groupInfo)
+            _insertGroupInfo(groupInfo)
         }
         return groupInfo
     }

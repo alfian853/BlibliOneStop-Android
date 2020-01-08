@@ -14,13 +14,17 @@ class ProfileViewModel @Inject constructor(
   private var profileResponse: ProfileResponse? = null
   var username: String? = null
 
-  suspend fun getProfile(username: String): ProfileResponse {
+  suspend fun getProfile(username: String): ProfileResponse? {
 
-      profileResponse = profileClient.getProfile(username).data
+    val response = profileClient.getProfile(username)
+    if(response.isSuccessful){
+      profileResponse = response.body()!!.data
       this.username = username
 
       ideaDao.insertIdea(profileResponse!!.topIdeas)
-    return profileResponse!!
+    }
+
+    return profileResponse
   }
 
 }

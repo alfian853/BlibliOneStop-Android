@@ -15,6 +15,7 @@ import com.gdn.android.onestop.group.GroupActivity
 import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.Group
+import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.group.databinding.FragmentGroupBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
 import com.gdn.android.onestop.group.util.GroupRecyclerAdapter
@@ -33,6 +34,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
     @Inject
     lateinit var viewModel: GroupViewModel
+
+    @Inject
+    lateinit var groupDao: GroupDao
 
     private val groupClickCallback = object :
         ItemClickCallback<Group> {
@@ -72,17 +76,16 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     lateinit var icDown : Drawable
     lateinit var icRight : Drawable
 
-
-    private val guildObserver = Observer<List<Group>> {
-        guildRvAdapter.updateList(it)
+    private val guildObserver = Observer<List<Group>> { groupList ->
+        guildRvAdapter.updateList(groupList)
     }
 
-    private val squadObserver = Observer<List<Group>> {
-        squadRvAdapter.updateList(it)
+    private val squadObserver = Observer<List<Group>> { groupList ->
+        squadRvAdapter.updateList(groupList)
     }
 
-    private val tribeObserver = Observer<List<Group>> {
-        tribeRvAdapter.updateList(it)
+    private val tribeObserver = Observer<List<Group>> { groupList ->
+        tribeRvAdapter.updateList(groupList)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,6 +105,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.refreshData(false)
         setHasOptionsMenu(true)
         databinding = FragmentGroupBinding.inflate(inflater, container, false)
         databinding.rvGuild.adapter = guildRvAdapter

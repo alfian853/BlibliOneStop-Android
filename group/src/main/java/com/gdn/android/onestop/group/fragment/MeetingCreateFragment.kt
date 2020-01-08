@@ -12,7 +12,7 @@ import androidx.fragment.app.DialogFragment
 import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.toDateString
 import com.gdn.android.onestop.base.util.toTime24String
-import com.gdn.android.onestop.base.R
+import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.databinding.DialogMeetingCreateBinding
 import java.util.*
 
@@ -25,7 +25,7 @@ class MeetingCreateFragment(
 
   private lateinit var databinding: DialogMeetingCreateBinding
 
-  private val errorEmptyText = "Please fill this field"
+  private val errorEmptyText = resources.getString(R.string.please_fill_this_field)
 
   private var redColor: Int = 0
 

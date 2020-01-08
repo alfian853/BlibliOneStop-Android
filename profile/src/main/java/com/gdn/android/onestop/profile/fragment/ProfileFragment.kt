@@ -82,13 +82,25 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
     databinding = FragmentProfileBinding.inflate(inflater, container, false)
     databinding.toolbar.toolbar.visibility = View.GONE
 
-    val username = loadUsername()
-
     showLoad()
+    loadProfile()
 
+    return databinding.root
+  }
+
+  private fun clickVote(ideaPost: IdeaPost,
+    item: IdeaRecyclerAdapter.IdeaViewHolder,
+    isVoteUp: Boolean){
     profileViewModel.launch {
+      voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
+    }
+  }
 
-      val profile = profileViewModel.getProfile(username)
+  private fun loadProfile(){
+    profileViewModel.launch {
+      val username = loadUsername()
+
+      val profile = profileViewModel.getProfile(username) ?: return@launch
 
       databinding.user.tvPoint.text = profile.points.toString()
       databinding.user.tvReadedBook.text = profile.readedBooks.toString() + " books"
@@ -126,13 +138,6 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
       databinding.user.rvTopIdea.adapter = adapter
     }
 
-    return databinding.root
-  }
-
-  private fun clickVote(ideaPost: IdeaPost,
-    item: IdeaRecyclerAdapter.IdeaViewHolder,
-    isVoteUp: Boolean){
-    voteHelper.clickVote(item.tvUpVote, item.tvDownVote, contextWrapper, ideaPost, isVoteUp)
   }
 
 

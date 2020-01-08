@@ -5,8 +5,7 @@ import com.gdn.android.onestop.base.util.toAliasName
 
 data class User (
     var username : String = "",
-    var token : String = "",
-    var pict_url : String = "")
+    var token : String = "")
 {
     @delegate:Transient
     val alias : String by lazy{ username.toAliasName() }

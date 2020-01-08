@@ -12,4 +12,14 @@ class BaseResponse<T> {
         this.status = status
         this.data = data
     }
+
+    companion object {
+        fun <T> success(data: T): BaseResponse<T> {
+            return BaseResponse<T>().apply {
+                this.data = data
+                this.code = 200
+                this.status = "OK"
+            }
+        }
+    }
 }
