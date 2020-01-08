@@ -65,7 +65,7 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
 
   private fun loadUsername(): String {
 
-    var username = arguments!!.getString("username", null)
+    var username = arguments!!.getString(Navigator.Argument.PROFILE_USERNAME.key, null)
 
     databinding.tvUser.text = username.toAliasName()
     databinding.tvUser.setBackgroundColor(Util.getColorFromString(username))
