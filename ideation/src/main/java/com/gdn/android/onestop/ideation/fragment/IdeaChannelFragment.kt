@@ -1,11 +1,11 @@
 package com.gdn.android.onestop.ideation.fragment
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -14,10 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.util.DefaultContextWrapper
-import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.NetworkUtil
-import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.databinding.FragmentIdeaChannelBinding
 import com.gdn.android.onestop.ideation.injection.IdeaComponent
@@ -37,7 +34,6 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
     @Inject
     lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
-    @Inject
     lateinit var ideaRecyclerAdapter: IdeaRecyclerAdapter
 
     @Inject
@@ -61,8 +57,17 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         )
     }
 
+    private var isLoading = false
+
+    private fun showLoading(){
+        databinding.pbLoadmore.visibility = View.VISIBLE
+    }
+
+    private fun hideLoading(){
+        databinding.pbLoadmore.visibility = View.GONE
+    }
+
     private val observer = Observer<List<IdeaPost>> {
-        Log.d("idea","on submit list ${it.size}")
         ideaRecyclerAdapter.ideaList = it
         ideaRecyclerAdapter.notifyDataSetChanged()
         databinding.swipeLayout.isRefreshing = false
@@ -76,6 +81,16 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
     private val liveData : LiveData<List<IdeaPost>> by lazy { viewmodel.getIdeaLiveData() }
 
+    private val profileClickCallback: ItemClickCallback<String> = object: ItemClickCallback<String> {
+        override fun onItemClick(item: String, position: Int) {
+            val fragment: DialogFragment = Navigator.getFragment(Navigator.Destination.PROFILE_DIALOG_FRAGMENT) as DialogFragment
+            val bundle = Bundle()
+            bundle.putString(Navigator.Argument.PROFILE_USERNAME.key ,item)
+            fragment.arguments = bundle
+            fragment.show(fragmentManager!!, "profile fragment")
+        }
+    }
+
     override fun doFragmentInjection() {
         IdeaComponent.getInstance().inject(this)
     }
@@ -85,6 +100,9 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
         viewmodel = ViewModelProvider(this, viewModelProviderFactory)
             .get(IdeaChannelViewModel::class.java)
 
+        isLoading = false
+
+        ideaRecyclerAdapter = IdeaRecyclerAdapter(voteHelper, profileClickCallback)
     }
 
     override fun onCreateView(
@@ -99,10 +117,14 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
 
         this.databinding.swipeLayout.isRefreshing = false
         this.databinding.swipeLayout.setOnRefreshListener {
-            Log.d("http-req","refresh0")
-            viewmodel.launch {
-                viewmodel.refreshIdeaChannelData()
-                databinding.swipeLayout.isRefreshing = false
+            if(!isLoading){
+                viewmodel.launch {
+                    showLoading()
+                    isLoading = true
+                    viewmodel.refreshIdeaChannelData()
+                    databinding.swipeLayout.isRefreshing = false
+                    isLoading = false
+                }
             }
         }
 
@@ -135,10 +157,15 @@ class IdeaChannelFragment : BaseFragment<FragmentIdeaChannelBinding>() {
                 super.onScrollStateChanged(recyclerView, newState)
 
                 if(!recyclerView.canScrollVertically(1)){
-                    viewmodel.launch {
-                        databinding.pbLoadmore.visibility = View.VISIBLE
-                        viewmodel.loadMoreData()
-                        databinding.pbLoadmore.visibility = View.GONE
+                    if(!isLoading){
+                        isLoading = true
+                        viewmodel.launch {
+                            val isLast = viewmodel.loadMoreData()
+                            isLoading = false
+                            if(isLast){
+                                hideLoading()
+                            }
+                        }
                     }
                 }
             }

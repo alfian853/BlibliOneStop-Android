@@ -28,7 +28,8 @@
             app:layout_constraintBottom_toBottomOf="@+id/tv_name_pict"
             app:layout_constraintStart_toEndOf="@+id/tv_name_pict"
             app:layout_constraintTop_toTopOf="@+id/tv_name_pict"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintVertical_bias="0.0"
+            android:layout_marginLeft="8dp" />
 
         <TextView
             android:id="@+id/tv_date"
@@ -101,7 +102,8 @@
             app:layout_constraintTop_toTopOf="parent"
             android:foreground="@drawable/border_round_image"
             android:text="AL"
-            android:background="@color/colorPrimaryDark"
+            android:textColor="@color/white"
+            android:background="@color/colorPrimary"
             android:textSize="@dimen/size_text_h4"
             android:gravity="center"
             tools:srcCompat="@drawable/ic_default_user" />

@@ -15,9 +15,10 @@ import com.gdn.android.onestop.ideation.data.IdeaPost
 import java.util.*
 
 
-class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
-    RecyclerView.Adapter<IdeaRecyclerAdapter.IdeaViewHolder>(
-    ) {
+class IdeaRecyclerAdapter(
+    private val voteHelper: VoteHelper,
+    private val profileClickCallback: ItemClickCallback<String>? = null
+) : RecyclerView.Adapter<IdeaRecyclerAdapter.IdeaViewHolder>() {
 
     var ideaList: List<IdeaPost> = Collections.emptyList()
 
@@ -28,6 +29,11 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
     lateinit var itemContentClickCallback : ItemClickCallback<IdeaPost>
     lateinit var voteClickCallback : VoteClickCallback
 
+
+    fun updateData(ideaList: List<IdeaPost>){
+        this.ideaList = ideaList
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IdeaViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_ideapost, parent, false)
@@ -76,13 +82,18 @@ class IdeaRecyclerAdapter(private val voteHelper: VoteHelper) :
             }
         }
 
-        this.voteClickCallback.let { voteClickCallback ->
+        voteClickCallback.let { voteClickCallback ->
             holder.tvUpVote.setOnClickListener {
                 voteClickCallback.onVote(ideaPost, holder, true)
             }
             holder.tvDownVote.setOnClickListener {
                 voteClickCallback.onVote(ideaPost, holder,false)
             }
+        }
+
+        profileClickCallback?.let {
+            holder.tvUsername.setOnClickListener { profileClickCallback.onItemClick(ideaPost.username, position) }
+            holder.tvNamePict.setOnClickListener { profileClickCallback.onItemClick(ideaPost.username, position) }
         }
 
     }

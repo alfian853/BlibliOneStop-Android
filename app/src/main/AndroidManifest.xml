@@ -22,7 +22,10 @@
         <activity android:name=".MainActivity">
             <nav-graph android:value="@navigation/main_navigation" />
         </activity>
-        <activity android:name="com.gdn.android.onestop.login.LoginActivity">
+        <activity android:name="com.gdn.android.onestop.login.LoginActivity"/>
+        <activity
+            android:name="com.gdn.android.onestop.base.activity.SplashActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -31,6 +34,7 @@
         <activity android:name="com.gdn.android.onestop.group.GroupActivity">
             <nav-graph android:value="@navigation/group_navigation"/>
         </activity>
+
         <service android:name="com.gdn.android.onestop.group.ChatReplyService" />
 
         <service

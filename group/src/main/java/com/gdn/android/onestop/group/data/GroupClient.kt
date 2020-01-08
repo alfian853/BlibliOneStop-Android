@@ -64,4 +64,9 @@ interface GroupClient{
         @Body notePostRequest: NotePostRequest
     ) : Response<BaseResponse<NotePostResponse>>
 
+    @GET("/group/{groupId}/members")
+    suspend fun getMembers(
+        @Path("groupId") groupId: String
+    ) : Response<BaseResponse<List<String>>>
+
 }

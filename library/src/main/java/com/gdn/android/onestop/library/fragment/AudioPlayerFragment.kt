@@ -75,7 +75,7 @@ class AudioPlayerFragment(val audio: Audio) : DialogFragment(){
           binding.sbProgress.progress = ((mediaPlayer.currentPosition.toDouble()/mediaPlayer.duration.toDouble())*100).toInt()
           binding.tvDuration.text = (mediaPlayer.duration - mediaPlayer.currentPosition).toMinuteString()
         }
-        handler.postDelayed(this, SECOND_IN_MS as Long)
+        handler.postDelayed(this, SECOND_IN_MS.toLong())
       }
     })
 

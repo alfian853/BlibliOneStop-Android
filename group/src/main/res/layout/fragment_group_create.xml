@@ -9,28 +9,33 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <LinearLayout
+        <RelativeLayout
             android:orientation="horizontal"
-            android:padding="15dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="@dimen/toolbar_height">
 
             <ImageView
                 android:id="@+id/iv_back"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/toolbar_horizontal_margin"
                 android:layout_width="@dimen/size_img_1"
                 android:layout_height="@dimen/size_img_1"
-                android:background="@drawable/ic_left_row" />
+                android:background="@drawable/ic_left_row_blue"
+                android:layout_marginStart="@dimen/toolbar_horizontal_margin" />
 
             <TextView
-                android:layout_weight="1"
-                android:layout_marginLeft="25dp"
+                android:layout_marginStart="@dimen/toolbar_horizontal_margin"
                 android:layout_gravity="center"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:textSize="@dimen/size_text_h3"
+                android:layout_toRightOf="@id/iv_back"
+                android:layout_centerVertical="true"
+                android:fontFamily="@font/dancing_script_bold"
+                android:textSize="@dimen/size_text_h1"
+                android:textColor="@color/colorPrimary"
                 android:text="@string/create_group"
-                android:layout_marginStart="25dp" />
+                android:layout_toEndOf="@id/iv_back"
+                android:layout_marginLeft="@dimen/toolbar_horizontal_margin" />
 
             <ImageView
                 android:id="@+id/iv_create"
@@ -38,9 +43,14 @@
                 android:background="@drawable/ic_checked"
                 android:scaleX="0.6"
                 android:scaleY="0.6"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
                 android:layout_width="@dimen/size_img_1"
-                android:layout_height="@dimen/size_img_1" />
-        </LinearLayout>
+                android:layout_marginEnd="@dimen/toolbar_horizontal_margin"
+                android:layout_height="@dimen/size_img_1"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/toolbar_horizontal_margin" />
+        </RelativeLayout>
 
         <View
             android:layout_width="match_parent"
@@ -48,6 +58,7 @@
             android:background="@color/colorPrimaryDark"/>
 
         <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/til_group_name"
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
             android:layout_marginStart="15dp"
             android:layout_marginLeft="15dp"

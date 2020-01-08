@@ -43,7 +43,7 @@ class AppModule{
                 val response = chain.proceed(request)
                 if(response.code == 403 || response.code == 401){
                     sessionManager.logout()
-                    val intent = Navigator.getIntent(Navigator.Destination.LOGIN)
+                    val intent = Navigator.getIntent(Navigator.Destination.LOGIN_ACTIVITY)
                     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     context.startActivity(intent)
                 }

@@ -19,8 +19,8 @@
         <RelativeLayout
             android:id="@+id/ll_toolbar"
             android:orientation="horizontal"
-            android:background="@color/white"
             android:layout_width="match_parent"
+            android:background="@drawable/toolbar_background_white"
             android:layout_height="@dimen/toolbar_height">
 
             <ImageView
@@ -316,7 +316,7 @@
                 android:layout_gravity="center_horizontal|center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/comment_input_border"
+                android:background="@drawable/round_border_primary"
                 android:hint="@string/send_message"
                 android:inputType="textMultiLine" />
 

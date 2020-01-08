@@ -11,7 +11,6 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_meeting"
-            android:layout_below="@id/ll_toolbar"
             android:layout_marginTop="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginStart="8dp"
@@ -22,5 +21,29 @@
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="7"
             tools:listitem="@layout/item_meeting" />
+
+        <LinearLayout
+            android:id="@+id/ll_no_meeting"
+            android:orientation="vertical"
+            android:layout_centerVertical="true"
+            android:gravity="center_horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv_no_meeting"
+                android:text="@string/no_upcoming_meeting"
+                android:layout_marginBottom="40dp"
+                android:textSize="@dimen/size_text_h2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <ImageView
+                android:layout_below="@id/tv_no_meeting"
+                android:layout_centerHorizontal="true"
+                app:srcCompat="@drawable/ic_happiness"
+                android:layout_width="@dimen/size_img_1_large"
+                android:layout_height="@dimen/size_img_1_large"/>
+
+        </LinearLayout>
     </RelativeLayout>
 </layout>

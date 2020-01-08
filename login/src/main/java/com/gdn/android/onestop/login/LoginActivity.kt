@@ -7,7 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.login.databinding.ActivityLoginBinding
 import com.gdn.android.onestop.login.injection.DaggerLoginComponent
 import com.gdn.android.onestop.login.viewmodel.LoginViewModel
-import com.gdn.android.onestop.base.BaseComponent
+import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.base.BaseActivity
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.Navigator
@@ -23,7 +23,7 @@ class LoginActivity : BaseActivity<LoginActivity, ActivityLoginBinding>(){
     }
 
     override fun activityInjector(): AndroidInjector<LoginActivity> {
-        return DaggerLoginComponent.factory().create(BaseComponent.getInstance()!!)
+        return DaggerLoginComponent.factory().create(AppComponent.getInstance()!!)
     }
 
     override fun getLayout(): Int {
@@ -38,13 +38,6 @@ class LoginActivity : BaseActivity<LoginActivity, ActivityLoginBinding>(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        if(sessionManager.isLoggedIn){
-            val intent = Navigator.getIntent(Navigator.Destination.MAIN_ACTIVITY)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-            finish()
-        }
 
         loginViewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(LoginViewModel::class.java)

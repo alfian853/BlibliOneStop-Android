@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.base.ViewModelProviderFactory
@@ -40,6 +41,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
 
         databinding = FragmentGroupCreateBinding.inflate(inflater, container, false)
 
+        databinding.etGroupName.setText("")
         databinding.ivBack.setOnClickListener {
             this.fragmentManager!!.beginTransaction().remove(this).commit()
         }
@@ -47,6 +49,12 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
         viewModel = ViewModelProvider(this, viewModelFactory)
             .get(GroupViewModel::class.java)
 
+
+        databinding.etGroupName.doOnTextChanged { text, start, count, after ->
+            if(text != null && text.isNotEmpty()){
+                databinding.tilGroupName.error = null
+            }
+        }
 
         databinding.ivCreate.setOnClickListener {
 
@@ -73,7 +81,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
                 }
             }
             else{
-                Toast.makeText(this.context, "please fill", Toast.LENGTH_SHORT).show()
+                databinding.tilGroupName.error = "Please fill group name"
             }
 
         }

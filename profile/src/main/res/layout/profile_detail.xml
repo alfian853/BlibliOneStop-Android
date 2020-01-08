@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <RelativeLayout
+        android:id="@+id/detail"
+        tools:context="com.gdn.android.onestop.profile.fragment.ProfileFragment"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tv_point"
+            android:layout_centerHorizontal="true"
+            android:text="Point : 40"
+            android:layout_marginTop="8dp"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:layout_alignTop="@id/tv_point"
+            android:src="@drawable/ic_star"
+            android:layout_width="@dimen/size_img_5"
+            android:layout_height="@dimen/size_img_5"
+            android:layout_toRightOf="@id/tv_point"
+            android:layout_toEndOf="@id/tv_point" />
+
+        <TextView
+            android:id="@+id/tv_label_ideation_posts"
+            android:text="Ideation Posts: "
+            android:layout_below="@id/tv_point"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:id="@+id/tv_ideation_posts"
+            android:text="40 Likes"
+            android:layout_alignTop="@id/tv_label_ideation_posts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_label_ideation_posts"
+            android:layout_toEndOf="@id/tv_label_ideation_posts" />
+
+        <TextView
+            android:id="@+id/tv_label_ideation_comments"
+            android:text="Ideation comments: "
+            android:layout_below="@id/tv_label_ideation_posts"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:id="@+id/tv_ideation_comments"
+            android:text="40 Comments"
+            android:layout_toRightOf="@id/tv_label_ideation_comments"
+            android:layout_alignTop="@id/tv_label_ideation_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tv_label_ideation_comments" />
+
+        <TextView
+            android:id="@+id/tv_label_readed_book"
+            android:text="Readed books: "
+            android:layout_below="@id/tv_label_ideation_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:id="@+id/tv_readed_book"
+            android:text="40 Books"
+            android:layout_toRightOf="@id/tv_label_readed_book"
+            android:layout_alignTop="@id/tv_label_readed_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tv_label_readed_book" />
+
+        <TextView
+            android:id="@+id/tv_label_listened_audio"
+            android:text="Listened audios: "
+            android:layout_below="@id/tv_readed_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:id="@+id/tv_listened_audio"
+            android:text="40 Audios"
+            android:layout_toRightOf="@id/tv_label_listened_audio"
+            android:layout_alignTop="@id/tv_label_listened_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/tv_label_listened_audio" />
+
+        <TextView
+            android:id="@+id/tv_label_writen_note"
+            android:text="Meeting Notes Writen: "
+            android:layout_below="@id/tv_listened_audio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp" />
+
+        <TextView
+            android:id="@+id/tv_writen_note"
+            android:text="40 Notes"
+            android:layout_alignTop="@id/tv_label_writen_note"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_label_writen_note"
+            android:layout_toEndOf="@id/tv_label_writen_note" />
+
+
+        <TextView
+            android:id="@+id/tv_label_popular_post"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"
+            android:text="Popular Post"
+            android:layout_below="@id/tv_label_writen_note"
+            android:textSize="@dimen/size_text_h3"
+            android:textColor="@color/black"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_top_idea"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_ideapost"
+            android:layout_below="@id/tv_label_popular_post"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </RelativeLayout>
+</layout>

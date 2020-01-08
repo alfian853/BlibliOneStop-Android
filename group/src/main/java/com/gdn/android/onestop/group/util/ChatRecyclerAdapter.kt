@@ -20,7 +20,9 @@ import com.google.android.material.button.MaterialButton
 import java.util.*
 
 
-class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatViewHolder>(){
+class ChatRecyclerAdapter(
+  val profileClickCallback: ItemClickCallback<String>
+) : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatViewHolder>(){
 
   var chatList : List<GroupChat> = LinkedList()
     set(value){
@@ -158,6 +160,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       tvNamePict.setBackgroundColor(chat.nameColor)
 
       tvMessage.maxWidth = chatMaxWidth
+
+      tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
+      tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
     }
   }
 
@@ -209,6 +214,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       }
 
       tvMessage.maxWidth = chatMaxWidth
+
+      tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
+      tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
     }
 
   }
@@ -269,6 +277,9 @@ class ChatRecyclerAdapter : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatVie
       }
 
       tvMessage.maxWidth = chatMaxWidth
+
+      tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
+      tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
     }
 
   }

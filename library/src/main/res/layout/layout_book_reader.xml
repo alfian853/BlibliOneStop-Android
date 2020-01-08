@@ -11,7 +11,7 @@
 
         <LinearLayout
             android:padding="14.5dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/toolbar_background_white"
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="@dimen/toolbar_height">
@@ -22,7 +22,7 @@
                 android:layout_width="0dp"
                 android:layout_gravity="center"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/size_text_h3"
                 android:text="@string/efective_java" />
 
@@ -31,7 +31,7 @@
                 android:layout_width="wrap_content"
                 android:layout_gravity="end"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:textColor="@color/colorPrimary"
                 android:textSize="@dimen/size_text_h3"
                 android:text="@string/page_n_a" />
         </LinearLayout>

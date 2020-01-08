@@ -21,8 +21,9 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GroupSettingFragment(private val groupViewModel: GroupViewModel,
-  private val group : Group
+class GroupSettingFragment(
+  private val groupViewModel: GroupViewModel,
+  private val group: Group
 ) : BottomSheetDialogFragment() {
 
   lateinit var binding: FragmentBsGroupSettingBinding
@@ -75,6 +76,13 @@ class GroupSettingFragment(private val groupViewModel: GroupViewModel,
         groupDao.insertGroupInfo(groupInfo)
       }
 
+    }
+
+    binding.llMembers.setOnClickListener {
+      val fragment = GroupMemberFragment()
+      fragment.arguments = GroupMemberFragmentArgs(group).toBundle()
+
+      fragment.show(fragmentManager!!,"member fragment")
     }
 
 

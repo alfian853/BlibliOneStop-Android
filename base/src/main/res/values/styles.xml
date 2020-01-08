@@ -8,6 +8,20 @@
         <item name="colorAccent">@color/colorPrimaryDark</item>
     </style>
 
+    <style name="SplashTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item name="android:windowBackground">@drawable/splash_screen</item>
+    </style>
+    <!-- styles.xml -->
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Light">
+        <item name="android:fontFamily">@font/dancing_script_bold</item>
+        <item name="android:textColorPrimary">@color/colorPrimary</item>
+        <item name="android:textSize">@dimen/size_text_h1</item>
+    </style>
+
     <style name="FullScreenDialog" parent="Theme.AppCompat.Light.DialogWhenLarge">
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>

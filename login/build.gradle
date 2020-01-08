@@ -51,6 +51,7 @@ android {
 
 dependencies {
     api project(':base')
+    api project(':ideation')
     kapt "com.google.dagger:dagger-android-processor:$dagger2_version"
     kapt "com.google.dagger:dagger-compiler:$dagger2_version"
 }

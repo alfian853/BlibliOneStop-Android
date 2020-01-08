@@ -45,10 +45,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         }
     }
 
-    val groupOptionClick = object : ItemClickCallback<Group> {
+    private val groupOptionClick = object : ItemClickCallback<Group> {
         override fun onItemClick(item: Group, position: Int) {
-            val groupSettingFragment =
-                GroupSettingFragment(viewModel, item)
+            val groupSettingFragment = GroupSettingFragment(viewModel, item)
             groupSettingFragment.show(
                 this@GroupFragment.fragmentManager!!, "group setting fragment"
             )
@@ -56,21 +55,14 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
     }
 
-    var guildRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter()
-            .apply {
-                nameClickCallback = this@GroupFragment.groupClickCallback
-                optionClickCallback = this@GroupFragment.groupOptionClick
-            }
+    private var guildRvAdapter : GroupRecyclerAdapter =
+        GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
 
-    var squadRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter().apply {
-            nameClickCallback = groupClickCallback
-        }
-    var tribeRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter().apply {
-            nameClickCallback = groupClickCallback
-        }
+    private var squadRvAdapter : GroupRecyclerAdapter =
+        GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
+
+    private var tribeRvAdapter : GroupRecyclerAdapter =
+        GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
 
     private val guildLiveData : LiveData<List<Group>> by lazy { viewModel.guildLiveData() }
     private val squadLiveData : LiveData<List<Group>> by lazy { viewModel.squadLiveData() }
@@ -81,14 +73,16 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     lateinit var icRight : Drawable
 
 
-    private val observer = Observer<List<Group>> {
-        if(it.isNotEmpty()){
-            when(it[0].type){
-                Group.Type.GUILD -> guildRvAdapter
-                Group.Type.SQUAD -> squadRvAdapter
-                Group.Type.TRIBE -> tribeRvAdapter
-            }.updateList(it)
-        }
+    private val guildObserver = Observer<List<Group>> {
+        guildRvAdapter.updateList(it)
+    }
+
+    private val squadObserver = Observer<List<Group>> {
+        squadRvAdapter.updateList(it)
+    }
+
+    private val tribeObserver = Observer<List<Group>> {
+        tribeRvAdapter.updateList(it)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -96,9 +90,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(GroupViewModel::class.java)
         viewModel.refreshData(false)
-        guildLiveData.observe(this, observer)
-        squadLiveData.observe(this, observer)
-        tribeLiveData.observe(this, observer)
+        guildLiveData.observe(this, guildObserver)
+        squadLiveData.observe(this, squadObserver)
+        tribeLiveData.observe(this, tribeObserver)
         icDown = ResourcesCompat.getDrawable(resources, R.drawable.ic_down, null)!!
         icRight = ResourcesCompat.getDrawable(resources, R.drawable.ic_right, null)!!
     }
@@ -172,9 +166,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
 
     override fun onDestroy() {
         super.onDestroy()
-        guildLiveData.removeObserver(observer)
-        squadLiveData.removeObserver(observer)
-        tribeLiveData.removeObserver(observer)
+        guildLiveData.removeObservers(this)
+        squadLiveData.removeObservers(this)
+        tribeLiveData.removeObservers(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

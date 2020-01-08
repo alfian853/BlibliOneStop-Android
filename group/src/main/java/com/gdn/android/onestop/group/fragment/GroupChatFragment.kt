@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
+import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -18,10 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.util.FragmentActionCallback
-import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.SessionManager
-import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.*
 import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
@@ -106,6 +104,18 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     }
   }
 
+  private val profileClickCallback: ItemClickCallback<String> = object: ItemClickCallback<String> {
+    override fun onItemClick(item: String, position: Int) {
+      val fragment: DialogFragment = Navigator.getFragment(Navigator.Destination.PROFILE_DIALOG_FRAGMENT) as DialogFragment
+      val bundle = Bundle()
+      bundle.putString("username",item)
+      fragment.arguments = bundle
+      fragment.show(fragmentManager!!, "profile fragment")
+
+    }
+  }
+
+
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewmodel = ViewModelProvider(this, viewModelProviderFactory)
@@ -184,6 +194,14 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
         groupDao.insertGroupInfo(groupInfo)
       }
     }
+
+    databinding.llMember.setOnClickListener {
+      val fragment = GroupMemberFragment()
+      fragment.arguments = GroupMemberFragmentArgs(group).toBundle()
+
+      fragment.show(fragmentManager!!,"member fragment")
+    }
+
   }
 
   private fun setupBottomLayout(){
@@ -213,7 +231,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   private fun setupChatRecyclerView(){
     chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
     chatLiveData.observe(this, chatObserver)
-    chatRvAdapter = ChatRecyclerAdapter()
+    chatRvAdapter = ChatRecyclerAdapter(profileClickCallback)
     chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
 
     val point = Point()
@@ -302,6 +320,6 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
     }
     ItemTouchHelper(itemSwipeCallback).attachToRecyclerView(databinding.rvChat)
-
   }
+
 }
