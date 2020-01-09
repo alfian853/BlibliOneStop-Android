@@ -107,7 +107,7 @@ class FirebaseChatService : FirebaseMessagingService() {
       val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != group.id
 
       if(isNotInChatRoom) {
-        GroupUtil.notifyingChat(context, resources, chat.username, chat.text, group)
+        GroupUtil.notifyChat(context, resources, chat.username, chat.text, group)
       }
     }
 

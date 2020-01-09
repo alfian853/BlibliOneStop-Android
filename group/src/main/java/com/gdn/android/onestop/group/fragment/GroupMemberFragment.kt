@@ -17,6 +17,7 @@ import com.gdn.android.onestop.group.databinding.FragmentMemberListBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
 import com.gdn.android.onestop.group.util.MemberRecyclerAdapter
 import com.gdn.android.onestop.group.viewmodel.GroupMemberViewModel
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GroupMemberFragment : BaseFullScreenFragment<FragmentMemberListBinding>() {
@@ -50,7 +51,9 @@ class GroupMemberFragment : BaseFullScreenFragment<FragmentMemberListBinding>() 
 
     groupMemberViewModel = ViewModelProvider(this, viewModelProviderFactory).get(GroupMemberViewModel::class.java)
 
-    groupMemberViewModel.fetchMember(group.id)
+    groupMemberViewModel.launch {
+      groupMemberViewModel.fetchMember(group.id)
+    }
 
     groupMemberViewModel.membersLiveData.observe(this, Observer {
       adapter.updateData(it)

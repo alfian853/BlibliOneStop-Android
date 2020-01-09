@@ -1,12 +1,10 @@
 package com.gdn.android.onestop.group.viewmodel
 
-import android.util.Log
 import androidx.databinding.Bindable
 import androidx.databinding.library.baseAdapters.BR
 import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.group.data.*
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -25,11 +23,9 @@ class MeetingNoteViewModel
 
   private var meetingNote: MeetingNote = MeetingNote()
 
-  fun setMeetingNoteId(noteId: String) {
-    launch {
-      meetingNote = groupDao.getMeetingNoteLiveDataById(noteId)
-      noteText = meetingNote.note
-    }
+  suspend fun setMeetingNoteId(noteId: String) {
+    meetingNote = groupDao.getMeetingNoteById(noteId)
+    noteText = meetingNote.note
   }
 
   suspend fun submitNote(): Boolean {

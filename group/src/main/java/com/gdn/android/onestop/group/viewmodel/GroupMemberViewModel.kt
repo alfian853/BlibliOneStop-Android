@@ -12,16 +12,14 @@ class GroupMemberViewModel @Inject constructor(private val groupClient: GroupCli
   private val _membersLiveData: MutableLiveData<List<String>> = MutableLiveData()
   val membersLiveData: LiveData<List<String>> = _membersLiveData
 
-  fun fetchMember(groupId: String){
-    launch {
+  suspend fun fetchMember(groupId: String){
 
-      val response = groupClient.getMembers(groupId)
+    val response = groupClient.getMembers(groupId)
 
-      if(response.isSuccessful){
-        _membersLiveData.postValue(response.body()!!.data)
-      }
-
+    if(response.isSuccessful){
+      _membersLiveData.postValue(response.body()!!.data)
     }
+
   }
 
 

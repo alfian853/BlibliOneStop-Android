@@ -17,10 +17,8 @@ constructor(
     fun squadLiveData() = groupRepository.squadLiveData
     fun tribeLiveData() = groupRepository.tribeLiveData
 
-    fun refreshData(isForceUpdate : Boolean = false){
-        launch {
-            groupRepository.reloadGroup(isForceUpdate)
-        }
+    suspend fun refreshData(isForceUpdate : Boolean = false){
+        groupRepository.reloadGroup(isForceUpdate)
     }
 
     suspend fun createGroup(groupName : String, groupType : Group.Type): Group? {

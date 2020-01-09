@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullScreenFragment
+import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.group.GroupActivity
 import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.data.Group
@@ -21,6 +22,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+
 
 class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>() {
 
@@ -58,7 +60,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
 
         databinding.ivCreate.setOnClickListener {
 
-            if(databinding.etGroupName.text!!.isNotEmpty()){
+            if(Util.isNotEmpty(databinding.etGroupName.text)){
                 val groupType = when(databinding.rgGroupType.checkedRadioButtonId){
                     R.id.ritem_tribe -> Group.Type.TRIBE
                     R.id.ritem_squad -> Group.Type.SQUAD

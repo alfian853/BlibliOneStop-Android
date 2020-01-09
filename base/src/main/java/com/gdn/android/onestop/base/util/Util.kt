@@ -2,6 +2,7 @@ package com.gdn.android.onestop.base.util
 
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.text.Editable
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -92,5 +93,34 @@ class Util {
             }
             return text
         }
+
+        fun isEmpty(str: String?): Boolean {
+            return str == null || str.isEmpty()
+        }
+
+        fun isEmpty(str: Editable?): Boolean {
+            return str == null || str.isEmpty()
+        }
+
+        fun isEmpty(str: CharSequence?): Boolean {
+            return str == null || str.isEmpty()
+        }
+
+        // return false for null or empty string
+        fun isNotEmpty(str: String?): Boolean {
+            return !isEmpty(str)
+        }
+
+        fun isNotEmpty(str: Editable?): Boolean {
+            return !isEmpty(str)
+        }
+
+        fun isNotEmpty(str: CharSequence?): Boolean {
+            return !isEmpty(str)
+        }
+
+
+
+
     }
 }

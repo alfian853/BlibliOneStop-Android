@@ -42,7 +42,7 @@ object GroupUtil {
     return groupChat
   }
 
-  fun notifyingChat(context: Context, resources: Resources, username: String, message: String, group: Group){
+  fun notifyChat(context: Context, resources: Resources, username: String, message: String, group: Group){
     val mainIntent = Intent(context, GroupActivity::class.java)
     mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     mainIntent.putExtras(GroupActivityArgs(group).toBundle())

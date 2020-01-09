@@ -128,9 +128,6 @@ interface GroupDao {
     @Query("select * from MeetingNote where id = :noteId limit 1")
     suspend fun getMeetingNoteById(noteId: String): MeetingNote
 
-    @Query("select * from MeetingNote where id = :noteId limit 1")
-    suspend fun getMeetingNoteLiveDataById(noteId: String): MeetingNote
-
     @Query("select * from MeetingNote where groupId = :groupId and meetingNumber = :meetingNumber limit 1")
     suspend fun getMeetingNote(groupId: String, meetingNumber: Int): MeetingNote
 

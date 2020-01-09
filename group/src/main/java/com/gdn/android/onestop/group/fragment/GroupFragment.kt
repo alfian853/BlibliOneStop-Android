@@ -92,7 +92,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         super.onCreate(savedInstanceState)
 
         viewModel = ViewModelProvider(this, viewModelProviderFactory).get(GroupViewModel::class.java)
-        viewModel.refreshData(false)
+        viewModel.launch {
+            viewModel.refreshData(false)
+        }
         guildLiveData.observe(this, guildObserver)
         squadLiveData.observe(this, squadObserver)
         tribeLiveData.observe(this, tribeObserver)
@@ -105,7 +107,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        viewModel.refreshData(false)
+        viewModel.launch { viewModel.refreshData(false) }
         setHasOptionsMenu(true)
         databinding = FragmentGroupBinding.inflate(inflater, container, false)
         databinding.rvGuild.adapter = guildRvAdapter

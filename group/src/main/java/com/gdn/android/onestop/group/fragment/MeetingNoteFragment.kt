@@ -32,7 +32,9 @@ class MeetingNoteFragment : BaseFragment<FragmentNoteBinding>(){
     super.onCreate(savedInstanceState)
 
     viewmodel = ViewModelProvider(this, viewModelProvierFactory).get(MeetingNoteViewModel::class.java)
-    viewmodel.setMeetingNoteId(args.meetingNoteId)
+    viewmodel.launch {
+      viewmodel.setMeetingNoteId(args.meetingNoteId)
+    }
   }
 
   override fun onCreateView(

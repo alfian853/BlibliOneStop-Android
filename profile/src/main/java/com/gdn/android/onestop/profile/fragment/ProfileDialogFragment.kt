@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
-import com.gdn.android.onestop.base.BaseDialogFragment
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
@@ -19,7 +18,6 @@ import com.gdn.android.onestop.ideation.util.VoteHelper
 import com.gdn.android.onestop.profile.databinding.FragmentProfileBinding
 import com.gdn.android.onestop.profile.injection.ProfileComponent
 import com.gdn.android.onestop.profile.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 

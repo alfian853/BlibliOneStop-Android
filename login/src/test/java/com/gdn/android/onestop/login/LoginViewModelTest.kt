@@ -43,4 +43,9 @@ class LoginViewModelTest {
       coVerify { sessionManager.saveLoginSession(any()) }
     }
   }
+
+  fun String.isNotEmpty(): Boolean{
+    return this != null && this.length > 0
+  }
+
 }

@@ -10,6 +10,7 @@ import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
 import com.gdn.android.onestop.base.util.FragmentActionCallback
+import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toDateString
 import com.gdn.android.onestop.base.util.toTime24String
 import com.gdn.android.onestop.group.R
@@ -78,7 +79,7 @@ class MeetingCreateFragment(
     }
 
     databinding.etDescription.doOnTextChanged { text, start, count, after ->
-      if(text!!.isNotEmpty()){
+      if(Util.isNotEmpty(text)){
         databinding.tilDescription.error = null
       }
     }
@@ -92,13 +93,13 @@ class MeetingCreateFragment(
         hasError = true
       }
 
-      if(databinding.tvTime.text.isEmpty() || databinding.tvTime.currentTextColor == redColor){
+      if(Util.isEmpty(databinding.tvTime.text) || databinding.tvTime.currentTextColor == redColor){
         databinding.tvTime.setTextColor(redColor)
         databinding.tvTime.text = errorEmptyText
         hasError = true
       }
 
-      if(databinding.etDescription.text!!.isEmpty()){
+      if(Util.isEmpty(databinding.etDescription.text)){
         databinding.tilDescription.error = errorEmptyText
       }
 

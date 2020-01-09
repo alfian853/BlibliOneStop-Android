@@ -38,7 +38,7 @@ class ChatReplyService : IntentService("") {
 
         CoroutineScope(Dispatchers.IO).launch {
           groupChatRepository.sendChat(group.id, chatRequest)
-          GroupUtil.notifyingChat(this@ChatReplyService, resources, "You", replyText, group)
+          GroupUtil.notifyChat(this@ChatReplyService, resources, "You", replyText, group)
         }
       }
     }
