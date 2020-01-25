@@ -2,9 +2,6 @@ package com.gdn.android.onestop.ideation.data
 
 import androidx.lifecycle.LiveData
 import com.gdn.android.onestop.base.util.SessionManager
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
@@ -19,7 +16,6 @@ class IdeaCommentRepository @Inject constructor(
     }
 
     var lastPageRequest = 1
-    var isFetching = false
 
     private lateinit var commentLiveData : LiveData<List<IdeaComment>>
     private lateinit var ideaId : String
@@ -39,27 +35,20 @@ class IdeaCommentRepository @Inject constructor(
     }
 
     private suspend fun getMoreDataByPost() : List<IdeaComment> {
-        if(isFetching){
-            return emptyList()
-        }
-        else{
-            isFetching = true
 
-            val response = ideaClient.getComment(ideaId, lastPageRequest, ITEM_PER_PAGE).data!!// ?: emptyList()
-            return response
-                .apply {
-                    forEach {
-                        val calender = Calendar.getInstance()
-                        calender.timeInMillis = it.date.toLong()
-                        it.postId = ideaId
-                        it.id = it.hashCode().toString()
-                    }
-                    if (isNotEmpty()) {
-                        lastPageRequest++
-                        isFetching = false
-                    }
+        val response = ideaClient.getComment(ideaId, lastPageRequest, ITEM_PER_PAGE).data!!// ?: emptyList()
+        return response
+            .apply {
+                forEach {
+                    val calender = Calendar.getInstance()
+                    calender.timeInMillis = it.date.toLong()
+                    it.postId = ideaId
+                    it.id = it.hashCode().toString()
                 }
-        }
+                if (isNotEmpty()) {
+                    lastPageRequest++
+                }
+            }
 
     }
 

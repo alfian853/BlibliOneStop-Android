@@ -6,7 +6,6 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
 
     var lastPageRequest = 1
     var allFetched = false
-    var isFetching = false
 
     companion object {
         private const val ITEM_PER_PAGE = 6
@@ -61,7 +60,6 @@ class IdeaChannelRepository(private val ideaDao: IdeaDao, private val ideaClient
 
             ideaDao.insertIdea(ideaList)
             lastPageRequest++
-            isFetching = false
             allFetched = ideaList.isEmpty()
             return ideaList
         }

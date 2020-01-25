@@ -1,6 +1,7 @@
 package com.gdn.android.onestop.ideation.fragment
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -55,9 +56,10 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
         }
     }
 
-    val ideaCommentRecyclerAdapter: IdeaCommentRecyclerAdapter = IdeaCommentRecyclerAdapter(profileClickCallback)
+    private val ideaCommentRecyclerAdapter: IdeaCommentRecyclerAdapter = IdeaCommentRecyclerAdapter(profileClickCallback)
 
     private val commentObserver: Observer<List<IdeaComment>> = Observer {
+        Log.d("updatehttp",it.size.toString())
         ideaCommentRecyclerAdapter.updateData(it)
     }
 
@@ -74,6 +76,7 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        ideaCommentRecyclerAdapter.updateData(emptyList())
         viewmodel = ViewModelProvider(this, viewModelProviderFactory).get(IdeaDetailViewModel::class.java)
         viewmodel.contextWrapper = contextWrapper
 

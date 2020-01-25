@@ -17,8 +17,6 @@ class IdeaDetailViewModel @Inject constructor(
     private val networkUtil: NetworkUtil
 ) : BaseViewModel() {
 
-    private val commentLiveData : LiveData<List<IdeaComment>> by lazy { ideaCommentRepository.getCommentsLiveData() }
-
     lateinit var contextWrapper : DefaultContextWrapper
 
     var commentInput : String = ""
@@ -41,7 +39,7 @@ class IdeaDetailViewModel @Inject constructor(
         ideaCommentRepository.setIdeaPost(postId)
     }
 
-    fun getCommentsLiveData() : LiveData<List<IdeaComment>> = commentLiveData
+    fun getCommentsLiveData() : LiveData<List<IdeaComment>> = ideaCommentRepository.getCommentsLiveData()
 
     private fun executeIfOnline(block : Any.() -> Unit){
         if(!networkUtil.isConnectedToNetwork()){

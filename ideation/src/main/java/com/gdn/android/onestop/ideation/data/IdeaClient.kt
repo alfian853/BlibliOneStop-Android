@@ -15,7 +15,7 @@ interface IdeaClient {
     ): Response<BaseResponse<List<IdeaPostResponse>>>
 
     @POST("/idea/{id}/vote")
-    fun voteIdea(
+    suspend fun voteIdea(
         @Path("id") id: String,
         @Query("vote_up") isVoteUp: Boolean
     ) : Response<BaseResponse<Boolean>>

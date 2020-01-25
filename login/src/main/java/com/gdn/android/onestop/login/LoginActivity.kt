@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.gdn.android.onestop.login.databinding.ActivityLoginBinding
 import com.gdn.android.onestop.login.injection.DaggerLoginComponent
 import com.gdn.android.onestop.login.viewmodel.LoginViewModel
@@ -42,6 +43,7 @@ class LoginActivity : BaseActivity<LoginActivity, ActivityLoginBinding>(){
         loginViewModel = ViewModelProvider(this, viewModelProviderFactory)
             .get(LoginViewModel::class.java)
 
+        Glide.with(this).load(R.drawable.idea).into(databinding.imageView)
 
         databinding.viewmodel = loginViewModel
 
