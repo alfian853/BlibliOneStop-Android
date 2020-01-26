@@ -46,7 +46,6 @@ class FirebaseChatService : FirebaseMessagingService() {
 
   override fun onCreate() {
     GroupComponent.getInstance().inject(this)
-    Log.d("chat-onestop","iahsidhas")
     if(!hasBeenSubscribed){
       GlobalScope.launch {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(

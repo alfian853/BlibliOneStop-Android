@@ -68,6 +68,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   lateinit var groupInfo: GroupInfo
 
   private val chatObserver = Observer<List<GroupChat>> {
+    setChatReaded()
     if(it.isNotEmpty()){
       if(chatRvAdapter.chatList.isEmpty()){
         chatRvAdapter.updateChatList(it)
@@ -115,6 +116,12 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     }
   }
 
+  fun setChatReaded(){
+    viewmodel.launch {
+      groupDao.insertGroup(group)
+      groupDao.insertGroupInfo(groupInfo)
+    }
+  }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
@@ -192,8 +199,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
       CoroutineScope(Dispatchers.IO).launch {
         groupInfo.isMute = group.isMute
-        groupDao.insertGroup(group)
-        groupDao.insertGroupInfo(groupInfo)
+        setChatReaded()
       }
     }
 

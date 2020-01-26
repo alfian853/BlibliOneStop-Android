@@ -26,11 +26,16 @@ class MeetingCreateFragment(
 
   private lateinit var databinding: DialogMeetingCreateBinding
 
-  private val errorEmptyText = resources.getString(R.string.please_fill_this_field)
+  private lateinit var errorEmptyText: String
 
   private var redColor: Int = 0
 
   private var blackColor: Int = 0
+
+  override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    errorEmptyText = resources.getString(R.string.please_fill_this_field)
+  }
 
   override fun onCreateView(
       inflater: LayoutInflater,

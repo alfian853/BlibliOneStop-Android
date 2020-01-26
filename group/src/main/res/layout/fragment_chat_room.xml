@@ -35,18 +35,11 @@
 
             <TextView
                 android:id="@+id/tv_group_name"
+                style="@style/ToolbarTitle"
                 android:layout_toRightOf="@id/iv_back"
-                android:layout_marginLeft="@dimen/toolbar_horizontal_margin"
-                android:layout_gravity="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/black"
-                android:includeFontPadding="false"
-                android:textSize="@dimen/size_text_h3"
-                android:maxLines="1"
-                android:layout_centerVertical="true"
-                android:text="asdasd"
-                android:layout_marginStart="@dimen/toolbar_horizontal_margin"
+                android:text="@string/group_name"
                 android:layout_toEndOf="@id/iv_back" />
 
             <ImageView
