@@ -68,6 +68,25 @@
                 android:layout_alignParentRight="true" />
         </RelativeLayout>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_date"
+            android:layout_below="@id/ll_toolbar"
+            android:layout_marginTop="8dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_date"
+                android:text="@string/birthday"
+                android:padding="4dp"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        </androidx.cardview.widget.CardView>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_chat"
             android:layout_width="match_parent"

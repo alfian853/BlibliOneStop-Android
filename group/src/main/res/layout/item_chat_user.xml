@@ -1,15 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="end"
         android:padding="8dp">
 
+        <include
+            android:id="@+id/batch_date"
+            layout="@layout/layout_date_separator" />
+
         <ProgressBar
             android:id="@+id/pb_sending"
+            android:layout_alignBottom="@id/tv_message"
+            android:layout_toLeftOf="@id/tv_message"
+            android:layout_toStartOf="@id/tv_message"
             android:layout_width="@dimen/size_img_6"
             android:layout_height="@dimen/size_img_6"
             android:layout_gravity="bottom"
@@ -22,6 +29,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
             android:text="@string/time"
+            android:layout_alignBottom="@id/tv_message"
+            android:layout_toLeftOf="@id/tv_message"
+            android:layout_toStartOf="@id/tv_message"
             android:layout_marginEnd="4dp"
             android:textSize="@dimen/size_text_h6"
             android:visibility="visible"
@@ -29,11 +39,14 @@
 
         <TextView
             android:id="@+id/tv_message"
+            android:layout_below="@id/batch_date"
             style="@style/ChatTip"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_tip_blue"
             android:text="Hello\nMy name is alfian"
-            android:textColor="@color/white" />
-    </LinearLayout>
+            android:textColor="@color/white"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
 </layout>

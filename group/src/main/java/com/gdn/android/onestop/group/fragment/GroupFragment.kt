@@ -68,9 +68,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     private var tribeRvAdapter : GroupRecyclerAdapter =
         GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
 
-    private val guildLiveData : LiveData<List<Group>> by lazy { viewModel.guildLiveData() }
-    private val squadLiveData : LiveData<List<Group>> by lazy { viewModel.squadLiveData() }
-    private val tribeLiveData : LiveData<List<Group>> by lazy { viewModel.tribeLiveData() }
+    private lateinit var guildLiveData : LiveData<List<Group>>
+    private lateinit var squadLiveData : LiveData<List<Group>>// by lazy { viewModel.squadLiveData() }
+    private lateinit var tribeLiveData : LiveData<List<Group>>// by lazy { viewModel.tribeLiveData() }
 
 
     lateinit var icDown : Drawable
@@ -95,6 +95,11 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         viewModel.launch {
             viewModel.refreshData(false)
         }
+
+        guildLiveData = viewModel.guildLiveData()
+        squadLiveData = viewModel.squadLiveData()
+        tribeLiveData = viewModel.tribeLiveData()
+
         guildLiveData.observe(this, guildObserver)
         squadLiveData.observe(this, squadObserver)
         tribeLiveData.observe(this, tribeObserver)

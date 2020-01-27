@@ -4,9 +4,11 @@ import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.graphics.Point
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AbsListView
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
@@ -80,6 +82,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
           val oldSize = chatRvAdapter.chatList.size
           val difSize = it.size-oldSize-1
           chatRvAdapter.chatList = it
+//          chatRvAdapter.notifyDataSetChanged()
           chatRvAdapter.notifyItemRangeInserted(0,difSize)
         }
         else{
@@ -118,8 +121,11 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   fun setChatReaded(){
     viewmodel.launch {
-      groupDao.insertGroup(group)
-      groupDao.insertGroupInfo(groupInfo)
+      if(::groupInfo.isInitialized){
+        val tmp = groupDao.getGroupInfo(group.id)
+        tmp.unreadChat = 0
+        groupDao.insertGroupInfo(tmp)
+      }
     }
   }
 
@@ -199,7 +205,8 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
       CoroutineScope(Dispatchers.IO).launch {
         groupInfo.isMute = group.isMute
-        setChatReaded()
+        groupDao.insertGroup(group)
+        groupDao.insertGroupInfo(groupInfo)
       }
     }
 
@@ -288,10 +295,24 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     databinding.rvChat.layoutManager = chatLayoutManager
 
     databinding.rvChat.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+
       override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
         if(!recyclerView.canScrollVertically(-1)){
           viewmodel.loadMoreChatBefore()
         }
+
+        if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
+          databinding.cvDate.visibility = View.GONE
+        }
+        else{
+          databinding.cvDate.visibility = View.VISIBLE
+        }
+      }
+
+      override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+        super.onScrolled(recyclerView, dx, dy)
+        val item = chatRvAdapter.chatList[chatLayoutManager.findFirstVisibleItemPosition()]
+        databinding.tvDate.text = item.createdAt.toDateString()
       }
     })
 

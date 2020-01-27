@@ -1,6 +1,8 @@
 package com.gdn.android.onestop.group.util
 
 import android.animation.ValueAnimator
+import android.text.format.DateUtils
+import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -8,21 +10,23 @@ import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
-import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.toAliasName
-import com.gdn.android.onestop.base.util.toDateTime24String
+import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.group.R
+import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupChat
-import com.gdn.android.onestop.base.util.toTimeString
 import com.gdn.android.onestop.group.databinding.*
 import com.google.android.material.button.MaterialButton
+import kotlinx.android.synthetic.main.layout_date_separator.view.*
 import java.util.*
 
 
 class ChatRecyclerAdapter(
   val profileClickCallback: ItemClickCallback<String>
 ) : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatViewHolder>(){
+
+  lateinit var lastBindItem: GroupChat
 
   var chatList : List<GroupChat> = LinkedList()
     set(value){
@@ -135,13 +139,27 @@ class ChatRecyclerAdapter(
       }
       pendingReplyShowAnimation = null
     }
-
+    lastBindItem = chat
     holder.onBindViewHolder(chat, position)
   }
 
-  abstract class BaseChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+  abstract inner class BaseChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
 
     abstract fun onBindViewHolder(chat: GroupChat, position: Int)
+
+    fun setDateSeparator(dateContainer: CardView, dateText: TextView, chat: GroupChat, position: Int){
+      val isDiffDay = if(position == 0){true}
+      else chat.dayOfYear != chatList[position-1].dayOfYear
+
+      if(isDiffDay){
+        dateContainer.visibility = View.VISIBLE
+          dateText.text = chat.dayOfYear
+      }
+      else{
+        dateContainer.visibility = View.GONE
+      }
+
+    }
   }
 
   inner class ChatViewHolder(binding: ItemChatBinding) : BaseChatViewHolder(binding.root){
@@ -149,17 +167,21 @@ class ChatRecyclerAdapter(
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val tvNamePict: TextView = binding.ivUser
+    private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
+    private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: GroupChat, position: Int){
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
-      tvDate.text = chat.createdAt.toTimeString()
+      tvDate.text = chat.createdAt.toDateString()
       tvMessage.text = chat.text
       val nameAlias = chat.username.toAliasName()
       tvNamePict.text = nameAlias
       tvNamePict.setBackgroundColor(chat.nameColor)
 
       tvMessage.maxWidth = chatMaxWidth
+
+      setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
       tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
@@ -170,10 +192,12 @@ class ChatRecyclerAdapter(
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = binding.pbSending
+    private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
+    private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvMessage.text = chat.text
-      tvDate.text = chat.createdAt.toTimeString()
+      tvDate.text = chat.createdAt.toDateString()
 
       if(chat.isSending){
         tvDate.visibility = View.GONE
@@ -183,6 +207,8 @@ class ChatRecyclerAdapter(
         tvDate.visibility = View.VISIBLE
         pbSending.visibility = View.GONE
       }
+
+      setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvMessage.maxWidth = myChatMaxWidth
     }
@@ -196,11 +222,13 @@ class ChatRecyclerAdapter(
     private val tvReplyName: TextView = binding.tvReplyUsername
     private val tvReplyText: TextView = binding.tvReplyMessage
     private val llReplyContainer: LinearLayout = binding.llReplyContainer
+    private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
+    private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: GroupChat, position: Int){
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
-      tvDate.text = chat.createdAt.toTimeString()
+      tvDate.text = chat.createdAt.toDateString()
       tvMessage.text = chat.text
       val nameAlias = chat.username.toAliasName()
       tvNamePict.text = nameAlias
@@ -215,6 +243,8 @@ class ChatRecyclerAdapter(
 
       tvMessage.maxWidth = chatMaxWidth
 
+      setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
+
       tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
       tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
     }
@@ -228,10 +258,12 @@ class ChatRecyclerAdapter(
     private val tvReplyName: TextView = binding.tvReplyUsername
     private val tvReplyText: TextView = binding.tvReplyMessage
     private val llReplyContainer: LinearLayout = binding.llReplyContainer
+    private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
+    private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvMessage.text = chat.text
-      tvDate.text = chat.createdAt.toTimeString()
+      tvDate.text = chat.createdAt.toDateString()
 
       if(chat.isSending){
         tvDate.visibility = View.GONE
@@ -241,6 +273,8 @@ class ChatRecyclerAdapter(
         tvDate.visibility = View.VISIBLE
         pbSending.visibility = View.GONE
       }
+
+      setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvReplyName.text = chat.repliedUsername
       tvReplyText.text = chat.repliedText
@@ -260,12 +294,14 @@ class ChatRecyclerAdapter(
     private val tvNamePict: TextView = binding.ivUser
     private val tvMeetingDate: TextView = binding.tvMeetingDate
     private val btnSeeNote: MaterialButton = binding.btnSeeNote
+    private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
+    private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvTitle.text = "Meeting #${chat.meetingNo}"
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
-      tvDate.text = chat.createdAt.toTimeString()
+      tvDate.text = chat.createdAt.toDateString()
       tvMessage.text = chat.text
       val nameAlias = chat.username.toAliasName()
       tvNamePict.text = nameAlias
@@ -275,6 +311,8 @@ class ChatRecyclerAdapter(
       btnSeeNote.setOnClickListener {
         meetingNoteClickCallback.onItemClick(chat, position)
       }
+
+      setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvMessage.maxWidth = chatMaxWidth
 
@@ -291,11 +329,13 @@ class ChatRecyclerAdapter(
     private val pbSending: ProgressBar = binding.pbSending
     private val tvMeetingDate: TextView = binding.tvMeetingDate
     private val btnSeeNote: MaterialButton = binding.btnSeeNote
+    private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
+    private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvTitle.text = "Meeting #${chat.meetingNo}"
       tvMessage.text = chat.text
-      tvDate.text = chat.createdAt.toTimeString()
+      tvDate.text = chat.createdAt.toDateString()
 
       if(chat.isSending){
         tvDate.visibility = View.GONE
@@ -305,6 +345,8 @@ class ChatRecyclerAdapter(
         tvDate.visibility = View.VISIBLE
         pbSending.visibility = View.GONE
       }
+
+      setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvMeetingDate.text = "Date: "+chat.meetingDate?.toDateTime24String()
       btnSeeNote.setOnClickListener {

@@ -3,17 +3,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp">
+
+        <include
+            android:id="@+id/batch_date"
+            layout="@layout/layout_date_separator" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cardView"
             android:layout_width="@dimen/size_img_2"
             android:layout_height="@dimen/size_img_2"
             app:cardBackgroundColor="@color/black"
+            android:layout_below="@id/batch_date"
             app:cardCornerRadius="18dp"
             app:cardPreventCornerOverlap="false"
             app:layout_constraintStart_toStartOf="parent"
@@ -37,11 +42,13 @@
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:includeFontPadding="false"
+            android:gravity="center_vertical"
             android:maxLines="1"
             android:text="@string/username"
-            app:layout_constraintStart_toEndOf="@+id/cardView"
-            app:layout_constraintTop_toTopOf="@+id/cardView" />
-
+            android:layout_alignTop="@id/cardView"
+            android:layout_alignBottom="@id/cardView"
+            android:layout_toRightOf="@id/cardView"
+            android:layout_toEndOf="@id/cardView" />
 
         <LinearLayout
             android:id="@+id/ll_chat"
@@ -51,8 +58,9 @@
             android:background="@drawable/chat_tip"
             android:orientation="vertical"
             android:padding="10dp"
-            app:layout_constraintStart_toStartOf="@+id/tv_username"
-            app:layout_constraintTop_toBottomOf="@+id/tv_username">
+            android:layout_below="@id/tv_username"
+            android:layout_toRightOf="@id/cardView"
+            android:layout_toEndOf="@id/cardView">
 
 
             <LinearLayout
@@ -103,9 +111,9 @@
             android:maxWidth="315dp"
             android:text="@string/time"
             android:textSize="@dimen/size_text_h6"
-            app:layout_constraintBottom_toBottomOf="@+id/ll_chat"
-            app:layout_constraintStart_toEndOf="@+id/ll_chat"
+            android:layout_alignBottom="@id/ll_chat"
+            android:layout_toRightOf="@id/ll_chat"
             android:layout_marginLeft="4dp" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </RelativeLayout>
 </layout>

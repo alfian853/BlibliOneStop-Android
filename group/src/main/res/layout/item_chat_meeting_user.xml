@@ -1,18 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="end"
         android:padding="8dp">
+
+        <include
+            android:id="@+id/batch_date"
+            layout="@layout/layout_date_separator" />
 
         <ProgressBar
             android:id="@+id/pb_sending"
             android:layout_width="@dimen/size_img_6"
             android:layout_height="@dimen/size_img_6"
-            android:layout_gravity="bottom"
+            android:layout_alignBottom="@id/rl_chat_tip"
+            android:layout_toLeftOf="@id/rl_chat_tip"
+            android:layout_toStartOf="@id/rl_chat_tip"
             android:layout_marginEnd="4dp"
             android:layout_marginRight="4dp" />
 
@@ -24,12 +28,16 @@
             android:text="@string/time"
             android:layout_marginEnd="4dp"
             android:textSize="@dimen/size_text_h6"
+            android:layout_alignBottom="@id/rl_chat_tip"
             android:visibility="visible"
-            android:layout_marginRight="4dp" />
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/rl_chat_tip"
+            android:layout_toStartOf="@id/rl_chat_tip" />
 
         <RelativeLayout
             android:id="@+id/rl_chat_tip"
             style="@style/ChatTip"
+            android:layout_below="@id/batch_date"
             android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:background="@drawable/chat_tip_blue"
@@ -37,7 +45,9 @@
             android:text="Hello\nMy name is alfian"
             android:layout_marginTop="4dp"
             android:textColor="@color/black"
-            android:padding="0dp">
+            android:padding="0dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true">
 
             <ImageView
                 android:id="@+id/iv_meeting_pict"
@@ -95,5 +105,5 @@
 
         </RelativeLayout>
 
-    </LinearLayout>
+    </RelativeLayout>
 </layout>
