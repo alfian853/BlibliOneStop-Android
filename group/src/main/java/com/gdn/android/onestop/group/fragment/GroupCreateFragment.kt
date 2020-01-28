@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.group.R
@@ -34,6 +33,8 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
     lateinit var viewModelFactory: ViewModelProviderFactory
 
     lateinit var viewModel : GroupViewModel
+
+    private val ERROR_GROUP_NAME = "Please fill group name"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -83,7 +84,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
                 }
             }
             else{
-                databinding.tilGroupName.error = "Please fill group name"
+                databinding.tilGroupName.error = ERROR_GROUP_NAME
             }
 
         }

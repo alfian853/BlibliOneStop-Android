@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <data>
-
-    </data>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
         android:padding="15dp"
@@ -17,24 +12,14 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/size_text_h3"
-            android:text="@string/join_a_group_with_a_code" />
+            android:text="@string/logout" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_group_name"
-            android:layout_marginTop="10dp"
-            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
-            app:boxBackgroundColor="@color/white"
+        <TextView
+            android:layout_marginTop="15dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_code">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/et_code"
-                android:background="@null"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-        </com.google.android.material.textfield.TextInputLayout>
+            android:text="@string/are_you_sure"
+            android:textSize="@dimen/size_text_h4"/>
 
 
         <LinearLayout
@@ -44,16 +29,16 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_cancel"
+                android:id="@+id/btn_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:text="@string/cancel" />
+                android:text="@string/no" />
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/btn_join"
+                android:id="@+id/btn_yes"
                 style="@style/Widget.MaterialComponents.Button.TextButton"
-                android:text="@string/join"
+                android:text="@string/yes"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
 

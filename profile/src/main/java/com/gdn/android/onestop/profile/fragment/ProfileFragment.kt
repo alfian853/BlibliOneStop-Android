@@ -1,10 +1,11 @@
 package com.gdn.android.onestop.profile.fragment
 
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFragment
@@ -17,12 +18,14 @@ import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragmentArgs
 import com.gdn.android.onestop.ideation.util.IdeaRecyclerAdapter
 import com.gdn.android.onestop.ideation.util.VoteClickCallback
 import com.gdn.android.onestop.ideation.util.VoteHelper
+import com.gdn.android.onestop.profile.R
 import com.gdn.android.onestop.profile.databinding.FragmentProfileBinding
 import com.gdn.android.onestop.profile.injection.ProfileComponent
 import com.gdn.android.onestop.profile.viewmodel.ProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
+import kotlin.math.log
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
@@ -78,6 +81,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
   override fun onCreateView(
     inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
   ): View? {
+    setHasOptionsMenu(true)
 
     databinding = FragmentProfileBinding.inflate(inflater, container, false)
     databinding.toolbar.toolbar.visibility = View.GONE
@@ -140,5 +144,20 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
   }
 
-
+  override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+    inflater.inflate(R.menu.profile_menu, menu)
+    menu.findItem(R.id.logout).setOnMenuItemClickListener {
+      AlertDialog.Builder(this.context!!)
+        .setTitle(R.string.logout)
+        .setMessage(R.string.are_you_sure)
+        .setPositiveButton(R.string.yes) { dialog, which ->
+          sessionManager.logout()
+          val loginIntent = Navigator.getIntent(Navigator.Destination.LOGIN_ACTIVITY)
+          startActivity(loginIntent)
+          activity!!.finish()
+        }
+        .setNegativeButton(R.string.no) { dialog, which -> }.show()
+      true
+    }
+  }
 }
