@@ -33,6 +33,19 @@
         <item name="android:layout_height">match_parent</item>
     </style>
 
+    <style name="Dialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="android:windowBackground">@android:color/white</item>
+        <item name="actionMenuTextColor">@color/colorAccent</item>
+        <item name="android:windowMinWidthMajor">85%</item>
+        <item name="android:windowMinWidthMinor">85%</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
     <style name="ToolbarTitle">
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_marginLeft">12dp</item>

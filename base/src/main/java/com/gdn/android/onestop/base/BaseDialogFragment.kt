@@ -10,6 +10,7 @@ abstract class BaseDialogFragment<T : ViewDataBinding> : DialogFragment(){
     override fun onCreate(savedInstanceState: Bundle?) {
         doFragmentInjection()
         super.onCreate(savedInstanceState)
+        setStyle(STYLE_NORMAL, R.style.Dialog)
     }
 
     open fun doFragmentInjection(){

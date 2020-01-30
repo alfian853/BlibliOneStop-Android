@@ -49,6 +49,7 @@
                     android:layout_height="wrap_content"
                     android:includeFontPadding="false"
                     android:text="Hello My name is alfian"
+                    android:singleLine="false"
                     android:textColor="@color/black"
                     app:layout_constraintStart_toStartOf="@+id/tv_reply_username"
                     app:layout_constraintTop_toBottomOf="@+id/tv_reply_username" />

@@ -68,10 +68,10 @@
             <ImageView
                 android:id="@+id/iv_meeting_pict"
                 android:layout_width="match_parent"
-                android:padding="3dp"
                 android:layout_height="140dp"
-                android:src="@drawable/idea"
-                android:background="@drawable/round_top" />
+                android:background="@drawable/round_top"
+                android:padding="3dp"
+                app:srcCompat="@drawable/idea" />
 
             <TextView
                 android:id="@+id/tv_meeting_title"

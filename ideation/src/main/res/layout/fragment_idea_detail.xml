@@ -75,6 +75,7 @@
                     android:layout_marginTop="4dp"
                     android:text="@string/post_content"
                     android:textColor="@color/black"
+                    android:autoLink="web"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="@+id/iv_user"

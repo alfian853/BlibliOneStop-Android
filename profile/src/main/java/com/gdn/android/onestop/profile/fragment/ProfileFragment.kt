@@ -1,17 +1,16 @@
 package com.gdn.android.onestop.profile.fragment
 
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.*
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFragment
-import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.util.*
+import com.gdn.android.onestop.base.util.DefaultContextWrapper
+import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.base.util.Navigator
+import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragmentArgs
@@ -22,10 +21,8 @@ import com.gdn.android.onestop.profile.R
 import com.gdn.android.onestop.profile.databinding.FragmentProfileBinding
 import com.gdn.android.onestop.profile.injection.ProfileComponent
 import com.gdn.android.onestop.profile.viewmodel.ProfileViewModel
-import kotlinx.android.synthetic.main.fragment_profile.*
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-import kotlin.math.log
 
 class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 

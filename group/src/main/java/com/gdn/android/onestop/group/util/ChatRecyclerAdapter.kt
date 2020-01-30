@@ -1,8 +1,6 @@
 package com.gdn.android.onestop.group.util
 
 import android.animation.ValueAnimator
-import android.text.format.DateUtils
-import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View
@@ -12,18 +10,18 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.group.R
-import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.databinding.*
 import com.google.android.material.button.MaterialButton
-import kotlinx.android.synthetic.main.layout_date_separator.view.*
 import java.util.*
 
 
 class ChatRecyclerAdapter(
-  val profileClickCallback: ItemClickCallback<String>
+  val onProfileClick: ItemClickCallback<String>,
+  val onMessageLongClick: ItemClickCallback<String>
 ) : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatViewHolder>(){
 
   lateinit var lastBindItem: GroupChat
@@ -162,7 +160,7 @@ class ChatRecyclerAdapter(
     }
   }
 
-  inner class ChatViewHolder(binding: ItemChatBinding) : BaseChatViewHolder(binding.root){
+  inner class ChatViewHolder(val binding: ItemChatBinding) : BaseChatViewHolder(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
@@ -183,12 +181,16 @@ class ChatRecyclerAdapter(
 
       setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
-      tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
-      tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
+      tvName.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+      tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+      binding.root.setOnLongClickListener {
+        onMessageLongClick.onItemClick(chat.text, position)
+        true
+      }
     }
   }
 
-  inner class MyChatViewHolder(binding: ItemChatUserBinding) : BaseChatViewHolder(binding.root){
+  inner class MyChatViewHolder(val binding: ItemChatUserBinding) : BaseChatViewHolder(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = binding.pbSending
@@ -211,10 +213,15 @@ class ChatRecyclerAdapter(
       setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvMessage.maxWidth = myChatMaxWidth
+
+      binding.root.setOnLongClickListener {
+        onMessageLongClick.onItemClick(chat.text, position)
+        true
+      }
     }
   }
 
-  inner class ChatReplyViewHolder(binding: ItemChatReplyBinding) : BaseChatViewHolder(binding.root){
+  inner class ChatReplyViewHolder(val binding: ItemChatReplyBinding) : BaseChatViewHolder(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
@@ -245,13 +252,18 @@ class ChatRecyclerAdapter(
 
       setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
-      tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
-      tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
+      tvName.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+      tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+      binding.root.setOnLongClickListener {
+        onMessageLongClick.onItemClick(chat.text, position)
+        true
+      }
+
     }
 
   }
 
-  inner class MyChatReplyViewHolder(binding: ItemChatReplyUserBinding) : BaseChatViewHolder(binding.root){
+  inner class MyChatReplyViewHolder(val binding: ItemChatReplyUserBinding) : BaseChatViewHolder(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = itemView.findViewById(R.id.pb_sending)
@@ -283,10 +295,15 @@ class ChatRecyclerAdapter(
         repliedClickCallback.onItemClick(chat, position)
       }
       tvMessage.maxWidth = myChatMaxWidth
+      binding.root.setOnLongClickListener {
+        onMessageLongClick.onItemClick(chat.text, position)
+        true
+      }
+
     }
   }
 
-  inner class MeetingViewHolder(binding: ItemChatMeetingBinding) : BaseChatViewHolder(binding.root){
+  inner class MeetingViewHolder(val binding: ItemChatMeetingBinding) : BaseChatViewHolder(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
     private val tvTitle: TextView = binding.tvMeetingTitle
@@ -312,17 +329,25 @@ class ChatRecyclerAdapter(
         meetingNoteClickCallback.onItemClick(chat, position)
       }
 
+      Glide.with(binding.root.context)
+        .load(R.drawable.idea)
+        .into(binding.ivMeetingPict)
+
       setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
       tvMessage.maxWidth = chatMaxWidth
 
-      tvName.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
-      tvNamePict.setOnClickListener { profileClickCallback.onItemClick(chat.username, position) }
+      tvName.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+      tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+      binding.root.setOnLongClickListener {
+        onMessageLongClick.onItemClick(chat.text, position)
+        true
+      }
     }
 
   }
 
-  inner class MyMeetingViewHolder(binding: ItemChatMeetingUserBinding) : BaseChatViewHolder(binding.root){
+  inner class MyMeetingViewHolder(val binding: ItemChatMeetingUserBinding) : BaseChatViewHolder(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvTitle: TextView = binding.tvMeetingTitle
     private val tvDate: TextView = binding.tvDate
@@ -348,12 +373,21 @@ class ChatRecyclerAdapter(
 
       setDateSeparator(cvBatchDate, tvBatchDate, chat, position)
 
+      Glide.with(binding.root.context)
+        .load(R.drawable.idea)
+        .into(binding.ivMeetingPict)
+
       tvMeetingDate.text = "Date: "+chat.meetingDate?.toDateTime24String()
       btnSeeNote.setOnClickListener {
         meetingNoteClickCallback.onItemClick(chat, position)
       }
 
       tvMessage.maxWidth = myChatMaxWidth
+      binding.root.setOnLongClickListener {
+        onMessageLongClick.onItemClick(chat.text, position)
+        true
+      }
+
     }
   }
 

@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.DialogFragment
+import com.gdn.android.onestop.base.BaseDialogFragment
 import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toDateString
@@ -19,12 +20,10 @@ import java.util.*
 
 class MeetingCreateFragment(
     private val fragmentActionCallback : FragmentActionCallback<MeetingCreateData>
-) : DialogFragment() {
+) : BaseDialogFragment<DialogMeetingCreateBinding>() {
 
 
   private val meetingCreateData = MeetingCreateData()
-
-  private lateinit var databinding: DialogMeetingCreateBinding
 
   private lateinit var errorEmptyText: String
 

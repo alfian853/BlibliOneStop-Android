@@ -1,14 +1,20 @@
 package com.gdn.android.onestop.group.fragment
 
+import android.R.attr.label
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.content.ClipData
+import android.content.ClipboardManager
+import android.content.Context
 import android.graphics.Point
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.content.ContextCompat.getSystemServiceName
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
@@ -20,6 +26,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
+import com.gdn.android.onestop.base.CopyTextFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.group.R
@@ -33,7 +40,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
@@ -82,7 +88,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
           val oldSize = chatRvAdapter.chatList.size
           val difSize = it.size-oldSize-1
           chatRvAdapter.chatList = it
-//          chatRvAdapter.notifyDataSetChanged()
+          //          chatRvAdapter.notifyDataSetChanged()
           chatRvAdapter.notifyItemRangeInserted(0,difSize)
         }
         else{
@@ -108,7 +114,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
     }
   }
 
-  private val profileClickCallback: ItemClickCallback<String> = object: ItemClickCallback<String> {
+  private val onProfileClick: ItemClickCallback<String> = object: ItemClickCallback<String> {
     override fun onItemClick(item: String, position: Int) {
       val fragment: DialogFragment = Navigator.getFragment(Navigator.Destination.PROFILE_DIALOG_FRAGMENT) as DialogFragment
       val bundle = Bundle()
@@ -116,6 +122,20 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
       fragment.arguments = bundle
       fragment.show(fragmentManager!!, "profile fragment")
 
+    }
+  }
+
+  private val onMessageLongClick: ItemClickCallback<String> = object: ItemClickCallback<String> {
+    override fun onItemClick(item: String, position: Int) {
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        CopyTextFragment {
+          val clipboard: ClipboardManager =
+            context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+
+          val clip: ClipData = ClipData.newPlainText(item, item)
+          clipboard.setPrimaryClip(clip)
+        }.show(fragmentManager!!, "")
+      }
     }
   }
 
@@ -136,9 +156,9 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   }
 
   override fun onCreateView(
-      inflater: LayoutInflater,
-      container: ViewGroup?,
-      savedInstanceState: Bundle?
+    inflater: LayoutInflater,
+    container: ViewGroup?,
+    savedInstanceState: Bundle?
   ): View? {
     instance = this
 
@@ -162,7 +182,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   private fun setupToolbar(){
     databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
-                                    else View.GONE
+    else View.GONE
 
     databinding.tvGroupName.text = group.name
 
@@ -198,7 +218,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
       group.isMute = !group.isMute
 
       databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
-                                      else View.GONE
+      else View.GONE
 
       GroupUtil.setSoundIcon(databinding.ivNotification, group.isMute)
       GroupUtil.setSoundIconLabel(databinding.tvNotification, group.isMute)
@@ -246,7 +266,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   private fun setupChatRecyclerView(){
     chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
     chatLiveData.observe(this, chatObserver)
-    chatRvAdapter = ChatRecyclerAdapter(profileClickCallback)
+    chatRvAdapter = ChatRecyclerAdapter(onProfileClick, onMessageLongClick)
     chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
 
     val point = Point()
@@ -324,9 +344,9 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
     val itemSwipeCallback = object : ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT){
       override fun onMove(
-          recyclerView: RecyclerView,
-          viewHolder: RecyclerView.ViewHolder,
-          target: RecyclerView.ViewHolder
+        recyclerView: RecyclerView,
+        viewHolder: RecyclerView.ViewHolder,
+        target: RecyclerView.ViewHolder
       ): Boolean {
         return false
       }

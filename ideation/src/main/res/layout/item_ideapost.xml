@@ -48,6 +48,7 @@
             android:maxLines="4"
             android:text="@string/post_content"
             android:textColor="@color/black"
+            android:autoLink="web"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/tv_date"
