@@ -171,7 +171,7 @@ class ChatRecyclerAdapter(
     override fun onBindViewHolder(chat: GroupChat, position: Int){
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
-      tvDate.text = chat.createdAt.toDateString()
+      tvDate.text = chat.createdAt.toTimeString()
       tvMessage.text = chat.text
       val nameAlias = chat.username.toAliasName()
       tvNamePict.text = nameAlias
@@ -199,7 +199,7 @@ class ChatRecyclerAdapter(
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvMessage.text = chat.text
-      tvDate.text = chat.createdAt.toDateString()
+      tvDate.text = chat.createdAt.toTimeString()
 
       if(chat.isSending){
         tvDate.visibility = View.GONE
@@ -235,7 +235,7 @@ class ChatRecyclerAdapter(
     override fun onBindViewHolder(chat: GroupChat, position: Int){
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
-      tvDate.text = chat.createdAt.toDateString()
+      tvDate.text = chat.createdAt.toTimeString()
       tvMessage.text = chat.text
       val nameAlias = chat.username.toAliasName()
       tvNamePict.text = nameAlias
@@ -275,7 +275,7 @@ class ChatRecyclerAdapter(
 
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvMessage.text = chat.text
-      tvDate.text = chat.createdAt.toDateString()
+      tvDate.text = chat.createdAt.toTimeString()
 
       if(chat.isSending){
         tvDate.visibility = View.GONE
@@ -318,7 +318,7 @@ class ChatRecyclerAdapter(
       tvTitle.text = "Meeting #${chat.meetingNo}"
       tvName.text = chat.username
       tvName.setTextColor(chat.nameColor)
-      tvDate.text = chat.createdAt.toDateString()
+      tvDate.text = chat.createdAt.toTimeString()
       tvMessage.text = chat.text
       val nameAlias = chat.username.toAliasName()
       tvNamePict.text = nameAlias
@@ -360,7 +360,7 @@ class ChatRecyclerAdapter(
     override fun onBindViewHolder(chat: GroupChat, position: Int) {
       tvTitle.text = "Meeting #${chat.meetingNo}"
       tvMessage.text = chat.text
-      tvDate.text = chat.createdAt.toDateString()
+      tvDate.text = chat.createdAt.toTimeString()
 
       if(chat.isSending){
         tvDate.visibility = View.GONE

@@ -1,20 +1,27 @@
 package com.gdn.android.onestop.group.fragment
 
-import android.R.attr.label
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
+import android.app.AlarmManager
+import android.app.Notification
+import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.content.Intent
 import android.graphics.Point
+import android.media.RingtoneManager
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
-import androidx.core.content.ContextCompat.getSystemService
-import androidx.core.content.ContextCompat.getSystemServiceName
+import androidx.appcompat.app.AlertDialog
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
@@ -26,13 +33,17 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
+import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.CopyTextFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
+import com.gdn.android.onestop.group.GroupActivity
+import com.gdn.android.onestop.group.GroupActivityArgs
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.*
 import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
+import com.gdn.android.onestop.group.service.MeetingAlarmPublisher
 import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
 import com.gdn.android.onestop.group.util.GroupUtil
 import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
@@ -65,6 +76,9 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   @Inject
   lateinit var groupClient: GroupClient
+
+  @Inject
+  lateinit var groupRepository: GroupRepository
 
   lateinit var chatRvAdapter: ChatRecyclerAdapter
 
@@ -237,6 +251,39 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
       fragment.show(fragmentManager!!,"member fragment")
     }
 
+    databinding.llLeave.setOnClickListener {
+      AlertDialog.Builder(this.context!!)
+        .setTitle(R.string.leave_group)
+        .setMessage(R.string.are_you_sure)
+        .setPositiveButton(R.string.yes) { dialog, which ->
+          viewmodel.launch {
+            groupRepository.leaveGroup(group.id)
+            activity!!.finish()
+          }
+        }.setNegativeButton(R.string.no) { dialog, which -> }.show()
+    }
+
+  }
+
+  private fun getMeetingNotification(meetingDateTime: Long) : Notification{
+    val mainIntent = Intent(context, GroupActivity::class.java)
+    mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+    mainIntent.putExtras(GroupActivityArgs(group).toBundle())
+
+    val mainPIntent: PendingIntent = PendingIntent.getActivity(
+      context, 0, mainIntent, PendingIntent.FLAG_ONE_SHOT
+    )
+
+
+    return NotificationCompat.Builder(context!!, Constant.NOTIF_CHAT_CHANNEL_ID)
+      .setPriority(NotificationCompat.PRIORITY_HIGH)
+      .setSmallIcon(R.drawable.ic_group_thin)
+      .setColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
+      .setContentTitle(group.name)
+      .setContentIntent(mainPIntent)
+      .setContentText("You have a meeting at ${meetingDateTime.toTime24String()} today")
+      .setAutoCancel(true)
+      .build()
   }
 
   private fun setupBottomLayout(){
@@ -249,7 +296,19 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
       MeetingCreateFragment(
         object : FragmentActionCallback<MeetingCreateData>{
           override fun onActionSuccess(data: MeetingCreateData) {
-            viewmodel.sendMeetingSchedule(data.datetime, data.description)
+            viewmodel.launch {
+              val isSuccess = viewmodel.sendMeetingSchedule(data.datetime, data.description)
+              if(isSuccess){
+                val context = this@GroupChatFragment.context!!
+                val notification = getMeetingNotification(data.datetime)
+
+                val notificationIntent = Intent( this@GroupChatFragment.context, MeetingAlarmPublisher::class.java)
+                notificationIntent.putExtra(Constant.NOTIF_MEETING_CHANNEL_ID , notification)
+                val serviceIntent = PendingIntent.getBroadcast(context, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT )
+                val alarmManager = context.getSystemService(Context. ALARM_SERVICE ) as AlarmManager
+                alarmManager.set(AlarmManager.RTC_WAKEUP , data.datetime - Constant.HOURS_TO_MS, serviceIntent)
+              }
+            }
           }
         }
       ).show(fragmentManager!!,null)
@@ -313,7 +372,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
     databinding.rvChat.adapter = chatRvAdapter
     databinding.rvChat.layoutManager = chatLayoutManager
-
+    databinding.cvDate.visibility = View.GONE
     databinding.rvChat.addOnScrollListener(object: RecyclerView.OnScrollListener(){
 
       override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {

@@ -1,4 +1,4 @@
-package com.gdn.android.onestop.group
+package com.gdn.android.onestop.group.service
 
 import android.content.Context
 import android.util.Log

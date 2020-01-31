@@ -18,8 +18,8 @@ import javax.inject.Inject
 class GroupChatViewModel
 @Inject
 constructor(
-    private val groupDao: GroupDao,
-    private val groupChatRepository: GroupChatRepository
+  private val groupDao: GroupDao,
+  private val groupChatRepository: GroupChatRepository
 ) : BaseViewModel(){
 
   private var pendingMsgList: LinkedList<GroupChat> = LinkedList()
@@ -92,9 +92,9 @@ constructor(
   }
 
   fun setOnReplyChat(
-      repliedChatId: String,
-      repliedUsername: String,
-      repliedSummary: String
+    repliedChatId: String,
+    repliedUsername: String,
+    repliedSummary: String
   ){
     chat.isReply = true
     chat.repliedUsername = repliedUsername
@@ -127,9 +127,9 @@ constructor(
     }
   }
 
-  suspend fun sendChat(){
-    if(chat.text == "")return
-    if(chatText == "" && !chat.isMeeting)return
+  suspend fun sendChat(): Boolean{
+    if(chat.text == "")return false
+    if(chatText == "" && !chat.isMeeting)return false
     val requestChat = chat
     chat = ChatSendRequest()
     chatText = ""
@@ -137,20 +137,19 @@ constructor(
     pendingMessage.postValue(pendingMsgList)
 
     replyVisibility = View.GONE
-    groupChatRepository.sendChat(activeGroupId, requestChat)
+    val result = groupChatRepository.sendChat(activeGroupId, requestChat)
 
     pendingMsgList.pop()
     pendingMessage.postValue(pendingMsgList)
+    return result
   }
 
 
-  fun sendMeetingSchedule(datetime: Long, description: String){
+  suspend fun sendMeetingSchedule(datetime: Long, description: String): Boolean {
     chat.isMeeting = true
     chat.text = description
     chat.meetingDate = datetime
-    launch {
-      sendChat()
-    }
+    return sendChat()
   }
 
 }

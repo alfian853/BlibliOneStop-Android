@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
@@ -49,14 +51,16 @@ class GroupSettingFragment(
 
 
     binding.llLeave.setOnClickListener {
-      val groupLeaveFragment = GroupLeaveFragment(
-        groupViewModel, group, object : ActionSuccessCallback {
-          override fun onSuccess() {
+      AlertDialog.Builder(this.context!!)
+        .setTitle(R.string.leave_group)
+        .setMessage(R.string.are_you_sure)
+        .setPositiveButton(R.string.yes) { dialog, which ->
+          groupViewModel.launch {
+            groupViewModel.leaveGroup(group.id)
+            Toast.makeText(this@GroupSettingFragment.context, "You leave the group", Toast.LENGTH_SHORT).show()
             fragmentManager!!.beginTransaction().remove(this@GroupSettingFragment).commit()
           }
-        })
-
-      groupLeaveFragment.show(this@GroupSettingFragment.fragmentManager!!, "leave group fragment")
+        }.setNegativeButton(R.string.no) { dialog, which -> }.show()
     }
 
 

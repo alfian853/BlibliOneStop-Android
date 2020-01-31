@@ -12,7 +12,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupWithNavController
 import com.gdn.android.onestop.app.databinding.ActivityMainBinding
-import com.gdn.android.onestop.group.FirebaseChatService
+import com.gdn.android.onestop.group.service.FirebaseChatService
 import com.google.android.material.bottomnavigation.BottomNavigationView
 
 

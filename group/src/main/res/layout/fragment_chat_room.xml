@@ -193,6 +193,7 @@
 
 
             <LinearLayout
+                android:id="@+id/ll_leave"
                 android:layout_marginTop="18dp"
                 android:orientation="horizontal"
                 android:gravity="center_horizontal"

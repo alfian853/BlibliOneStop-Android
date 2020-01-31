@@ -17,7 +17,7 @@ import com.gdn.android.onestop.group.*
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.data.GroupChatResponse
-
+import com.gdn.android.onestop.group.service.ChatReplyService
 
 object GroupUtil {
 

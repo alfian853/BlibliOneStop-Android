@@ -1,8 +1,8 @@
 package com.gdn.android.onestop.group.injection
 
 import com.gdn.android.onestop.base.AppComponent
-import com.gdn.android.onestop.group.ChatReplyService
-import com.gdn.android.onestop.group.FirebaseChatService
+import com.gdn.android.onestop.group.service.ChatReplyService
+import com.gdn.android.onestop.group.service.FirebaseChatService
 import com.gdn.android.onestop.group.fragment.*
 import dagger.Component
 import dagger.android.AndroidInjectionModule

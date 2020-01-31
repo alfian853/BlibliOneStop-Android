@@ -1,10 +1,11 @@
-package com.gdn.android.onestop.group
+package com.gdn.android.onestop.group.service
 
 import android.app.IntentService
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.RemoteInput
+import com.gdn.android.onestop.group.GroupConstant
 import com.gdn.android.onestop.group.data.ChatSendRequest
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupChatRepository

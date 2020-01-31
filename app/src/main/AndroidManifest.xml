@@ -35,10 +35,10 @@
             <nav-graph android:value="@navigation/group_navigation"/>
         </activity>
 
-        <service android:name="com.gdn.android.onestop.group.ChatReplyService" />
+        <service android:name="com.gdn.android.onestop.group.service.ChatReplyService" />
 
         <service
-            android:name="com.gdn.android.onestop.group.FirebaseChatService"
+            android:name="com.gdn.android.onestop.group.service.FirebaseChatService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -50,6 +50,8 @@
 
         <service android:name="com.gdn.android.onestop.library.util.AudioDownloadService"
             android:exported="false"/>
+
+        <receiver android:name="com.gdn.android.onestop.group.service.MeetingAlarmPublisher"/>
     </application>
 
 </manifest>
