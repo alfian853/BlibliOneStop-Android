@@ -52,7 +52,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     api project(':ideation')
     api project(':login')
-    api project(':group')
+    api project(':chat')
     api project(':library')
     api project(':profile')
 }
