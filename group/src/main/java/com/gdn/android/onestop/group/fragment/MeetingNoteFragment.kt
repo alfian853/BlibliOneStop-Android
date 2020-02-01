@@ -58,6 +58,7 @@ class MeetingNoteFragment : BaseFragment<FragmentNoteBinding>(){
       }
     }
 
+    databinding.llToolbar.tvToolbarTitle.setText(args.groupName)
 
     databinding.llToolbar.ivToolbarBack.setOnClickListener {
       findNavController().navigateUp()

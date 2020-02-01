@@ -54,6 +54,9 @@
         <argument
             android:name="meetingNoteId"
             app:argType="string" />
+        <argument
+            android:name="groupName"
+            app:argType="string" />
     </fragment>
     <activity
         android:id="@+id/groupActivity"

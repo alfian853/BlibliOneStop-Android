@@ -40,6 +40,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/group_name"
+                android:textSize="@dimen/size_text_h1"
                 android:layout_toEndOf="@id/iv_back" />
 
             <ImageView

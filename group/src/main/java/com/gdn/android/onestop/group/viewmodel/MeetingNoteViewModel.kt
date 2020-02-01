@@ -33,10 +33,10 @@ class MeetingNoteViewModel
     val result: NotePostResponse = meetingNoteRepository.postMeetingNote(meetingNote.groupId, notePostRequest)
     meetingNote.lastUpdate = result.currentLastUpdate
     if(result.isConflict){
-      noteText = "<last edit : ${Date().time.toDateTime24String()}>\n "+
-          "$noteText\n"+
-          "<your last edit : ${result.currentLastUpdate.toDateTime24String()}>\n " +
-          "${result.currentText}\n"
+      noteText = "<last edit : ${result.currentLastUpdate.toDateTime24String()}>\n "+
+          "${result.currentText}\n"+
+          "<your last edit : ${Date().time.toDateTime24String()}>\n " +
+          "$noteText\n"
 
       return false
     }
