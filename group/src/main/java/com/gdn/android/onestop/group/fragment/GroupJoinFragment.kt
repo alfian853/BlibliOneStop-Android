@@ -6,10 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.DialogFragment
 import com.gdn.android.onestop.base.BaseDialogFragment
-import com.gdn.android.onestop.group.GroupActivity
-import com.gdn.android.onestop.group.GroupActivityArgs
+import com.gdn.android.onestop.group.ChatActivity
+import com.gdn.android.onestop.group.ChatActivityArgs
 import com.gdn.android.onestop.group.databinding.FragmentPdGroupJoinBinding
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
 import kotlinx.coroutines.launch
@@ -39,9 +38,9 @@ class GroupJoinFragment(private val groupViewModel: GroupViewModel) : BaseDialog
                     Toast.makeText(context, ERROR_WRONG_GROUP_CODE, Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    val arg = GroupActivityArgs(group)
+                    val arg = ChatActivityArgs(group)
 
-                    val intent = Intent(activity, GroupActivity::class.java)
+                    val intent = Intent(activity, ChatActivity::class.java)
                     intent.putExtras(arg.toBundle())
                     startActivity(intent)
                 }

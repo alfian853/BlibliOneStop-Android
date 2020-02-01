@@ -34,14 +34,16 @@ import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.CopyTextFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
-import com.gdn.android.onestop.group.GroupActivity
-import com.gdn.android.onestop.group.GroupActivityArgs
-import com.gdn.android.onestop.group.R
-import com.gdn.android.onestop.group.data.*
-import com.gdn.android.onestop.group.databinding.FragmentChatRoomBinding
-import com.gdn.android.onestop.group.injection.GroupComponent
+import com.gdn.android.onestop.group.ChatActivity
+import com.gdn.android.onestop.group.ChatActivityArgs
+import com.gdn.android.onestop.group.data.GroupChat
+import com.gdn.android.onestop.group.data.GroupChatRepository
 import com.gdn.android.onestop.group.service.MeetingAlarmPublisher
 import com.gdn.android.onestop.group.util.ChatRecyclerAdapter
+import com.gdn.android.onestop.group.R
+import com.gdn.android.onestop.group.data.*
+import com.gdn.android.onestop.group.databinding.FragmentGroupChatBinding
+import com.gdn.android.onestop.group.injection.GroupComponent
 import com.gdn.android.onestop.group.util.GroupUtil
 import com.gdn.android.onestop.group.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -49,7 +51,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
+
+class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
   override fun doFragmentInjection() {
     GroupComponent.getInstance().inject(this)
@@ -70,9 +73,6 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
 
   @Inject
   lateinit var viewmodel : GroupChatViewModel
-
-  @Inject
-  lateinit var groupClient: GroupClient
 
   @Inject
   lateinit var groupRepository: GroupRepository
@@ -120,7 +120,9 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   private val toMeetingNoteClick = object : ItemClickCallback<GroupChat> {
     override fun onItemClick(item: GroupChat, position: Int) {
       findNavController().navigate(
-        GroupChatFragmentDirections.toMeetingNoteListFragment(group, item.id)
+        GroupChatFragmentDirections.toMeetingNoteListFragment(
+          group, item.id
+        )
       )
     }
   }
@@ -173,7 +175,7 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   ): View? {
     instance = this
 
-    databinding = FragmentChatRoomBinding.inflate(inflater, container, false)
+    databinding = FragmentGroupChatBinding.inflate(inflater, container, false)
     databinding.viewmodel = viewmodel
 
     setupChatRecyclerView()
@@ -263,9 +265,9 @@ class GroupChatFragment : BaseFragment<FragmentChatRoomBinding>(){
   }
 
   private fun getMeetingNotification(meetingDateTime: Long) : Notification{
-    val mainIntent = Intent(context, GroupActivity::class.java)
+    val mainIntent = Intent(context, ChatActivity::class.java)
     mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    mainIntent.putExtras(GroupActivityArgs(group).toBundle())
+    mainIntent.putExtras(ChatActivityArgs(group).toBundle())
 
     val mainPIntent: PendingIntent = PendingIntent.getActivity(
       context, 0, mainIntent, PendingIntent.FLAG_ONE_SHOT

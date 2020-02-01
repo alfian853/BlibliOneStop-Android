@@ -7,10 +7,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.gdn.android.onestop.base.BaseViewModel
+import com.gdn.android.onestop.group.data.ChatDao
 import com.gdn.android.onestop.group.data.ChatSendRequest
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.data.GroupChatRepository
-import com.gdn.android.onestop.group.data.GroupDao
 import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
@@ -18,7 +18,7 @@ import javax.inject.Inject
 class GroupChatViewModel
 @Inject
 constructor(
-  private val groupDao: GroupDao,
+  private val chatDao: ChatDao,
   private val groupChatRepository: GroupChatRepository
 ) : BaseViewModel(){
 
@@ -28,7 +28,7 @@ constructor(
 
 
   private suspend fun loadData(groupId: String){
-    val groupInfo = groupDao.getGroupInfo(groupId)
+    val groupInfo = chatDao.getGroupInfo(groupId)
     if(groupInfo.isNeverFetched()){
       groupChatRepository.loadMoreChatBefore(groupId)
     }
@@ -65,7 +65,8 @@ constructor(
   lateinit var activeGroupId : String
 
 
-  private var chat : ChatSendRequest = ChatSendRequest()
+  private var chat : ChatSendRequest =
+    ChatSendRequest()
 
   var chatText = ""
     @Bindable

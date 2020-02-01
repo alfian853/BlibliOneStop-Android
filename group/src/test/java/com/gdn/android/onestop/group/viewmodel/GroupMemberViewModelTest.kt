@@ -4,10 +4,8 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.gdn.android.onestop.base.BaseResponse
 import com.gdn.android.onestop.group.data.*
 import io.mockk.*
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
@@ -20,7 +18,7 @@ class GroupMemberViewModelTest {
   @RelaxedMockK
   lateinit var groupClient: GroupClient
 
-  lateinit var viewmodel: GroupMemberViewModel
+  lateinit var viewmodel: com.gdn.android.onestop.chat.viewmodel.GroupMemberViewModel
 
   private val mainThreadSurrogate = newSingleThreadContext("test-thread")
 
@@ -31,7 +29,7 @@ class GroupMemberViewModelTest {
   fun setup(){
     Dispatchers.setMain(mainThreadSurrogate)
     MockKAnnotations.init(this)
-    viewmodel = GroupMemberViewModel(groupClient)
+    viewmodel = com.gdn.android.onestop.chat.viewmodel.GroupMemberViewModel(groupClient)
   }
 
   @After

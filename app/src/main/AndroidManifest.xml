@@ -31,7 +31,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.gdn.android.onestop.group.GroupActivity">
+        <activity android:name="com.gdn.android.onestop.group.ChatActivity">
             <nav-graph android:value="@navigation/group_navigation"/>
         </activity>
 

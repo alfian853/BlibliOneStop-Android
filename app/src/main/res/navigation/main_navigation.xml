@@ -32,7 +32,7 @@
         tools:layout="@layout/layout_page_book"/>
     <activity
         android:id="@+id/groupActivity"
-        android:name="com.gdn.android.onestop.group.GroupActivity"
+        android:name="com.gdn.android.onestop.group.ChatActivity"
         android:label="GroupActivity"
         tools:layout="@layout/activity_group">
     </activity>

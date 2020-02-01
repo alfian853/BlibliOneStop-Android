@@ -4,12 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.group.data.ChatDao
 import com.gdn.android.onestop.group.data.GroupChat
 import com.gdn.android.onestop.group.data.GroupClient
-import com.gdn.android.onestop.group.data.GroupDao
-import com.gdn.android.onestop.group.fragment.GroupChatFragment
 import com.gdn.android.onestop.group.injection.GroupComponent
-import com.gdn.android.onestop.group.util.GroupUtil
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -23,7 +21,7 @@ import javax.inject.Inject
 class FirebaseChatService : FirebaseMessagingService() {
 
   @Inject
-  lateinit var groupDao: GroupDao
+  lateinit var chatDao: ChatDao
 
   @Inject
   lateinit var sessionManager: SessionManager
@@ -94,20 +92,20 @@ class FirebaseChatService : FirebaseMessagingService() {
     }
 
     CoroutineScope(Dispatchers.IO).launch {
-      groupDao.insertGroupChat(chat)
-      val groupInfo = groupDao.getGroupInfo(chat.groupId)
-      groupInfo.unreadChat += 1
-      groupDao.insertGroupInfo(groupInfo)
-
-      val group = groupDao.getGroupById(chat.groupId)
-
-      if(group.isMute)return@launch
-      
-      val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != group.id
-
-      if(isNotInChatRoom) {
-        GroupUtil.notifyChat(context, resources, chat.username, chat.text, group)
-      }
+//      chatDao.insertGroupChat(chat)
+//      val groupInfo = chatDao.getGroupInfo(chat.groupId)
+//      groupInfo.unreadChat += 1
+//      chatDao.insertGroupInfo(groupInfo)
+//
+//      val group = chatDao.getGroupById(chat.groupId)
+//
+//      if(group.isMute)return@launch
+//
+//      val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != group.id
+//
+//      if(isNotInChatRoom) {
+//        com.gdn.android.onestop.chat.util.ChatUtil.notifyChat(context, resources, chat.username, chat.text, group)
+//      }
     }
 
 

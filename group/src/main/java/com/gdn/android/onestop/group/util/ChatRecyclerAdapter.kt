@@ -12,8 +12,8 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.util.*
-import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.GroupChat
+import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.databinding.*
 import com.google.android.material.button.MaterialButton
 import java.util.*
@@ -266,7 +266,7 @@ class ChatRecyclerAdapter(
   inner class MyChatReplyViewHolder(val binding: ItemChatReplyUserBinding) : BaseChatViewHolder(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
-    private val pbSending: ProgressBar = itemView.findViewById(R.id.pb_sending)
+    private val pbSending: ProgressBar = binding.pbSending
     private val tvReplyName: TextView = binding.tvReplyUsername
     private val tvReplyText: TextView = binding.tvReplyMessage
     private val llReplyContainer: LinearLayout = binding.llReplyContainer

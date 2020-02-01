@@ -11,8 +11,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.group.GroupActivity
-import com.gdn.android.onestop.group.GroupActivityArgs
+import com.gdn.android.onestop.base.util.Navigator
+import com.gdn.android.onestop.group.ChatActivity
+import com.gdn.android.onestop.group.ChatActivityArgs
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.data.GroupDao
@@ -41,9 +42,9 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     private val groupClickCallback = object :
         ItemClickCallback<Group> {
         override fun onItemClick(item: Group, position: Int) {
-            val arg = GroupActivityArgs(item)
+            val arg = ChatActivityArgs(item)
 
-            val intent = Intent(activity, GroupActivity::class.java)
+            val intent = Intent(activity, ChatActivity::class.java)
             intent.putExtras(arg.toBundle())
             startActivity(intent)
         }

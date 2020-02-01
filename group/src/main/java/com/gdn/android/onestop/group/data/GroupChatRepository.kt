@@ -1,14 +1,14 @@
 package com.gdn.android.onestop.group.data
 
-import com.gdn.android.onestop.group.util.GroupUtil
 import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.group.util.ChatUtil
 import kotlin.math.max
 import kotlin.math.min
 
 
 class GroupChatRepository constructor(
-    private val groupDao: GroupDao,
-    private val groupClient: GroupClient,
+    private val chatDao: ChatDao,
+    private val groupClient: ChatClient,
     private val sessionManager: SessionManager
 ) {
 
@@ -19,10 +19,10 @@ class GroupChatRepository constructor(
 
     private val sessionUsername = sessionManager.user!!.username
 
-    fun getChatLiveData(groupId: String) = groupDao.getGroupChatLiveData(groupId)
+    fun getChatLiveData(groupId: String) = chatDao.getGroupChatLiveData(groupId)
 
     suspend fun loadMoreChatBefore(groupId : String){
-        val groupInfo = groupDao.getGroupInfo(groupId)
+        val groupInfo = chatDao.getGroupInfo(groupId)
         if(groupInfo.hasFetchFirstChat)return
         val response = groupClient.getGroupChat(groupId, groupInfo.lowerBoundTimeStamp, null,
             PAGE_SIZE
@@ -43,24 +43,24 @@ class GroupChatRepository constructor(
                     groupInfo.lowerBoundTimeStamp = minTime
                     groupInfo.upperBoundTimeStamp = maxTime
 
-                    groupDao.insertGroupInfo(groupInfo)
+                    chatDao.insertGroupInfo(groupInfo)
                     val chatList : List<GroupChat> = it.map {
-                        GroupUtil.mapChatResponse(it, sessionUsername).apply {
+                        ChatUtil.mapChatResponse(it, sessionUsername).apply {
                             this.groupId = groupId
                         }
                     }
-                    groupDao.insertGroupChat(chatList)
+                    chatDao.insertGroupChat(chatList)
                 }
                 else{
                     groupInfo.hasFetchFirstChat = true
-                    groupDao.insertGroupInfo(groupInfo)
+                    chatDao.insertGroupInfo(groupInfo)
                 }
             }
         }
     }
 
     suspend fun loadMoreChatAfter(groupId: String){
-        val groupInfo = groupDao.getGroupInfo(groupId)
+        val groupInfo = chatDao.getGroupInfo(groupId)
 
         val response = groupClient.getGroupChat(groupId, null, groupInfo.upperBoundTimeStamp,
             PAGE_SIZE
@@ -81,14 +81,14 @@ class GroupChatRepository constructor(
                     groupInfo.lowerBoundTimeStamp = minTime
                     groupInfo.upperBoundTimeStamp = maxTime
 
-                    groupDao.insertGroupInfo(groupInfo)
+                    chatDao.insertGroupInfo(groupInfo)
                     val chatList : List<GroupChat> = it.map {
-                        GroupUtil.mapChatResponse(it, sessionUsername).apply {
+                        ChatUtil.mapChatResponse(it, sessionUsername).apply {
                             this.groupId = groupId
                             this.isMe = this.username == sessionUsername
                         }
                     }
-                    groupDao.insertGroupChat(chatList)
+                    chatDao.insertGroupChat(chatList)
                 }
             }
         }
@@ -99,10 +99,10 @@ class GroupChatRepository constructor(
         val response = groupClient.postGroupChat(groupId, chatSendRequest)
 
         if(response.isSuccessful){
-            val groupChat = GroupUtil.mapChatResponse(response.body()!!.data!!, sessionUsername).apply {
+            val groupChat = ChatUtil.mapChatResponse(response.body()!!.data!!, sessionUsername).apply {
                 this.groupId = groupId
             }
-            groupDao.insertGroupChat(groupChat)
+            chatDao.insertGroupChat(groupChat)
         }
 
         return response.isSuccessful

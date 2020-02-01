@@ -8,9 +8,8 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.group.GroupActivity
-import com.gdn.android.onestop.group.GroupActivityArgs
-import com.gdn.android.onestop.group.R
+import com.gdn.android.onestop.group.ChatActivity
+import com.gdn.android.onestop.group.ChatActivityArgs
 import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.group.data.GroupMeeting
 import com.gdn.android.onestop.group.databinding.FragmentMeetingListBinding
@@ -36,9 +35,9 @@ class MeetingListFragment : BaseFragment<FragmentMeetingListBinding>() {
     override fun onItemClick(item: GroupMeeting, position: Int) {
       CoroutineScope(Dispatchers.Main).launch {
         val group = groupDao.getGroupById(item.groupId)
-        val arg = GroupActivityArgs(group)
+        val arg = ChatActivityArgs(group)
 
-        val intent = Intent(activity, GroupActivity::class.java)
+        val intent = Intent(activity, ChatActivity::class.java)
         intent.putExtras(arg.toBundle())
         startActivity(intent)
       }

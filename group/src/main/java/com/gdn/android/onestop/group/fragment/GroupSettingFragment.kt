@@ -4,14 +4,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.viewmodel.GroupViewModel
-import com.gdn.android.onestop.base.util.ActionSuccessCallback
 import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.group.databinding.FragmentBsGroupSettingBinding
@@ -37,8 +33,6 @@ class GroupSettingFragment(
     GroupComponent.getInstance().inject(this)
     super.onCreate(savedInstanceState)
   }
-
-
 
   override fun onCreateView(
     inflater: LayoutInflater,

@@ -40,13 +40,9 @@ interface GroupDao {
     @Query("delete from GroupInfo where id = :groupId")
     suspend fun deleteGroupInfoById(groupId: String)
 
-    @Query("delete from GroupChat where id = :groupId")
-    suspend fun deleteGroupChatById(groupId: String)
-
     @Transaction
     suspend fun deleteGroupData(groupId: String){
         deleteGroupById(groupId)
-        deleteGroupChatById(groupId)
         deleteGroupInfoById(groupId)
     }
 
@@ -56,7 +52,7 @@ interface GroupDao {
     @Transaction
     suspend fun insertGroupInfo(groupInfo: GroupInfo){
         _insertGroupInfo(groupInfo)
-        val group = getGroupById(groupInfo.id)
+        val group: Group = getGroupById(groupInfo.id)
         group.unreadChat = groupInfo.unreadChat
         insertGroup(group)
     }
@@ -74,41 +70,6 @@ interface GroupDao {
         }
         return groupInfo
     }
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun _insertGroupChat(vararg groupChat: GroupChat)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun _insertGroupChat(groupChat: List<GroupChat>)
-
-    private suspend fun mapChatToMeeting(groupChat: GroupChat): GroupMeeting {
-        return GroupMeeting().apply {
-            chatId = groupChat.id
-            groupId = groupChat.groupId
-            meetingDate = groupChat.meetingDate!!
-            meetingNo = groupChat.meetingNo!!
-            groupName = getGroupById(groupChat.groupId).name
-        }
-    }
-
-    @Transaction
-    suspend fun insertGroupChat(groupChatList: List<GroupChat>){
-        _insertGroupChat(groupChatList)
-        val meetingList = groupChatList.filter { it.isMeeting }.map {mapChatToMeeting(it)}
-        insertGroupMeeting(meetingList)
-    }
-
-    @Transaction
-    suspend fun insertGroupChat(groupChat: GroupChat){
-        _insertGroupChat(groupChat)
-
-        if(groupChat.isMeeting){
-            insertGroupMeeting(mapChatToMeeting(groupChat))
-        }
-    }
-
-    @Query("select * from GroupChat where groupId = :groupId order by createdAt asc")
-    fun getGroupChatLiveData(groupId: String): LiveData<List<GroupChat>>
 
     @Query("select * from GroupMeeting where meetingDate >= :currentTime order by meetingDate asc")
     fun getAllNextMeeting(currentTime: Long): LiveData<List<GroupMeeting>>

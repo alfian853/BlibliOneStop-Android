@@ -7,6 +7,11 @@ import retrofit2.http.*
 
 interface GroupClient{
 
+    @POST("/chat/subscribe")
+    suspend fun subscribeGroupsByToken(
+        @Query("token")token : String
+    ) : Response<BaseResponse<Boolean>>
+
     @GET("/group")
     suspend fun getGroups() : Response<BaseResponse<UserGroupResponse>>
 
@@ -14,20 +19,6 @@ interface GroupClient{
     suspend fun createGroups(
         @Body createGroupRequest: CreateGroupRequest
     ) : Response<BaseResponse<Group>>
-
-    @GET("/group/{groupId}/chat")
-    suspend fun getGroupChat(
-        @Path("groupId") groupId : String,
-        @Query("before_time") beforeTime : Long?,
-        @Query("after_time") afterTime : Long?,
-        @Query("size") size : Int
-    ) : Response<BaseResponse<List<GroupChatResponse>>>
-
-    @POST("/group/{groupId}/chat")
-    suspend fun postGroupChat(
-        @Path("groupId") groupId: String,
-        @Body groupChatSendRequest: ChatSendRequest
-    ) : Response<BaseResponse<GroupChatResponse>>
 
     @GET("/group/last_update")
     suspend fun getLastUpdate() : Response<BaseResponse<Long>>
@@ -40,11 +31,6 @@ interface GroupClient{
     @POST("/group/{groupId}/leave")
     suspend fun leaveGroup(
         @Path("groupId") groupId: String
-    ) : Response<BaseResponse<Boolean>>
-
-    @POST("/group/subscribe")
-    suspend fun subscribeGroupsByToken(
-        @Query("token")token : String
     ) : Response<BaseResponse<Boolean>>
 
     @GET("/group/{groupId}/meeting")

@@ -1,14 +1,11 @@
 package com.gdn.android.onestop.group.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.gdn.android.onestop.group.data.GroupChat
-import com.gdn.android.onestop.group.data.GroupChatRepository
 import com.gdn.android.onestop.group.data.GroupDao
 import com.gdn.android.onestop.group.data.GroupInfo
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
 import io.mockk.impl.annotations.MockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -28,7 +25,7 @@ class GroupChatViewModelTest {
   @MockK(relaxed = true)
   lateinit var groupChatRepository: GroupChatRepository
 
-  lateinit var viewmodel: GroupChatViewModel
+  lateinit var viewmodel: com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel
 
   val GROUP_ID = "123"
 
@@ -41,7 +38,8 @@ class GroupChatViewModelTest {
   fun setup(){
     Dispatchers.setMain(mainThreadSurrogate)
     MockKAnnotations.init(this)
-    viewmodel = GroupChatViewModel(groupDao, groupChatRepository)
+    viewmodel =
+      com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel(groupDao, groupChatRepository)
   }
 
   @After

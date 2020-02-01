@@ -11,8 +11,8 @@ import com.gdn.android.onestop.group.R
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.util.Util
-import com.gdn.android.onestop.group.GroupActivity
-import com.gdn.android.onestop.group.GroupActivityArgs
+import com.gdn.android.onestop.group.ChatActivityArgs
+import com.gdn.android.onestop.group.ChatActivity
 import com.gdn.android.onestop.group.data.Group
 import com.gdn.android.onestop.group.databinding.FragmentGroupCreateBinding
 import com.gdn.android.onestop.group.injection.GroupComponent
@@ -75,9 +75,9 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
                     fragmentManager!!.beginTransaction().remove(this@GroupCreateFragment).commit()
 
                     group?.let {
-                        val arg = GroupActivityArgs(it)
+                        val arg = ChatActivityArgs(it)
 
-                        val intent = Intent(activity, GroupActivity::class.java)
+                        val intent = Intent(activity, ChatActivity::class.java)
                         intent.putExtras(arg.toBundle())
                         startActivity(intent)
                     }

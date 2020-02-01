@@ -6,11 +6,8 @@ import android.app.NotificationManager
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.media.AudioAttributes
-import android.net.Uri
 import android.os.Build
 import com.gdn.android.onestop.base.Constant
-import com.gdn.android.onestop.group.R
 
 class MeetingAlarmPublisher : BroadcastReceiver() {
 

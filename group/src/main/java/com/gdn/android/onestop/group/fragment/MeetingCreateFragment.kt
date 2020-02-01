@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.res.ResourcesCompat
 import androidx.core.widget.doOnTextChanged
-import androidx.fragment.app.DialogFragment
 import com.gdn.android.onestop.base.BaseDialogFragment
 import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.Util

@@ -12,14 +12,14 @@ import com.gdn.android.onestop.group.databinding.ActivityGroupBinding
 import com.gdn.android.onestop.group.fragment.GroupChatFragment
 import com.gdn.android.onestop.group.fragment.GroupChatFragmentArgs
 
-class GroupActivity : AppCompatActivity(){
+class ChatActivity : AppCompatActivity(){
 
   lateinit var hostFragment: NavHostFragment
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     val group : Group by lazy {
-      val tmp : GroupActivityArgs by navArgs()
+      val tmp : ChatActivityArgs by navArgs()
       tmp.groupModel
     }
 

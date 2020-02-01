@@ -20,6 +20,12 @@ class GroupProvideModule {
 
     @GroupScope
     @Provides
+    fun provideChatClient(retrofit: Retrofit) : ChatClient {
+        return retrofit.create(ChatClient::class.java)
+    }
+
+    @GroupScope
+    @Provides
     fun provideGroupDatabase(application: Application) : GroupDatabase {
         return Room.databaseBuilder(
             application.applicationContext,
@@ -30,7 +36,13 @@ class GroupProvideModule {
     @GroupScope
     @Provides
     fun provideGroupDao(groupDatabase: GroupDatabase) : GroupDao {
-        return groupDatabase.GroupDao()
+        return groupDatabase.groupDao()
+    }
+
+    @GroupScope
+    @Provides
+    fun provideChatDao(groupDatabase: GroupDatabase) : ChatDao {
+        return groupDatabase.chatDao()
     }
 
     @GroupScope
@@ -45,12 +57,8 @@ class GroupProvideModule {
 
     @GroupScope
     @Provides
-    fun provideGroupChatRepository(groupDao: GroupDao, groupClient: GroupClient, sessionManager: SessionManager) : GroupChatRepository {
-        return GroupChatRepository(
-            groupDao,
-            groupClient,
-            sessionManager
-        )
+    fun provideGroupChatRepository(chatDao: ChatDao, chatClient: ChatClient, sessionManager: SessionManager) : GroupChatRepository {
+        return GroupChatRepository(chatDao, chatClient, sessionManager)
     }
 
     @GroupScope
