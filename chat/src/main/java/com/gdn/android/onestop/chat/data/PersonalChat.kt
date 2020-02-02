@@ -22,6 +22,10 @@ open class PersonalChat {
   var repliedText: String? = null
   var repliedUsername: String? = null
 
+  open fun getSenderName(): String {
+    return from
+  }
+
   @Ignore
   var isSending = false
 
@@ -32,21 +36,16 @@ open class PersonalChat {
 
   @delegate:Ignore
   val nameColor : Int by lazy {
-    Util.getColorFromString(from)
+    Util.getColorFromString(getSenderName())
   }
 
   @delegate:Ignore
   val alias : String by lazy {
-    from.toAliasName()
+    getSenderName().toAliasName()
   }
 
   @delegate:Ignore
   val repliedNameColor : Int by lazy {
-    if(isMe){
-      Util.getColorFromString(to+"")
-    }
-    else{
-      Util.getColorFromString(from+"")
-    }
+      Util.getColorFromString(repliedUsername+"")
   }
 }

@@ -19,4 +19,8 @@ open class GroupChat : PersonalChat() {
   val nameAlias : String by lazy {
     username.toAliasName()
   }
+
+  override fun getSenderName(): String {
+    return username
+  }
 }

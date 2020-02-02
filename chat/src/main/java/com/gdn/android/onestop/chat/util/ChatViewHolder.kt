@@ -61,7 +61,7 @@ class ChatViewHolder<T: PersonalChat>(
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
-        tvName.text = chat.from
+        tvName.text = chat.getSenderName()
         tvName.setTextColor(chat.nameColor)
         tvDate.text = chat.createdAt.toTimeString()
         tvMessage.text = chat.text
@@ -73,8 +73,8 @@ class ChatViewHolder<T: PersonalChat>(
 
         setDateSeparator(cvBatchDate, tvBatchDate, chat, isDiffDay)
 
-        tvName.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
-        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
+        tvName.setOnClickListener { onProfileClick.onItemClick(chat.getSenderName(), position) }
+        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.getSenderName(), position) }
         binding.root.setOnLongClickListener {
             onMessageLongClick.onItemClick(chat.text, position)
             true
@@ -133,7 +133,7 @@ class ChatReplyViewHolder<T: PersonalChat>(
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
-        tvName.text = chat.from
+        tvName.text = chat.getSenderName()
         tvName.setTextColor(chat.nameColor)
         tvDate.text = chat.createdAt.toTimeString()
         tvMessage.text = chat.text
@@ -141,7 +141,7 @@ class ChatReplyViewHolder<T: PersonalChat>(
         tvNamePict.text = nameAlias
         tvNamePict.setBackgroundColor(chat.nameColor)
 
-        tvReplyName.text = chat.from
+        tvReplyName.text = chat.getSenderName()
         tvReplyText.text = chat.repliedText
         tvReplyName.setTextColor(chat.repliedNameColor)
         llReplyContainer.setOnClickListener{
@@ -152,8 +152,8 @@ class ChatReplyViewHolder<T: PersonalChat>(
 
         setDateSeparator(cvBatchDate, tvBatchDate, chat, isDiffDay)
 
-        tvName.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
-        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
+        tvName.setOnClickListener { onProfileClick.onItemClick(chat.getSenderName(), position) }
+        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.getSenderName(), position) }
         binding.root.setOnLongClickListener {
             onMessageLongClick.onItemClick(chat.text, position)
             true
