@@ -34,12 +34,11 @@ import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.CopyTextFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
-import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.data.GroupChat
 import com.gdn.android.onestop.chat.data.GroupChatRepository
 import com.gdn.android.onestop.chat.service.MeetingAlarmPublisher
-import com.gdn.android.onestop.chat.util.ChatRecyclerAdapter
+import com.gdn.android.onestop.chat.util.GroupChatRecyclerAdapter
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.databinding.FragmentGroupChatBinding
@@ -77,7 +76,7 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
   @Inject
   lateinit var groupRepository: GroupRepository
 
-  lateinit var chatRvAdapter: ChatRecyclerAdapter
+  lateinit var chatRvAdapter: GroupChatRecyclerAdapter
 
   val group: Group by lazy {
     val tmp: GroupChatFragmentArgs by navArgs()
@@ -99,8 +98,7 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
           val oldSize = chatRvAdapter.chatList.size
           val difSize = it.size-oldSize-1
           chatRvAdapter.chatList = it
-          //          chatRvAdapter.notifyDataSetChanged()
-          chatRvAdapter.notifyItemRangeInserted(0,difSize)
+          chatRvAdapter.notifyItemRangeInserted(0,difSize-1)
         }
         else{
           chatRvAdapter.chatList = it
@@ -322,18 +320,8 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
 
   private fun setupChatRecyclerView(){
-    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
-    chatLiveData.observe(this, chatObserver)
-    chatRvAdapter = ChatRecyclerAdapter(onProfileClick, onMessageLongClick)
-    chatRvAdapter.meetingNoteClickCallback = toMeetingNoteClick
-
-    val point = Point()
-    activity!!.windowManager.defaultDisplay.getSize(point)
-    chatRvAdapter.layoutWidth = point.x
-
     val chatLayoutManager = LinearLayoutManager(this.context)
 
-    // init reply click callback
     val onReplyClickCallback = object: ItemClickCallback<GroupChat>{
       override fun onItemClick(item: GroupChat, position: Int) {
         val chatList = chatRvAdapter.chatList
@@ -355,7 +343,7 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
         val target = chatRvAdapter.itemViewArray[repliedPosition]
         if(target == null){
-          chatRvAdapter.pendingReplyShowAnimation = ChatRecyclerAdapter.ItemAnimationTask(repliedPosition, animator)
+          chatRvAdapter.pendingReplyShowAnimation = GroupChatRecyclerAdapter.ItemAnimationTask(repliedPosition, animator)
         }
         else{
           animator.addUpdateListener {
@@ -366,8 +354,13 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
       }
 
     }
+    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
+    chatLiveData.observe(this, chatObserver)
+    chatRvAdapter = GroupChatRecyclerAdapter(onProfileClick, onMessageLongClick, onReplyClickCallback, toMeetingNoteClick)
 
-    chatRvAdapter.repliedClickCallback = onReplyClickCallback
+    val point = Point()
+    activity!!.windowManager.defaultDisplay.getSize(point)
+    chatRvAdapter.layoutWidth = point.x
 
     databinding.rvChat.adapter = chatRvAdapter
     databinding.rvChat.layoutManager = chatLayoutManager

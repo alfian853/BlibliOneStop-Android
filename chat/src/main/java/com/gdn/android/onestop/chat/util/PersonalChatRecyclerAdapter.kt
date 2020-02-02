@@ -19,10 +19,10 @@ import com.google.android.material.button.MaterialButton
 import java.util.*
 
 
-class ChatRecyclerAdapter(
+class GroupChatRecyclerAdapter(
   val onProfileClick: ItemClickCallback<String>,
   val onMessageLongClick: ItemClickCallback<String>
-) : RecyclerView.Adapter<ChatRecyclerAdapter.BaseChatViewHolder>(){
+) : RecyclerView.Adapter<GroupChatRecyclerAdapter.BaseChatViewHolder>(){
 
   lateinit var lastBindItem: GroupChat
 
