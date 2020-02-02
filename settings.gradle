@@ -1,2 +1,2 @@
-include ':app', ':ideation', ':login', ':base', ':group', ':library', ':profile'
+include ':app', ':ideation', ':login', ':base', ':chat', ':library', ':profile'
 rootProject.name='BlibliOneStop'
