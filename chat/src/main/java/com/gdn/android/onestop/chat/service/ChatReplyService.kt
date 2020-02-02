@@ -5,11 +5,10 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.RemoteInput
-import com.gdn.android.onestop.chat.ChatConstant
-import com.gdn.android.onestop.chat.data.ChatSendRequest
+import com.gdn.android.onestop.chat.data.GroupChatSendRequest
 import com.gdn.android.onestop.chat.data.GroupChatRepository
 import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.ChatUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -22,7 +21,7 @@ class ChatReplyService : IntentService("ChatReplyService") {
   lateinit var groupChatRepository: GroupChatRepository
 
   override fun onHandleIntent(intent: Intent?) {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
 
     val group = intent!!.extras!!.get(com.gdn.android.onestop.chat.ChatConstant.GROUP) as Group
 
@@ -34,7 +33,7 @@ class ChatReplyService : IntentService("ChatReplyService") {
           com.gdn.android.onestop.chat.ChatConstant.KEY_TEXT_REPLY
         ).toString()
 
-        val chatRequest = ChatSendRequest()
+        val chatRequest = GroupChatSendRequest()
         chatRequest.text = replyText
 
 

@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.viewmodel.GroupViewModel
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.GroupDao
 import com.gdn.android.onestop.chat.databinding.FragmentBsGroupSettingBinding
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.GroupUtil
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
@@ -20,7 +20,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GroupSettingFragment(
-  private val groupViewModel: GroupViewModel,
+  private val groupViewModel: ChatListViewModel,
   private val group: Group
 ) : BottomSheetDialogFragment() {
 
@@ -30,7 +30,7 @@ class GroupSettingFragment(
   lateinit var groupDao: GroupDao
 
   override fun onCreate(savedInstanceState: Bundle?) {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
     super.onCreate(savedInstanceState)
   }
 
@@ -51,7 +51,7 @@ class GroupSettingFragment(
         .setPositiveButton(R.string.yes) { dialog, which ->
           groupViewModel.launch {
             groupViewModel.leaveGroup(group.id)
-            Toast.makeText(this@GroupSettingFragment.context, "You leave the group", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@GroupSettingFragment.context, "You leave the name", Toast.LENGTH_SHORT).show()
             fragmentManager!!.beginTransaction().remove(this@GroupSettingFragment).commit()
           }
         }.setNegativeButton(R.string.no) { dialog, which -> }.show()

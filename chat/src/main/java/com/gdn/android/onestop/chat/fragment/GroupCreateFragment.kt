@@ -12,11 +12,10 @@ import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.chat.ChatActivityArgs
-import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.databinding.FragmentGroupCreateBinding
-import com.gdn.android.onestop.chat.injection.GroupComponent
-import com.gdn.android.onestop.chat.viewmodel.GroupViewModel
+import com.gdn.android.onestop.chat.injection.ChatComponent
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -26,15 +25,15 @@ import javax.inject.Inject
 class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>() {
 
     override fun doFragmentInjection() {
-        GroupComponent.getInstance().inject(this)
+        ChatComponent.getInstance().inject(this)
     }
 
     @Inject
     lateinit var viewModelFactory: ViewModelProviderFactory
 
-    lateinit var viewModel : GroupViewModel
+    lateinit var viewModel : ChatListViewModel
 
-    private val ERROR_GROUP_NAME = "Please fill group name"
+    private val ERROR_GROUP_NAME = "Please fill name name"
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,7 +49,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
         }
 
         viewModel = ViewModelProvider(this, viewModelFactory)
-            .get(GroupViewModel::class.java)
+            .get(ChatListViewModel::class.java)
 
 
         databinding.etGroupName.doOnTextChanged { text, start, count, after ->
@@ -75,7 +74,7 @@ class GroupCreateFragment : BaseFullScreenFragment<FragmentGroupCreateBinding>()
                     fragmentManager!!.beginTransaction().remove(this@GroupCreateFragment).commit()
 
                     group?.let {
-                        val arg = ChatActivityArgs(it)
+                        val arg = ChatActivityArgs(it, null)
 
                         val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
                         intent.putExtras(arg.toBundle())

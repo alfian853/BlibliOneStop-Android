@@ -8,25 +8,23 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.data.GroupDao
-import com.gdn.android.onestop.chat.data.GroupInfo
+import com.gdn.android.onestop.chat.data.ChatChannel
 import com.gdn.android.onestop.chat.databinding.ItemGroupBinding
 
-class GroupRecyclerAdapter(
-    private val optionClickCallback: ItemClickCallback<Group>,
-    private val nameClickCallback: ItemClickCallback<Group>
-    ) : RecyclerView.Adapter<GroupRecyclerAdapter.GroupViewHolder>() {
+class ChatChannelRecyclerAdapter(
+    private val optionClickCallback: ItemClickCallback<ChatChannel>,
+    private val nameClickCallback: ItemClickCallback<ChatChannel>
+    ) : RecyclerView.Adapter<ChatChannelRecyclerAdapter.ChatChannelViewHolder>() {
 
-    private var groupList: List<Group> = ArrayList()
+    private var groupList: List<ChatChannel> = ArrayList()
 
-    fun updateList(groupList: List<Group>){
+    fun updateList(groupList: List<ChatChannel>){
         this.groupList = groupList
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
-        return GroupViewHolder(ItemGroupBinding.inflate(
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatChannelViewHolder {
+        return ChatChannelViewHolder(ItemGroupBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         ))
     }
@@ -35,7 +33,7 @@ class GroupRecyclerAdapter(
         return groupList.size
     }
 
-    override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ChatChannelViewHolder, position: Int) {
         val group = groupList[position]
 
         holder.tvName.text = group.name
@@ -62,7 +60,7 @@ class GroupRecyclerAdapter(
     }
 
 
-    inner class GroupViewHolder(databinding: ItemGroupBinding) : RecyclerView.ViewHolder(databinding.root) {
+    inner class ChatChannelViewHolder(databinding: ItemGroupBinding) : RecyclerView.ViewHolder(databinding.root) {
 
         val tvName: TextView = databinding.tvGroupName
         val ivOption: ImageView = databinding.ivOption

@@ -12,9 +12,9 @@
     </fragment>
     <fragment
         android:id="@+id/groupFragment"
-        android:name="com.gdn.android.onestop.chat.fragment.GroupFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.ChatChannelFragment"
         android:label="@string/label_idea_channel"
-        tools:layout="@layout/fragment_group" >
+        tools:layout="@layout/fragment_chat_list" >
         <action
             android:id="@+id/action_groupFragment_to_groupActivity"
             app:destination="@id/groupActivity" />

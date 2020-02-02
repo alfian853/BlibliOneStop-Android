@@ -4,41 +4,38 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 
 @Dao
-interface ChatDao : GroupDao {
+interface ChatDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun _insertGroupChat(vararg groupChat: GroupChat)
+    suspend fun insertGroupChat(vararg groupChat: GroupChat)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun _insertGroupChat(groupChat: List<GroupChat>)
-
-    private suspend fun mapChatToMeeting(groupChat: GroupChat): GroupMeeting {
-        return GroupMeeting().apply {
-            chatId = groupChat.id
-            groupId = groupChat.groupId
-            meetingDate = groupChat.meetingDate!!
-            meetingNo = groupChat.meetingNo!!
-            groupName = getGroupById(groupChat.groupId).name
-        }
-    }
-
-    @Transaction
-    suspend fun insertGroupChat(groupChatList: List<GroupChat>){
-        _insertGroupChat(groupChatList)
-        val meetingList = groupChatList.filter { it.isMeeting }.map {mapChatToMeeting(it)}
-        insertGroupMeeting(meetingList)
-    }
-
-    @Transaction
-    suspend fun insertGroupChat(groupChat: GroupChat){
-        _insertGroupChat(groupChat)
-
-        if(groupChat.isMeeting){
-            insertGroupMeeting(mapChatToMeeting(groupChat))
-        }
-    }
+    suspend fun insertGroupChat(groupChat: List<GroupChat>)
 
     @Query("select * from GroupChat where groupId = :groupId order by createdAt asc")
     fun getGroupChatLiveData(groupId: String): LiveData<List<GroupChat>>
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPersonalChat(vararg personalChat: PersonalChat)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPersonalChat(personalChat: List<PersonalChat>)
+
+    @Query("delete from PersonalChat where `from` = :username or `to` = :username")
+    suspend fun deletePersonalChat(username: String)
+
+    @Query("select * from PersonalChat where `from` = :username or `to` = :username order by createdAt asc")
+    fun getPersonalChatLiveData(username: String): LiveData<List<PersonalChat>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPersonalInfo(vararg personalInfo: PersonalInfo)
+
+    @Query("select * from PersonalInfo where name = :username")
+    suspend fun getPersonalInfo(username: String): PersonalInfo?
+
+    @Query("select * from PersonalInfo")
+    fun getAllPersonalInfo(): LiveData<List<PersonalInfo>>
+
+    @Query("update PersonalInfo set unreadChat = 0 where name = :username")
+    suspend fun resetUnreadedPersonalChat(username: String)
 }

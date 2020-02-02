@@ -11,7 +11,7 @@ import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.data.GroupDao
 import com.gdn.android.onestop.chat.data.GroupMeeting
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.MeetingListAdapter
 import com.gdn.android.onestop.chat.databinding.FragmentMeetingListBinding
 import kotlinx.coroutines.CoroutineScope
@@ -24,7 +24,7 @@ import javax.inject.Inject
 class MeetingListFragment : BaseFragment<FragmentMeetingListBinding>() {
 
   override fun doFragmentInjection() {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
   }
 
   @Inject
@@ -34,7 +34,7 @@ class MeetingListFragment : BaseFragment<FragmentMeetingListBinding>() {
     override fun onItemClick(item: GroupMeeting, position: Int) {
       CoroutineScope(Dispatchers.Main).launch {
         val group = groupDao.getGroupById(item.groupId)
-        val arg = ChatActivityArgs(group)
+        val arg = ChatActivityArgs(group, null)
 
         val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
         intent.putExtras(arg.toBundle())

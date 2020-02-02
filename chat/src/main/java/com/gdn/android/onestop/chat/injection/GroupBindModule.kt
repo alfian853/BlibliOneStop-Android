@@ -14,8 +14,8 @@ abstract class GroupBindModule {
     @GroupScope
     @Binds
     @IntoMap
-    @ViewModelKey(GroupViewModel::class)
-    abstract fun bindGroupViewModel(groupViewModel: GroupViewModel): ViewModel
+    @ViewModelKey(ChatListViewModel::class)
+    abstract fun bindGroupViewModel(groupViewModel: ChatListViewModel): ViewModel
 
     @GroupScope
     @Binds

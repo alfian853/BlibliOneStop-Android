@@ -9,44 +9,59 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
 import com.gdn.android.onestop.base.Constant
-import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.base.util.Util
-import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.ChatActivityArgs
-import com.gdn.android.onestop.chat.ChatConstant
 import com.gdn.android.onestop.chat.R
-import com.gdn.android.onestop.chat.data.GroupChat
-import com.gdn.android.onestop.chat.data.GroupChatResponse
+import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.service.ChatReplyService
-import com.gdn.android.onestop.chat.data.Group
 
 object ChatUtil {
 
-  fun mapChatResponse(chatResponse: GroupChatResponse, username : String) : GroupChat {
-    val groupChat = GroupChat()
-    groupChat.id = chatResponse.id
-    groupChat.username = chatResponse.username
-    groupChat.isMe = username == chatResponse.username
-    groupChat.text = chatResponse.text
+  fun mapGroupChatResponse(chatResponse: GroupChatResponse, username : String) : GroupChat {
 
-    groupChat.createdAt = chatResponse.createdAt
-    chatResponse.meetingDate?.let {
-      groupChat.meetingDate = it
+    return GroupChat().apply {
+      id = chatResponse.id
+      this.username = chatResponse.username
+      isMe = username == chatResponse.username
+      text = chatResponse.text
+
+      createdAt = chatResponse.createdAt
+      chatResponse.meetingDate?.let {
+        meetingDate = it
+      }
+      isMeeting = chatResponse.isMeeting
+      isReply = chatResponse.isReply
+      repliedId = chatResponse.repliedId
+      repliedUsername = chatResponse. repliedUsername
+      repliedText = chatResponse.repliedText
+      meetingNo = chatResponse.meetingNo
+
     }
-    groupChat.isMeeting = chatResponse.isMeeting
-    groupChat.isReply = chatResponse.isReply
-    groupChat.repliedId = chatResponse.repliedId
-    groupChat.repliedUsername = chatResponse. repliedUsername
-    groupChat.repliedText = chatResponse.repliedText
-    groupChat.meetingNo = chatResponse.meetingNo
+  }
 
-    return groupChat
+  fun mapPersonalChatResponse(chatResponse: PersonalChatResponse, isMe: Boolean) : PersonalChat {
+    return PersonalChat().apply {
+      id = chatResponse.id
+      this.isMe = isMe
+      if(isMe){
+        to = chatResponse.to
+      }
+      else{
+        from = chatResponse.from
+      }
+      text = chatResponse.text
+      createdAt = chatResponse.createdAt
+
+      isReply = chatResponse.isReply
+      repliedId = chatResponse.repliedId
+      repliedText = chatResponse.repliedText
+    }
   }
 
   fun notifyChat(context: Context, resources: Resources, username: String, message: String, group: Group){
     val mainIntent = Intent(context, com.gdn.android.onestop.chat.ChatActivity::class.java)
     mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    mainIntent.putExtras(ChatActivityArgs(group).toBundle())
+    mainIntent.putExtras(ChatActivityArgs(group, null).toBundle())
 
     val mainPIntent: PendingIntent = PendingIntent.getActivity(
       context, 0, mainIntent, PendingIntent.FLAG_ONE_SHOT

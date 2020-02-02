@@ -8,14 +8,14 @@ import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import com.gdn.android.onestop.chat.databinding.FragmentPdGroupLeaveBinding
 import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.viewmodel.GroupViewModel
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.gdn.android.onestop.base.util.ActionSuccessCallback
 import kotlinx.coroutines.launch
 
 
 class GroupLeaveFragment
     constructor(
-        private val groupViewModel: GroupViewModel,
+        private val groupViewModel: ChatListViewModel,
         private val group : Group,
         private val leaveGroupCallback : ActionSuccessCallback?
     ) : DialogFragment(){
@@ -38,7 +38,7 @@ class GroupLeaveFragment
         dataBinding.btnLeave.setOnClickListener {
             groupViewModel.launch {
                 groupViewModel.leaveGroup(group.id)
-                Toast.makeText(this@GroupLeaveFragment.context, "You leave the group", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@GroupLeaveFragment.context, "You leave the name", Toast.LENGTH_SHORT).show()
                 leaveGroupCallback?.onSuccess()
                 fragmentManager!!.beginTransaction().remove(this@GroupLeaveFragment).commit()
 

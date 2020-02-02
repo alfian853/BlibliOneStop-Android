@@ -3,10 +3,7 @@ package com.gdn.android.onestop.chat.viewmodel
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.gdn.android.onestop.chat.data.*
 import io.mockk.MockKAnnotations
-import io.mockk.coEvery
 import io.mockk.coVerify
-import io.mockk.every
-import io.mockk.impl.annotations.MockK
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.newSingleThreadContext
@@ -20,7 +17,7 @@ import org.junit.Test
 
 class GroupViewModelTest {
 
-  lateinit var viewmodel: GroupViewModel
+  lateinit var viewmodel: ChatListViewModel
 
   private val mainThreadSurrogate = newSingleThreadContext("test-thread")
 
@@ -39,7 +36,7 @@ class GroupViewModelTest {
   fun setup(){
     Dispatchers.setMain(mainThreadSurrogate)
     MockKAnnotations.init(this)
-    viewmodel = GroupViewModel(groupRepository)
+    viewmodel = ChatListViewModel(groupRepository)
   }
 
   @After

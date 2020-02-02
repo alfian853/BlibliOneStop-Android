@@ -11,14 +11,14 @@ import androidx.navigation.fragment.navArgs
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.chat.databinding.FragmentNoteBinding
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.viewmodel.MeetingNoteViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MeetingNoteFragment : BaseFragment<FragmentNoteBinding>(){
   override fun doFragmentInjection() {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
   }
 
   lateinit var viewmodel: MeetingNoteViewModel

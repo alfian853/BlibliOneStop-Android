@@ -8,9 +8,9 @@
 
     <fragment
         android:id="@+id/groupFragment"
-        android:name="com.gdn.android.onestop.chat.fragment.GroupFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.ChatChannelFragment"
         android:label="@string/groups"
-        tools:layout="@layout/fragment_group" >
+        tools:layout="@layout/fragment_chat_list" >
     </fragment>
     <fragment
         android:id="@+id/groupCreateFragment"
@@ -64,7 +64,12 @@
         android:label="GroupActivity">
         <argument
             android:name="groupModel"
-            app:argType="com.gdn.android.onestop.chat.data.Group" />
+            app:argType="com.gdn.android.onestop.chat.data.Group"
+            app:nullable="true" />
+        <argument
+            android:name="personalInfo"
+            app:argType="com.gdn.android.onestop.chat.data.PersonalInfo"
+            app:nullable="true" />
     </activity>
     <dialog
         android:id="@+id/groupMemberFragment"
@@ -75,4 +80,13 @@
             android:name="group"
             app:argType="com.gdn.android.onestop.chat.data.Group" />
     </dialog>
+    <fragment
+        android:id="@+id/personalChatFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.PersonalChatFragment"
+        tools:layout="@layout/fragment_personal_chat"
+        android:label="PersonalChatFragment" >
+        <argument
+            android:name="personalInfo"
+            app:argType="com.gdn.android.onestop.chat.data.PersonalInfo" />
+    </fragment>
 </navigation>

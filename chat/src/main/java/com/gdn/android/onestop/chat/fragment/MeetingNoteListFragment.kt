@@ -3,7 +3,6 @@ package com.gdn.android.onestop.chat.fragment
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -22,7 +21,7 @@ import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.data.GroupDao
 import com.gdn.android.onestop.chat.data.MeetingNote
 import com.gdn.android.onestop.chat.databinding.FragmentNoteListBinding
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.MeetingNoteRecyclerAdapter
 import com.gdn.android.onestop.chat.viewmodel.MeetingNoteListViewModel
 import kotlinx.coroutines.launch
@@ -31,7 +30,7 @@ import javax.inject.Inject
 class MeetingNoteListFragment : BaseFullScreenFragment<FragmentNoteListBinding>(){
 
   override fun doFragmentInjection() {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
   }
 
   @Inject

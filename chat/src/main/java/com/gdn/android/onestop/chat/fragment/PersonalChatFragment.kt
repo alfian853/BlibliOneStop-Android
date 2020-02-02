@@ -2,91 +2,76 @@ package com.gdn.android.onestop.chat.fragment
 
 import android.animation.ArgbEvaluator
 import android.animation.ValueAnimator
-import android.app.AlarmManager
-import android.app.Notification
-import android.app.PendingIntent
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
-import android.content.Intent
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import androidx.appcompat.app.AlertDialog
-import androidx.core.app.NotificationCompat
-import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gdn.android.onestop.base.BaseFragment
-import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.CopyTextFragment
+import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
-import com.gdn.android.onestop.chat.ChatActivityArgs
-import com.gdn.android.onestop.chat.data.GroupChat
-import com.gdn.android.onestop.chat.data.GroupChatRepository
-import com.gdn.android.onestop.chat.service.MeetingAlarmPublisher
-import com.gdn.android.onestop.chat.util.GroupChatRecyclerAdapter
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.*
-import com.gdn.android.onestop.chat.databinding.FragmentGroupChatBinding
+import com.gdn.android.onestop.chat.databinding.FragmentPersonalChatBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.BaseChatRecyclerAdapter
 import com.gdn.android.onestop.chat.util.GroupUtil
-import com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel
+import com.gdn.android.onestop.chat.viewmodel.PersonalChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 
-class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
+class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
 
   override fun doFragmentInjection() {
     ChatComponent.getInstance().inject(this)
   }
 
   companion object {
-    var instance: GroupChatFragment? = null
+    var instance: PersonalChatFragment? = null
   }
 
   @Inject
-  lateinit var groupDao: GroupDao
+  lateinit var chatDao: ChatDao
 
   @Inject
   lateinit var sessionManager: SessionManager
+
+  val myUser: User by lazy {sessionManager.user!!}
 
   @Inject
   lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
   @Inject
-  lateinit var viewmodel : GroupChatViewModel
+  lateinit var viewmodel : PersonalChatViewModel
 
-  @Inject
-  lateinit var groupRepository: GroupRepository
+  lateinit var chatRvAdapter: BaseChatRecyclerAdapter<PersonalChat>
 
-  lateinit var chatRvAdapter: GroupChatRecyclerAdapter
-
-  val group: Group by lazy {
-    val tmp: GroupChatFragmentArgs by navArgs()
-    tmp.groupModel
+  private val personalInfo: PersonalInfo by lazy {
+    val tmp: PersonalChatFragmentArgs by navArgs()
+    tmp.personalInfo
   }
 
-  lateinit var groupInfo: GroupInfo
 
-  private val chatObserver = Observer<List<GroupChat>> {
+  private val chatObserver = Observer<List<PersonalChat>> {
     setChatReaded()
     if(it.isNotEmpty()){
       if(chatRvAdapter.chatList.isEmpty()){
@@ -97,9 +82,9 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
         // if load old chat
         if(chatRvAdapter.chatList[0].createdAt > it[0].createdAt){
           val oldSize = chatRvAdapter.chatList.size
-          val difSize = it.size-oldSize
+          val difSize = it.size-oldSize-1
           chatRvAdapter.chatList = it
-          chatRvAdapter.notifyItemRangeInserted(0,difSize)
+          chatRvAdapter.notifyItemRangeInserted(0,difSize-1)
         }
         else{
           chatRvAdapter.chatList = it
@@ -111,20 +96,11 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
     }
   }
 
-  lateinit var chatLiveData : LiveData<List<GroupChat>>
+  lateinit var chatLiveData : LiveData<List<PersonalChat>>
 
   @Inject
-  lateinit var groupChatRepository: GroupChatRepository
+  lateinit var groupChatRepository: PersonalChatRepository
 
-  private val toMeetingNoteClick = object : ItemClickCallback<GroupChat> {
-    override fun onItemClick(item: GroupChat, position: Int) {
-      findNavController().navigate(
-        GroupChatFragmentDirections.toMeetingNoteListFragment(
-          group, item.id
-        )
-      )
-    }
-  }
 
   private val onProfileClick: ItemClickCallback<String> = object: ItemClickCallback<String> {
     override fun onItemClick(item: String, position: Int) {
@@ -153,18 +129,16 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
   fun setChatReaded(){
     viewmodel.launch {
-      if(::groupInfo.isInitialized){
-        val tmp = groupDao.getGroupInfo(group.id)
-        tmp.unreadChat = 0
-        groupDao.insertGroupInfo(tmp)
-      }
+      chatDao.resetUnreadedPersonalChat(personalInfo.name)
     }
   }
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     viewmodel = ViewModelProvider(this, viewModelProviderFactory)
-      .get(GroupChatViewModel::class.java)
+      .get(PersonalChatViewModel::class.java)
+
+    setChatReaded()
   }
 
   override fun onCreateView(
@@ -174,7 +148,7 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
   ): View? {
     instance = this
 
-    databinding = FragmentGroupChatBinding.inflate(inflater, container, false)
+    databinding = FragmentPersonalChatBinding.inflate(inflater, container, false)
     databinding.viewmodel = viewmodel
 
     setupChatRecyclerView()
@@ -183,20 +157,16 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
     setupOptionLayout()
 
 
-    viewmodel.launch {
-      groupInfo = groupDao.getGroupInfo(group.id)
-      groupInfo.unreadChat = 0
-      groupDao.insertGroupInfo(groupInfo)
-    }
-
     return databinding.root
   }
 
   private fun setupToolbar(){
-    databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
-    else View.GONE
+    viewmodel.launch {
+      databinding.ivMute.visibility = if(personalInfo.isMute)View.VISIBLE
+      else View.GONE
+    }
 
-    databinding.tvGroupName.text = group.name
+    databinding.tvGroupName.text = personalInfo.name
 
     databinding.ivBack.setOnClickListener {
       activity!!.finish()
@@ -220,42 +190,28 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
   }
 
   private fun setupOptionLayout(){
-    databinding.llMeetingList.setOnClickListener {
-      findNavController().navigate(
-        GroupChatFragmentDirections.toMeetingNoteListFragment(group, null)
-      )
-    }
 
     databinding.llMute.setOnClickListener {
-      group.isMute = !group.isMute
+      personalInfo.isMute = !personalInfo.isMute
 
-      databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
+      databinding.ivMute.visibility = if(personalInfo.isMute)View.VISIBLE
       else View.GONE
 
-      GroupUtil.setSoundIcon(databinding.ivNotification, group.isMute)
-      GroupUtil.setSoundIconLabel(databinding.tvNotification, group.isMute)
+      GroupUtil.setSoundIcon(databinding.ivNotification, personalInfo.isMute)
+      GroupUtil.setSoundIconLabel(databinding.tvNotification, personalInfo.isMute)
 
       CoroutineScope(Dispatchers.IO).launch {
-        groupInfo.isMute = group.isMute
-        groupDao.insertGroup(group)
-        groupDao.insertGroupInfo(groupInfo)
+        chatDao.insertPersonalInfo(personalInfo)
       }
     }
 
-    databinding.llMember.setOnClickListener {
-      val fragment = GroupMemberFragment()
-      fragment.arguments = GroupMemberFragmentArgs(group).toBundle()
-
-      fragment.show(fragmentManager!!,"member fragment")
-    }
-
-    databinding.llLeave.setOnClickListener {
+    databinding.llRemoveChat.setOnClickListener {
       AlertDialog.Builder(this.context!!)
         .setTitle(R.string.leave_group)
         .setMessage(R.string.are_you_sure)
         .setPositiveButton(R.string.yes) { dialog, which ->
           viewmodel.launch {
-            groupRepository.leaveGroup(group.id)
+            chatDao.deletePersonalChat(personalInfo.name)
             activity!!.finish()
           }
         }.setNegativeButton(R.string.no) { dialog, which -> }.show()
@@ -263,53 +219,11 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
   }
 
-  private fun getMeetingNotification(meetingDateTime: Long) : Notification{
-    val mainIntent = Intent(context, com.gdn.android.onestop.chat.ChatActivity::class.java)
-    mainIntent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-    mainIntent.putExtras(ChatActivityArgs(group, null).toBundle())
-
-    val mainPIntent: PendingIntent = PendingIntent.getActivity(
-      context, 0, mainIntent, PendingIntent.FLAG_ONE_SHOT
-    )
-
-
-    return NotificationCompat.Builder(context!!, Constant.NOTIF_CHAT_CHANNEL_ID)
-      .setPriority(NotificationCompat.PRIORITY_HIGH)
-      .setSmallIcon(R.drawable.ic_group_thin)
-      .setColor(ContextCompat.getColor(context!!, R.color.colorPrimary))
-      .setContentTitle(group.name)
-      .setContentIntent(mainPIntent)
-      .setContentText("You have a meeting at ${meetingDateTime.toTime24String()} today")
-      .setAutoCancel(true)
-      .build()
-  }
-
   private fun setupBottomLayout(){
     databinding.btnChatSend.setOnClickListener {
       viewmodel.launch(Dispatchers.IO) {
         viewmodel.sendChat()
       }
-    }
-    databinding.btnMeeting.setOnClickListener {
-      MeetingCreateFragment(
-        object : FragmentActionCallback<MeetingCreateData>{
-          override fun onActionSuccess(data: MeetingCreateData) {
-            viewmodel.launch {
-              val isSuccess = viewmodel.sendMeetingSchedule(data.datetime, data.description)
-              if(isSuccess){
-                val context = this@GroupChatFragment.context!!
-                val notification = getMeetingNotification(data.datetime)
-
-                val notificationIntent = Intent( this@GroupChatFragment.context, MeetingAlarmPublisher::class.java)
-                notificationIntent.putExtra(Constant.NOTIF_MEETING_CHANNEL_ID , notification)
-                val serviceIntent = PendingIntent.getBroadcast(context, 0 , notificationIntent , PendingIntent. FLAG_UPDATE_CURRENT )
-                val alarmManager = context.getSystemService(Context. ALARM_SERVICE ) as AlarmManager
-                alarmManager.set(AlarmManager.RTC_WAKEUP , data.datetime - Constant.HOURS_TO_MS, serviceIntent)
-              }
-            }
-          }
-        }
-      ).show(fragmentManager!!,null)
     }
   }
 
@@ -323,8 +237,8 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
   private fun setupChatRecyclerView(){
     val chatLayoutManager = LinearLayoutManager(this.context)
 
-    val onReplyClickCallback = object: ItemClickCallback<GroupChat>{
-      override fun onItemClick(item: GroupChat, position: Int) {
+    val onReplyClickCallback = object: ItemClickCallback<PersonalChat>{
+      override fun onItemClick(item: PersonalChat, position: Int) {
         val chatList = chatRvAdapter.chatList
 
         var repliedPosition = position
@@ -355,9 +269,9 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
       }
 
     }
-    chatLiveData = viewmodel.resetStateAndGetLiveData(group.id)
+    chatLiveData = viewmodel.resetStateAndGetLiveData(personalInfo.name)
     chatLiveData.observe(this, chatObserver)
-    chatRvAdapter = GroupChatRecyclerAdapter(onProfileClick, onMessageLongClick, onReplyClickCallback, toMeetingNoteClick)
+    chatRvAdapter = BaseChatRecyclerAdapter(onProfileClick, onMessageLongClick, onReplyClickCallback)
 
     val point = Point()
     activity!!.windowManager.defaultDisplay.getSize(point)
@@ -369,16 +283,16 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
     databinding.rvChat.addOnScrollListener(object: RecyclerView.OnScrollListener(){
 
       override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-        if(!recyclerView.canScrollVertically(-1)){
-          viewmodel.loadMoreChatBefore()
-        }
-
-        if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
-          databinding.cvDate.visibility = View.GONE
-        }
-        else{
-          databinding.cvDate.visibility = View.VISIBLE
-        }
+//        if(!recyclerView.canScrollVertically(-1)){
+//          viewmodel.loadMoreChatBefore()
+//        }
+//
+//        if(newState == AbsListView.OnScrollListener.SCROLL_STATE_IDLE){
+//          databinding.cvDate.visibility = View.GONE
+//        }
+//        else{
+//          databinding.cvDate.visibility = View.VISIBLE
+//        }
       }
 
       override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
@@ -409,10 +323,24 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
         val chat = chatRvAdapter.chatList[position]
         if(chat.isSending)return
         val previewText = Util.shrinkText(chat.text)
-        viewmodel.setOnReplyChat(chat.id, chat.username, previewText)
 
-        databinding.tvReplyUsername.text = chat.username
-        databinding.tvReplyUserPict.text = chat.nameAlias
+        val repliedUsername = if(chat.isMe){
+          myUser.username
+        }
+        else {
+          chat.from
+        }
+        viewmodel.setOnReplyChat(chat.id, previewText, repliedUsername)
+
+        if(chat.isMe){
+          databinding.tvReplyUsername.text = myUser.username
+          databinding.tvReplyUserPict.text = myUser.alias
+        }
+        else{
+          databinding.tvReplyUsername.text = personalInfo.name
+          databinding.tvReplyUserPict.text = personalInfo.alias
+        }
+
         databinding.tvReplyUserPict.setBackgroundColor(chat.nameColor)
         databinding.tvReplyUsername.setTextColor(chat.nameColor)
         databinding.tvReplyMessage.text = Util.shrinkText(previewText)

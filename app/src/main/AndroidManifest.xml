@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.gdn.android.onestop.chat.ChatActivity">
-            <nav-graph android:value="@navigation/group_navigation"/>
+            <nav-graph android:value="@navigation/chat_navigation"/>
         </activity>
 
         <service android:name="com.gdn.android.onestop.chat.service.ChatReplyService" />

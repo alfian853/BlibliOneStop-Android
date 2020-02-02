@@ -8,44 +8,27 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.chat.data.*
-import kotlinx.coroutines.launch
 import java.util.*
 import javax.inject.Inject
 
-class GroupChatViewModel
-@Inject
-constructor(
-  private val groupDao: GroupDao,
-  private val groupChatRepository: GroupChatRepository
+class PersonalChatViewModel @Inject constructor(
+  private val chatDao: ChatDao,
+  private val personalChatRepository: PersonalChatRepository
 ) : BaseViewModel(){
 
-  private var pendingMsgList: LinkedList<GroupChat> = LinkedList()
-  private var pendingMessage: MutableLiveData<List<GroupChat>> = MutableLiveData()
+  private var pendingMsgList: LinkedList<PersonalChat> = LinkedList()
+  private var pendingMessage: MutableLiveData<List<PersonalChat>> = MutableLiveData()
 
-
-
-  private suspend fun loadData(groupId: String){
-    val groupInfo = groupDao.getGroupInfo(groupId)
-    if(groupInfo.isNeverFetched()){
-      groupChatRepository.loadMoreChatBefore(groupId)
-    }
-    else{
-      groupChatRepository.loadMoreChatAfter(groupId)
-    }
-  }
-
-  fun resetStateAndGetLiveData(groupId : String) : LiveData<List<GroupChat>> {
-    activeGroupId = groupId
+  fun resetStateAndGetLiveData(username : String) : LiveData<List<PersonalChat>> {
+    activeChatUsername = username
     pendingMsgList = LinkedList()
     pendingMessage.postValue(pendingMsgList)
     chatText = ""
-    chat = GroupChatSendRequest()
-    launch {
-      loadData(groupId)
-    }
-    return MediatorLiveData<List<GroupChat>>().apply {
-      val concreteLiveData = groupChatRepository.getChatLiveData(groupId)
-      var concreteData: List<GroupChat> = emptyList()
+    chat = PersonalChatSendRequest()
+
+    return MediatorLiveData<List<PersonalChat>>().apply {
+      val concreteLiveData = personalChatRepository.getChatLiveData(username)
+      var concreteData: List<PersonalChat> = emptyList()
 
       this.addSource(concreteLiveData) {chatList ->
         concreteData = chatList
@@ -59,11 +42,11 @@ constructor(
 
   }
 
-  lateinit var activeGroupId : String
+  lateinit var activeChatUsername : String
 
 
-  private var chat : GroupChatSendRequest =
-    GroupChatSendRequest()
+  private var chat : PersonalChatSendRequest =
+    PersonalChatSendRequest()
 
   var chatText = ""
     @Bindable
@@ -82,36 +65,31 @@ constructor(
       notifyPropertyChanged(BR.replyVisibility)
     }
 
-
-  fun loadMoreChatBefore(){
-    launch {
-      groupChatRepository.loadMoreChatBefore(activeGroupId)
-    }
-  }
-
   fun setOnReplyChat(
     repliedChatId: String,
-    repliedUsername: String,
-    repliedSummary: String
+    repliedSummary: String,
+    repliedUsername: String
   ){
     chat.isReply = true
-    chat.repliedUsername = repliedUsername
     chat.repliedId = repliedChatId
     chat.repliedText = repliedSummary
+    chat.repliedUsername = repliedUsername
     replyVisibility = View.VISIBLE
   }
 
   fun setOffReplyChat(){
     chat.isReply = false
     chat.repliedId = null
-    chat.repliedUsername = null
     chat.repliedText = null
+    chat.repliedUsername = null
     replyVisibility = View.GONE
   }
 
-  private fun convertRequestChatToGroupChat(request: GroupChatSendRequest) : GroupChat {
-    return GroupChat().apply {
+  private fun convertRequestChatToPendingPersonalChat(request: PersonalChatSendRequest) : PersonalChat {
+
+    return PersonalChat().apply {
       isMe = true
+      to = activeChatUsername
       text = request.text
       isSending = true
       createdAt = Long.MAX_VALUE
@@ -119,35 +97,23 @@ constructor(
       repliedId = request.repliedId
       repliedText = request.repliedText
       repliedUsername = request.repliedUsername
-
-      isMeeting = request.isMeeting
-      meetingDate = request.meetingDate
     }
   }
 
   suspend fun sendChat(): Boolean{
     if(chat.text == "")return false
-    if(chatText == "" && !chat.isMeeting)return false
     val requestChat = chat
-    chat = GroupChatSendRequest()
+    chat = PersonalChatSendRequest()
     chatText = ""
-    pendingMsgList.add(convertRequestChatToGroupChat(requestChat))
+    pendingMsgList.add(convertRequestChatToPendingPersonalChat(requestChat))
     pendingMessage.postValue(pendingMsgList)
 
     replyVisibility = View.GONE
-    val result = groupChatRepository.sendChat(activeGroupId, requestChat)
+    val result = personalChatRepository.sendChat(activeChatUsername, requestChat)
 
     pendingMsgList.pop()
     pendingMessage.postValue(pendingMsgList)
     return result
-  }
-
-
-  suspend fun sendMeetingSchedule(datetime: Long, description: String): Boolean {
-    chat.isMeeting = true
-    chat.text = description
-    chat.meetingDate = datetime
-    return sendChat()
   }
 
 }

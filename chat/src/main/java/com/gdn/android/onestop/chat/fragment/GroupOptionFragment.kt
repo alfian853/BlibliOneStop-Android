@@ -4,11 +4,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gdn.android.onestop.chat.viewmodel.GroupViewModel
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.gdn.android.onestop.chat.databinding.FragmentBsGroupOptionBinding
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-class GroupOptionFragment(private val groupViewModel: GroupViewModel) : BottomSheetDialogFragment() {
+class GroupOptionFragment(private val groupViewModel: ChatListViewModel) : BottomSheetDialogFragment() {
 
     lateinit var binding: FragmentBsGroupOptionBinding
 
@@ -22,7 +22,7 @@ class GroupOptionFragment(private val groupViewModel: GroupViewModel) : BottomSh
         val createGroupClickListener = View.OnClickListener {
             val createGroupFragment = GroupCreateFragment()
             createGroupFragment.show(
-                this.fragmentManager!!, "create group fragment"
+                this.fragmentManager!!, "create name fragment"
             )
         }
         val joinGroupClickListener = View.OnClickListener {
@@ -30,7 +30,7 @@ class GroupOptionFragment(private val groupViewModel: GroupViewModel) : BottomSh
                 GroupJoinFragment(groupViewModel)
 
             groupJoinFragment.show(
-                this.fragmentManager!!,"group join fragment"
+                this.fragmentManager!!,"name join fragment"
             )
         }
 

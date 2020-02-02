@@ -26,22 +26,22 @@ class GroupProvideModule {
 
     @GroupScope
     @Provides
-    fun provideGroupDatabase(application: Application) : GroupDatabase {
+    fun provideGroupDatabase(application: Application) : ChatDatabase {
         return Room.databaseBuilder(
             application.applicationContext,
-            GroupDatabase::class.java, "group_database"
+            ChatDatabase::class.java, "group_database"
         ).fallbackToDestructiveMigration().build()
     }
 
     @GroupScope
     @Provides
-    fun provideGroupDao(groupDatabase: GroupDatabase) : GroupDao {
+    fun provideGroupDao(groupDatabase: ChatDatabase) : GroupDao {
         return groupDatabase.groupDao()
     }
 
     @GroupScope
     @Provides
-    fun provideChatDao(groupDatabase: GroupDatabase) : ChatDao {
+    fun provideChatDao(groupDatabase: ChatDatabase) : ChatDao {
         return groupDatabase.chatDao()
     }
 
@@ -53,12 +53,6 @@ class GroupProvideModule {
             groupClient,
             groupUpdateManager
         )
-    }
-
-    @GroupScope
-    @Provides
-    fun provideGroupChatRepository(chatDao: ChatDao, chatClient: ChatClient, sessionManager: SessionManager) : GroupChatRepository {
-        return GroupChatRepository(chatDao, chatClient, sessionManager)
     }
 
     @GroupScope

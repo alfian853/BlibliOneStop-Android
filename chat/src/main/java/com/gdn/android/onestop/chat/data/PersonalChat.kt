@@ -4,13 +4,15 @@ import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
 import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.base.util.toDateString
 
 @Entity
 open class PersonalChat {
   @PrimaryKey
   lateinit var id: String
-  lateinit var username: String
+  var from: String = ""
+  var to: String = ""
   lateinit var text: String
   var createdAt: Long = 0
 
@@ -30,11 +32,21 @@ open class PersonalChat {
 
   @delegate:Ignore
   val nameColor : Int by lazy {
-    Util.getColorFromString(username)
+    Util.getColorFromString(from)
+  }
+
+  @delegate:Ignore
+  val alias : String by lazy {
+    from.toAliasName()
   }
 
   @delegate:Ignore
   val repliedNameColor : Int by lazy {
-    Util.getColorFromString(repliedUsername+"")
+    if(isMe){
+      Util.getColorFromString(to+"")
+    }
+    else{
+      Util.getColorFromString(from+"")
+    }
   }
 }

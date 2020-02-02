@@ -11,38 +11,37 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.Navigator
-import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.R
+import com.gdn.android.onestop.chat.data.ChatChannel
 import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.data.GroupDao
-import com.gdn.android.onestop.chat.databinding.FragmentGroupBinding
-import com.gdn.android.onestop.chat.injection.GroupComponent
-import com.gdn.android.onestop.chat.util.GroupRecyclerAdapter
-import com.gdn.android.onestop.chat.viewmodel.GroupViewModel
+import com.gdn.android.onestop.chat.data.PersonalInfo
+import com.gdn.android.onestop.chat.databinding.FragmentChatListBinding
+import com.gdn.android.onestop.chat.injection.ChatComponent
+import com.gdn.android.onestop.chat.util.ChatChannelRecyclerAdapter
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class GroupFragment : BaseFragment<FragmentGroupBinding>() {
+class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
 
     override fun doFragmentInjection() {
-        GroupComponent.getInstance().inject(this)
+        ChatComponent.getInstance().inject(this)
     }
 
     @Inject
     lateinit var viewModelProviderFactory : ViewModelProviderFactory
 
     @Inject
-    lateinit var viewModel: GroupViewModel
+    lateinit var viewModel: ChatListViewModel
 
     @Inject
     lateinit var groupDao: GroupDao
 
-    private val groupClickCallback = object :
-        ItemClickCallback<Group> {
-        override fun onItemClick(item: Group, position: Int) {
-            val arg = ChatActivityArgs(item)
+    private val groupClickCallback = object : ItemClickCallback<ChatChannel> {
+        override fun onItemClick(item: ChatChannel, position: Int) {
+            val arg = ChatActivityArgs(item as Group,null)
 
             val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
             intent.putExtras(arg.toBundle())
@@ -50,28 +49,47 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         }
     }
 
-    private val groupOptionClick = object : ItemClickCallback<Group> {
-        override fun onItemClick(item: Group, position: Int) {
-            val groupSettingFragment = GroupSettingFragment(viewModel, item)
+    private val groupOptionClick = object : ItemClickCallback<ChatChannel> {
+        override fun onItemClick(item: ChatChannel, position: Int) {
+            val groupSettingFragment = GroupSettingFragment(viewModel, item as Group)
             groupSettingFragment.show(
-                this@GroupFragment.fragmentManager!!, "group setting fragment"
+                this@ChatChannelFragment.fragmentManager!!, "name setting fragment"
             )
         }
-
     }
 
-    private var guildRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
+    private val personalClickCallback = object : ItemClickCallback<ChatChannel> {
+        override fun onItemClick(item: ChatChannel, position: Int) {
+            val arg = ChatActivityArgs(null, item as PersonalInfo)
 
-    private var squadRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
+            val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
+            intent.putExtras(arg.toBundle())
+            startActivity(intent)
+        }
+    }
 
-    private var tribeRvAdapter : GroupRecyclerAdapter =
-        GroupRecyclerAdapter(groupOptionClick, groupClickCallback)
+    private val personalOptionClick: ItemClickCallback<ChatChannel> = object : ItemClickCallback<ChatChannel> {
+        override fun onItemClick(item: ChatChannel, position: Int) {
+
+        }
+    }
+
+    private var guildRvAdapter : ChatChannelRecyclerAdapter =
+        ChatChannelRecyclerAdapter(groupOptionClick, groupClickCallback)
+
+    private var squadRvAdapter : ChatChannelRecyclerAdapter =
+        ChatChannelRecyclerAdapter(groupOptionClick, groupClickCallback)
+
+    private var tribeRvAdapter : ChatChannelRecyclerAdapter =
+        ChatChannelRecyclerAdapter(groupOptionClick, groupClickCallback)
+
+    private var personalRvAdapter : ChatChannelRecyclerAdapter =
+        ChatChannelRecyclerAdapter(personalOptionClick, personalClickCallback)
 
     private lateinit var guildLiveData : LiveData<List<Group>>
-    private lateinit var squadLiveData : LiveData<List<Group>>// by lazy { viewModel.squadLiveData() }
-    private lateinit var tribeLiveData : LiveData<List<Group>>// by lazy { viewModel.tribeLiveData() }
+    private lateinit var squadLiveData : LiveData<List<Group>>
+    private lateinit var tribeLiveData : LiveData<List<Group>>
+    private lateinit var personalLiveData : LiveData<List<PersonalInfo>>
 
 
     lateinit var icDown : Drawable
@@ -89,10 +107,16 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         tribeRvAdapter.updateList(groupList)
     }
 
+    private val personalObserver = Observer<List<PersonalInfo>> { personalList ->
+        personalRvAdapter.updateList(personalList)
+    }
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(GroupViewModel::class.java)
+        viewModel = ViewModelProvider(this, viewModelProviderFactory).get(ChatListViewModel::class.java)
         viewModel.launch {
             viewModel.refreshData(false)
         }
@@ -100,10 +124,13 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         guildLiveData = viewModel.guildLiveData()
         squadLiveData = viewModel.squadLiveData()
         tribeLiveData = viewModel.tribeLiveData()
+        personalLiveData = viewModel.personalLiveData()
 
         guildLiveData.observe(this, guildObserver)
         squadLiveData.observe(this, squadObserver)
         tribeLiveData.observe(this, tribeObserver)
+        personalLiveData.observe(this, personalObserver)
+
         icDown = ResourcesCompat.getDrawable(resources, R.drawable.ic_down, null)!!
         icRight = ResourcesCompat.getDrawable(resources, R.drawable.ic_right, null)!!
     }
@@ -115,10 +142,11 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
     ): View? {
         viewModel.launch { viewModel.refreshData(false) }
         setHasOptionsMenu(true)
-        databinding = FragmentGroupBinding.inflate(inflater, container, false)
+        databinding = FragmentChatListBinding.inflate(inflater, container, false)
         databinding.rvGuild.adapter = guildRvAdapter
         databinding.rvSquad.adapter = squadRvAdapter
         databinding.rvTribe.adapter = tribeRvAdapter
+        databinding.rvPersonal.adapter = personalRvAdapter
 
         val guildOnclick = View.OnClickListener {
             val isCollapse : Boolean = databinding.rvGuild.visibility == View.GONE
@@ -156,14 +184,27 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
             }
         }
 
+        val personalOnClick = View.OnClickListener {
+            val isCollapse : Boolean = databinding.rvTribe.visibility == View.GONE
+            if(isCollapse){
+                databinding.rvPersonal.visibility = View.VISIBLE
+                databinding.tvTogglePersonal.background = icDown
+            }
+            else{
+                databinding.rvPersonal.visibility = View.GONE
+                databinding.tvTogglePersonal.background = icRight
+            }
+        }
+
         databinding.tvToggleGuild.setOnClickListener(guildOnclick)
         databinding.tvToggleSquad.setOnClickListener(squadOnclick)
         databinding.tvToggleTribe.setOnClickListener(tribeOnclick)
+        databinding.tvTogglePersonal.setOnClickListener(personalOnClick)
 
         databinding.tvGuild.setOnClickListener(guildOnclick)
         databinding.tvSquad.setOnClickListener(squadOnclick)
         databinding.tvTribe.setOnClickListener(tribeOnclick)
-
+        databinding.tvPersonal.setOnClickListener(personalOnClick)
 
         databinding.swipeLayout.setOnRefreshListener {
             databinding.swipeLayout.isRefreshing = true
@@ -181,6 +222,7 @@ class GroupFragment : BaseFragment<FragmentGroupBinding>() {
         guildLiveData.removeObservers(this)
         squadLiveData.removeObservers(this)
         tribeLiveData.removeObservers(this)
+        personalLiveData.removeObservers(this)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

@@ -7,8 +7,7 @@ class GroupRepository(
     private val groupDao: GroupDao,
     private val groupClient: GroupClient,
     private val groupUpdateManager: GroupUpdateManager
-    ) {
-
+) {
     val guildLiveData : LiveData<List<Group>> = groupDao.getGroupByType(Group.Type.GUILD.code)
     val squadLiveData : LiveData<List<Group>> = groupDao.getGroupByType(Group.Type.SQUAD.code)
     val tribeLiveData : LiveData<List<Group>> = groupDao.getGroupByType(Group.Type.TRIBE.code)

@@ -35,7 +35,7 @@ interface GroupDao {
     fun deleteGroupById(groupId: String)
 
     @Query("update GroupInfo set unreadChat = 0 where id = :groupId")
-    suspend fun resetUnreadedChat(groupId: String)
+    suspend fun resetUnreadedGroupChat(groupId: String)
 
     @Query("delete from GroupInfo where id = :groupId")
     suspend fun deleteGroupInfoById(groupId: String)

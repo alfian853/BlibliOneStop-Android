@@ -4,10 +4,10 @@ import android.content.Context
 import android.util.Log
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.base.util.SessionManager
-import com.gdn.android.onestop.chat.data.ChatDao
-import com.gdn.android.onestop.chat.data.GroupChat
-import com.gdn.android.onestop.chat.data.GroupClient
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.data.*
+import com.gdn.android.onestop.chat.fragment.GroupChatFragment
+import com.gdn.android.onestop.chat.injection.ChatComponent
+import com.gdn.android.onestop.chat.util.ChatUtil
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.iid.FirebaseInstanceId
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -22,6 +22,15 @@ class FirebaseChatService : FirebaseMessagingService() {
 
   @Inject
   lateinit var chatDao: ChatDao
+
+  @Inject
+  lateinit var groupDao: GroupDao
+
+  @Inject
+  lateinit var groupChatRepository: GroupChatRepository
+
+  @Inject
+  lateinit var personalChatRepository: PersonalChatRepository
 
   @Inject
   lateinit var sessionManager: SessionManager
@@ -43,7 +52,7 @@ class FirebaseChatService : FirebaseMessagingService() {
 
 
   override fun onCreate() {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
     if(!hasBeenSubscribed){
       GlobalScope.launch {
         FirebaseInstanceId.getInstance().instanceId.addOnCompleteListener(
@@ -72,42 +81,62 @@ class FirebaseChatService : FirebaseMessagingService() {
     }
   }
 
-  override fun onMessageReceived(message: RemoteMessage) {
-    Log.d("chat-onestop-firebase",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(message.data))
-    val data = message.data
-    if(data["username"]!! == username)return
+  private fun processGroupChat(data: Map<String,String>){
+    if(data["name"]!! == username)return
 
     val chat = GroupChat().apply {
       id = data["id"]!!
       groupId = data["groupId"]!!
       text = data["text"]!!
-      username = data["username"]!!
+      username = data["name"]!!
       createdAt = data["createdAt"]!!.toLong()
       isMeeting = data["isMeeting"]!!.toBoolean()
       meetingDate = data.getOrElse("meetingDate",{null})?.toLong()
       isReply = data["isReply"]!!.toBoolean()
       repliedId = data.getOrElse("repliedId",{null})
       repliedText = data.getOrElse("repliedText",{null})
+      repliedUsername = data.getOrElse("repliedUsername", { null})
       isMe = username == this@FirebaseChatService.username
     }
 
     CoroutineScope(Dispatchers.IO).launch {
-//      chatDao.insertGroupChat(chat)
-//      val groupInfo = chatDao.getGroupInfo(chat.groupId)
-//      groupInfo.unreadChat += 1
-//      chatDao.insertGroupInfo(groupInfo)
-//
-//      val group = chatDao.getGroupById(chat.groupId)
-//
-//      if(group.isMute)return@launch
-//
-//      val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != group.id
-//
-//      if(isNotInChatRoom) {
-//        com.gdn.android.onestop.chat.util.ChatUtil.notifyChat(context, resources, chat.username, chat.text, group)
-//      }
+      groupChatRepository.addAndProcessGroupChat(chat)
+      val groupInfo = groupDao.getGroupInfo(chat.groupId)
+      groupInfo.unreadChat += 1
+      groupDao.insertGroupInfo(groupInfo)
+
+      val username = groupDao.getGroupById(chat.groupId)
+
+      if(username.isMute)return@launch
+
+      val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != username.id
+
+      if(isNotInChatRoom) {
+        ChatUtil.notifyChat(context, resources, chat.username, chat.text, username)
+      }
     }
 
+  }
+
+  private fun processPersonalChat(data: Map<String,String>){
+    val chat = PersonalChat().apply {
+      id = data["id"]!!
+      text = data["text"]!!
+      from = data["from"]!!
+      createdAt = data["createdAt"]!!.toLong()
+      isReply = data["isReply"]!!.toBoolean()
+      repliedId = data.getOrElse("repliedId",{null})
+      repliedText = data.getOrElse("repliedText",{null})
+      isMe = false
+    }
+  }
+
+  override fun onMessageReceived(message: RemoteMessage) {
+    Log.d("chat-onestop-firebase",objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(message.data))
+    val data = message.data
+
+    if(data.containsKey("groupId"))processGroupChat(data)
+    else processPersonalChat(data)
 
   }
 

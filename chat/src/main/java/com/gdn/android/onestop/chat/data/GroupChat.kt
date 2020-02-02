@@ -10,6 +10,7 @@ import com.gdn.android.onestop.base.util.toDateString
 @Entity
 open class GroupChat : PersonalChat() {
   lateinit var groupId : String
+  lateinit var username : String
   var isMeeting : Boolean = false
   var meetingDate: Long? = null
   var meetingNo: Int? = null

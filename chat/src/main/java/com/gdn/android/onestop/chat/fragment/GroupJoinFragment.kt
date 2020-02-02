@@ -7,13 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.gdn.android.onestop.base.BaseDialogFragment
-import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.databinding.FragmentPdGroupJoinBinding
-import com.gdn.android.onestop.chat.viewmodel.GroupViewModel
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import kotlinx.coroutines.launch
 
-class GroupJoinFragment(private val groupViewModel: GroupViewModel) : BaseDialogFragment<FragmentPdGroupJoinBinding>() {
+class GroupJoinFragment(private val groupViewModel: ChatListViewModel) : BaseDialogFragment<FragmentPdGroupJoinBinding>() {
 
     private val ERROR_WRONG_GROUP_CODE = "Invalid Group Code"
 
@@ -38,7 +37,7 @@ class GroupJoinFragment(private val groupViewModel: GroupViewModel) : BaseDialog
                     Toast.makeText(context, ERROR_WRONG_GROUP_CODE, Toast.LENGTH_SHORT).show()
                 }
                 else{
-                    val arg = ChatActivityArgs(group)
+                    val arg = ChatActivityArgs(group, null)
 
                     val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
                     intent.putExtras(arg.toBundle())

@@ -61,11 +61,11 @@ class ChatViewHolder<T: PersonalChat>(
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
-        tvName.text = chat.username
+        tvName.text = chat.from
         tvName.setTextColor(chat.nameColor)
         tvDate.text = chat.createdAt.toTimeString()
         tvMessage.text = chat.text
-        val nameAlias = chat.username.toAliasName()
+        val nameAlias = chat.alias
         tvNamePict.text = nameAlias
         tvNamePict.setBackgroundColor(chat.nameColor)
 
@@ -73,8 +73,8 @@ class ChatViewHolder<T: PersonalChat>(
 
         setDateSeparator(cvBatchDate, tvBatchDate, chat, isDiffDay)
 
-        tvName.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
-        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+        tvName.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
+        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
         binding.root.setOnLongClickListener {
             onMessageLongClick.onItemClick(chat.text, position)
             true
@@ -133,15 +133,15 @@ class ChatReplyViewHolder<T: PersonalChat>(
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
     override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
-        tvName.text = chat.username
+        tvName.text = chat.from
         tvName.setTextColor(chat.nameColor)
         tvDate.text = chat.createdAt.toTimeString()
         tvMessage.text = chat.text
-        val nameAlias = chat.username.toAliasName()
+        val nameAlias = chat.alias
         tvNamePict.text = nameAlias
         tvNamePict.setBackgroundColor(chat.nameColor)
 
-        tvReplyName.text = chat.repliedUsername
+        tvReplyName.text = chat.from
         tvReplyText.text = chat.repliedText
         tvReplyName.setTextColor(chat.repliedNameColor)
         llReplyContainer.setOnClickListener{
@@ -152,8 +152,8 @@ class ChatReplyViewHolder<T: PersonalChat>(
 
         setDateSeparator(cvBatchDate, tvBatchDate, chat, isDiffDay)
 
-        tvName.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
-        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.username, position) }
+        tvName.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
+        tvNamePict.setOnClickListener { onProfileClick.onItemClick(chat.from, position) }
         binding.root.setOnLongClickListener {
             onMessageLongClick.onItemClick(chat.text, position)
             true

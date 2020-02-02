@@ -10,6 +10,7 @@ import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.fragment.GroupChatFragment
 import com.gdn.android.onestop.chat.databinding.ActivityGroupBinding
 import com.gdn.android.onestop.chat.fragment.GroupChatFragmentArgs
+import com.gdn.android.onestop.chat.fragment.PersonalChatFragmentArgs
 
 class ChatActivity : AppCompatActivity(){
 
@@ -17,24 +18,27 @@ class ChatActivity : AppCompatActivity(){
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    val group : Group by lazy {
-      val tmp : com.gdn.android.onestop.chat.ChatActivityArgs by navArgs()
-      tmp.groupModel
-    }
+
+    val args: ChatActivityArgs by navArgs()
 
     DataBindingUtil.setContentView<ActivityGroupBinding>(this,
-      com.gdn.android.onestop.chat.R.layout.activity_group
+      R.layout.activity_group
     )
 
     hostFragment = supportFragmentManager
-      .findFragmentById(com.gdn.android.onestop.chat.R.id.nav_fragment_group) as NavHostFragment
+      .findFragmentById(R.id.nav_fragment_group) as NavHostFragment
 
     val navController = hostFragment.navController
 
     val inflater = navController.navInflater
-    navController.graph = inflater.inflate(com.gdn.android.onestop.chat.R.navigation.group_navigation)
+    navController.graph = inflater.inflate(R.navigation.chat_navigation)
 
-    navController.navigate(com.gdn.android.onestop.chat.R.id.groupChatFragment, GroupChatFragmentArgs(group).toBundle())
+    if(args.personalInfo != null){
+      navController.navigate(R.id.personalChatFragment, PersonalChatFragmentArgs(args.personalInfo!!).toBundle())
+    }
+    else{
+      navController.navigate(R.id.groupChatFragment, GroupChatFragmentArgs(args.groupModel!!).toBundle())
+    }
   }
 
   override fun onBackPressed() {

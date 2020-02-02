@@ -7,13 +7,10 @@ import com.gdn.android.onestop.chat.util.GroupTypeConverter
 import java.io.Serializable
 
 @Entity
-class Group : Serializable {
+class Group : ChatChannel() {
     @PrimaryKey
     lateinit var id: String
-    lateinit var name: String
     lateinit var groupCode: String
-    var isMute: Boolean = false
-    var unreadChat: Int = 0
 
     @TypeConverters(GroupTypeConverter::class)
     lateinit var type : Type

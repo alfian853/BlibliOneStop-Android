@@ -16,12 +16,13 @@ import dagger.android.AndroidInjectionModule
     ],
     dependencies = [AppComponent::class]
 )
-interface GroupComponent {
+interface ChatComponent {
 
     fun inject(groupCreateFragment: GroupCreateFragment)
     fun inject(groupChatFragment: GroupChatFragment)
+    fun inject(personalChatFragment: PersonalChatFragment)
     fun inject(groupSettingFragment: GroupSettingFragment)
-    fun inject(groupFragment: GroupFragment)
+    fun inject(groupFragment: ChatChannelFragment)
     fun inject(meetingListFragment: MeetingListFragment)
     fun inject(meetingNoteFragment: MeetingNoteListFragment)
     fun inject(meetingNoteEditFragment: MeetingNoteFragment)
@@ -30,15 +31,15 @@ interface GroupComponent {
     fun inject(chatReplyService: ChatReplyService)
 
     companion object {
-        private var instance : GroupComponent? = null
+        private var instance : ChatComponent? = null
 
-        fun getInstance() : GroupComponent {
+        fun getInstance() : ChatComponent {
             var localInstance = instance
             if(localInstance == null){
-                synchronized(GroupComponent::class){
+                synchronized(ChatComponent::class){
                     localInstance = instance
                     if(localInstance == null){
-                        instance = DaggerGroupComponent.factory().create(AppComponent.getInstance()!!)
+                        instance = DaggerChatComponent.factory().create(AppComponent.getInstance()!!)
                         localInstance = instance
                     }
                 }
@@ -49,7 +50,7 @@ interface GroupComponent {
 
     @Component.Factory
     interface Factory {
-        fun create(appComponent: AppComponent) : GroupComponent
+        fun create(appComponent: AppComponent) : ChatComponent
     }
 
 

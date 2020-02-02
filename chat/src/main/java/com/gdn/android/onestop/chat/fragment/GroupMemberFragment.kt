@@ -14,7 +14,7 @@ import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.databinding.FragmentMemberListBinding
-import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.MemberRecyclerAdapter
 import com.gdn.android.onestop.chat.viewmodel.GroupMemberViewModel
 import kotlinx.coroutines.launch
@@ -23,7 +23,7 @@ import javax.inject.Inject
 class GroupMemberFragment : BaseFullScreenFragment<FragmentMemberListBinding>() {
 
   override fun doFragmentInjection() {
-    GroupComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(this)
   }
 
   val group: Group by lazy {
