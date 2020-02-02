@@ -8,36 +8,36 @@
 
     <fragment
         android:id="@+id/groupFragment"
-        android:name="com.gdn.android.onestop.group.fragment.GroupFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.GroupFragment"
         android:label="@string/groups"
         tools:layout="@layout/fragment_group" >
     </fragment>
     <fragment
         android:id="@+id/groupCreateFragment"
-        android:name="com.gdn.android.onestop.group.fragment.GroupCreateFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.GroupCreateFragment"
         android:label="fragment_group_create"
         tools:layout="@layout/fragment_group_create" >
     </fragment>
     <fragment
         android:id="@+id/groupChatFragment"
-        android:name="com.gdn.android.onestop.group.fragment.GroupChatFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.GroupChatFragment"
         android:label="fragment_chat_room"
         tools:layout="@layout/fragment_group_chat">
         <argument
             android:name="groupModel"
-            app:argType="com.gdn.android.onestop.group.data.Group" />
+            app:argType="com.gdn.android.onestop.chat.data.Group" />
         <action
             android:id="@+id/to_meetingNoteListFragment"
             app:destination="@id/meetingNoteListFragment" />
     </fragment>
     <fragment
         android:id="@+id/meetingNoteListFragment"
-        android:name="com.gdn.android.onestop.group.fragment.MeetingNoteListFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.MeetingNoteListFragment"
         android:label="MeetingNoteListFragment"
         tools:layout="@layout/fragment_note_list">
         <argument
             android:name="group"
-            app:argType="com.gdn.android.onestop.group.data.Group" />
+            app:argType="com.gdn.android.onestop.chat.data.Group" />
         <argument
             android:name="scrollTargetId"
             app:argType="string"
@@ -48,7 +48,7 @@
     </fragment>
     <fragment
         android:id="@+id/meetingNoteFragment"
-        android:name="com.gdn.android.onestop.group.fragment.MeetingNoteFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.MeetingNoteFragment"
         android:label="MeetingNoteFragment"
         tools:layout="@layout/fragment_note">
         <argument
@@ -60,19 +60,19 @@
     </fragment>
     <activity
         android:id="@+id/groupActivity"
-        android:name="com.gdn.android.onestop.group.ChatActivity"
+        android:name="com.gdn.android.onestop.chat.ChatActivity"
         android:label="GroupActivity">
         <argument
             android:name="groupModel"
-            app:argType="com.gdn.android.onestop.group.data.Group" />
+            app:argType="com.gdn.android.onestop.chat.data.Group" />
     </activity>
     <dialog
         android:id="@+id/groupMemberFragment"
-        android:name="com.gdn.android.onestop.group.fragment.GroupMemberFragment"
+        android:name="com.gdn.android.onestop.chat.fragment.GroupMemberFragment"
         tools:layout="@layout/fragment_member_list"
         android:label="GroupMemberFragment" >
         <argument
             android:name="group"
-            app:argType="com.gdn.android.onestop.group.data.Group" />
+            app:argType="com.gdn.android.onestop.chat.data.Group" />
     </dialog>
 </navigation>

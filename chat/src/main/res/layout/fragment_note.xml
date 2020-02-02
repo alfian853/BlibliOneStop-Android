@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="com.gdn.android.onestop.group.fragment.MeetingNoteFragment">
+    tools:context="com.gdn.android.onestop.chat.fragment.MeetingNoteFragment">
 
     <data>
         <variable
             name="viewmodel"
-            type="com.gdn.android.onestop.group.viewmodel.MeetingNoteViewModel" />
+            type="com.gdn.android.onestop.chat.viewmodel.MeetingNoteViewModel" />
     </data>
 
     <LinearLayout

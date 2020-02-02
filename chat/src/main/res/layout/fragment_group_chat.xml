@@ -2,12 +2,12 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.gdn.android.onestop.group.fragment.GroupChatFragment">
+    tools:context="com.gdn.android.onestop.chat.fragment.GroupChatFragment">
 
     <data>
         <variable
             name="viewmodel"
-            type="com.gdn.android.onestop.group.viewmodel.GroupChatViewModel" />
+            type="com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel" />
     </data>
 
     <RelativeLayout

@@ -31,14 +31,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.gdn.android.onestop.group.ChatActivity">
+        <activity android:name="com.gdn.android.onestop.chat.ChatActivity">
             <nav-graph android:value="@navigation/group_navigation"/>
         </activity>
 
-        <service android:name="com.gdn.android.onestop.group.service.ChatReplyService" />
+        <service android:name="com.gdn.android.onestop.chat.service.ChatReplyService" />
 
         <service
-            android:name="com.gdn.android.onestop.group.service.FirebaseChatService"
+            android:name="com.gdn.android.onestop.chat.service.FirebaseChatService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -51,7 +51,7 @@
         <service android:name="com.gdn.android.onestop.library.util.AudioDownloadService"
             android:exported="false"/>
 
-        <receiver android:name="com.gdn.android.onestop.group.service.MeetingAlarmPublisher"/>
+        <receiver android:name="com.gdn.android.onestop.chat.service.MeetingAlarmPublisher"/>
     </application>
 
 </manifest>
