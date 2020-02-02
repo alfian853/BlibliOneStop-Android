@@ -104,6 +104,7 @@ class MeetingCreateFragment(
 
       if(Util.isEmpty(databinding.etDescription.text)){
         databinding.tilDescription.error = errorEmptyText
+        hasError = true
       }
 
       if(hasError)return@setOnClickListener

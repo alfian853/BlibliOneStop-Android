@@ -43,6 +43,7 @@ import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.databinding.FragmentGroupChatBinding
 import com.gdn.android.onestop.chat.injection.GroupComponent
+import com.gdn.android.onestop.chat.util.BaseChatRecyclerAdapter
 import com.gdn.android.onestop.chat.util.GroupUtil
 import com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -343,7 +344,7 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
         val target = chatRvAdapter.itemViewArray[repliedPosition]
         if(target == null){
-          chatRvAdapter.pendingReplyShowAnimation = GroupChatRecyclerAdapter.ItemAnimationTask(repliedPosition, animator)
+          chatRvAdapter.pendingReplyShowAnimation = BaseChatRecyclerAdapter.ItemAnimationTask(repliedPosition, animator)
         }
         else{
           animator.addUpdateListener {

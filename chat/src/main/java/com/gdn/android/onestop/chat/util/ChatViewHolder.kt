@@ -13,18 +13,27 @@ import com.gdn.android.onestop.base.util.toDateTime24String
 import com.gdn.android.onestop.base.util.toTimeString
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.GroupChat
+import com.gdn.android.onestop.chat.data.PersonalChat
 import com.gdn.android.onestop.chat.databinding.*
 import com.google.android.material.button.MaterialButton
 
+object Const {
+    const val MESSAGE_TYPE = 0
+    const val MY_MESSAGE_TYPE = 1
+    const val REPLY_TYPE = 2
+    const val MY_REPLY_TYPE = 3
+    const val MEETING_TYPE = 4
+    const val MY_MEETING_TYPE = 5
+}
 
-abstract class BaseChatViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+abstract class BaseChatViewHolder<T: PersonalChat>(itemView: View) : RecyclerView.ViewHolder(itemView){
 
-    abstract fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int)
+    abstract fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int)
 
     fun setDateSeparator(
         dateContainer: CardView,
         dateText: TextView,
-        chat: GroupChat,
+        chat: T,
         isDiffDay: Boolean
     ){
 
@@ -39,13 +48,11 @@ abstract class BaseChatViewHolder(itemView: View) : RecyclerView.ViewHolder(item
     }
 }
 
-class ChatViewHolder(
+class ChatViewHolder<T: PersonalChat>(
     val binding: ItemChatBinding,
     private val onProfileClick: ItemClickCallback<String>,
-    private val onMessageLongClick: ItemClickCallback<String>,
-    private val repliedClickCallback: ItemClickCallback<GroupChat>,
-    private val meetingNoteClickCallback: ItemClickCallback<GroupChat>
-) : BaseChatViewHolder(binding.root){
+    private val onMessageLongClick: ItemClickCallback<String>
+) : BaseChatViewHolder<T>(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
@@ -53,7 +60,7 @@ class ChatViewHolder(
     private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
-    override fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
+    override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
         tvName.text = chat.username
         tvName.setTextColor(chat.nameColor)
         tvDate.text = chat.createdAt.toTimeString()
@@ -75,20 +82,17 @@ class ChatViewHolder(
     }
 }
 
-class MyChatViewHolder(
+class MyChatViewHolder<T: PersonalChat>(
     val binding: ItemChatUserBinding,
-    private val onProfileClick: ItemClickCallback<String>,
-    private val onMessageLongClick: ItemClickCallback<String>,
-    private val repliedClickCallback: ItemClickCallback<GroupChat>,
-    private val meetingNoteClickCallback: ItemClickCallback<GroupChat>
-) : BaseChatViewHolder(binding.root){
+    private val onMessageLongClick: ItemClickCallback<String>
+) : BaseChatViewHolder<T>(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = binding.pbSending
     private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
-    override fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
+    override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
         tvMessage.text = chat.text
         tvDate.text = chat.createdAt.toTimeString()
 
@@ -112,13 +116,12 @@ class MyChatViewHolder(
     }
 }
 
-class ChatReplyViewHolder(
+class ChatReplyViewHolder<T: PersonalChat>(
     val binding: ItemChatReplyBinding,
     private val onProfileClick: ItemClickCallback<String>,
     private val onMessageLongClick: ItemClickCallback<String>,
-    private val repliedClickCallback: ItemClickCallback<GroupChat>,
-    private val meetingNoteClickCallback: ItemClickCallback<GroupChat>
-) : BaseChatViewHolder(binding.root){
+    private val repliedClickCallback: ItemClickCallback<T>
+) : BaseChatViewHolder<T>(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
@@ -129,7 +132,7 @@ class ChatReplyViewHolder(
     private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
-    override fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
+    override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int){
         tvName.text = chat.username
         tvName.setTextColor(chat.nameColor)
         tvDate.text = chat.createdAt.toTimeString()
@@ -160,13 +163,11 @@ class ChatReplyViewHolder(
 
 }
 
-class MyChatReplyViewHolder(
+class MyChatReplyViewHolder<T: PersonalChat>(
     val binding: ItemChatReplyUserBinding,
-    private val onProfileClick: ItemClickCallback<String>,
     private val onMessageLongClick: ItemClickCallback<String>,
-    private val repliedClickCallback: ItemClickCallback<GroupChat>,
-    private val meetingNoteClickCallback: ItemClickCallback<GroupChat>
-) : BaseChatViewHolder(binding.root){
+    private val repliedClickCallback: ItemClickCallback<T>
+) : BaseChatViewHolder<T>(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvDate: TextView = binding.tvDate
     private val pbSending: ProgressBar = binding.pbSending
@@ -176,7 +177,7 @@ class MyChatReplyViewHolder(
     private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
-    override fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
+    override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
         tvMessage.text = chat.text
         tvDate.text = chat.createdAt.toTimeString()
 
@@ -206,13 +207,12 @@ class MyChatReplyViewHolder(
     }
 }
 
-class MeetingViewHolder(
+class MeetingViewHolder<T : GroupChat>(
     val binding: ItemChatMeetingBinding,
     private val onProfileClick: ItemClickCallback<String>,
     private val onMessageLongClick: ItemClickCallback<String>,
-    private val repliedClickCallback: ItemClickCallback<GroupChat>,
     private val meetingNoteClickCallback: ItemClickCallback<GroupChat>
-) : BaseChatViewHolder(binding.root){
+) : BaseChatViewHolder<T>(binding.root){
     private val tvName: TextView = binding.tvUsername
     private val tvMessage: TextView = binding.tvMessage
     private val tvTitle: TextView = binding.tvMeetingTitle
@@ -223,7 +223,7 @@ class MeetingViewHolder(
     private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
-    override fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
+    override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
         tvTitle.text = "Meeting #${chat.meetingNo}"
         tvName.text = chat.username
         tvName.setTextColor(chat.nameColor)
@@ -256,13 +256,11 @@ class MeetingViewHolder(
 
 }
 
-class MyMeetingViewHolder(
+class MyMeetingViewHolder<T : GroupChat>(
     val binding: ItemChatMeetingUserBinding,
-    private val onProfileClick: ItemClickCallback<String>,
     private val onMessageLongClick: ItemClickCallback<String>,
-    private val repliedClickCallback: ItemClickCallback<GroupChat>,
     private val meetingNoteClickCallback: ItemClickCallback<GroupChat>
-) : BaseChatViewHolder(binding.root){
+) : BaseChatViewHolder<T>(binding.root){
     private val tvMessage: TextView = binding.tvMessage
     private val tvTitle: TextView = binding.tvMeetingTitle
     private val tvDate: TextView = binding.tvDate
@@ -272,7 +270,7 @@ class MyMeetingViewHolder(
     private val cvBatchDate: CardView = binding.batchDate.cvBatchDate
     private val tvBatchDate: TextView = binding.batchDate.tvBatchDate
 
-    override fun onBindViewHolder(chat: GroupChat, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
+    override fun onBindViewHolder(chat: T, position: Int, isDiffDay: Boolean, chatMaxWidth: Int, myChatMaxWidth: Int) {
         tvTitle.text = "Meeting #${chat.meetingNo}"
         tvMessage.text = chat.text
         tvDate.text = chat.createdAt.toTimeString()

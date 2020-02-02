@@ -3,10 +3,11 @@ package com.gdn.android.onestop.chat.data
 import androidx.room.Entity
 import androidx.room.Ignore
 import androidx.room.PrimaryKey
+import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toDateString
 
 @Entity
-class PersonalChat {
+open class PersonalChat {
   @PrimaryKey
   lateinit var id: String
   lateinit var username: String
@@ -17,6 +18,7 @@ class PersonalChat {
   var isReply : Boolean = false
   var repliedId: String? = null
   var repliedText: String? = null
+  var repliedUsername: String? = null
 
   @Ignore
   var isSending = false
@@ -26,4 +28,13 @@ class PersonalChat {
     createdAt.toDateString()
   }
 
+  @delegate:Ignore
+  val nameColor : Int by lazy {
+    Util.getColorFromString(username)
+  }
+
+  @delegate:Ignore
+  val repliedNameColor : Int by lazy {
+    Util.getColorFromString(repliedUsername+"")
+  }
 }
