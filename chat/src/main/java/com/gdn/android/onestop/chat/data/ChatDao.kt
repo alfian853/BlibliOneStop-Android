@@ -1,7 +1,10 @@
 package com.gdn.android.onestop.chat.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.*
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
 
 @Dao
 interface ChatDao {
@@ -42,7 +45,7 @@ interface ChatDao {
     @Query("select * from PersonalInfo where name = :username")
     suspend fun getPersonalInfo(username: String): PersonalInfo?
 
-    @Query("select * from PersonalInfo")
+    @Query("select * from PersonalInfo order by lastChat desc")
     fun getAllPersonalInfo(): LiveData<List<PersonalInfo>>
 
     @Query("update PersonalInfo set unreadChat = 0 where name = :username")

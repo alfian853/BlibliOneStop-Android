@@ -3,11 +3,13 @@ package com.gdn.android.onestop.chat.util
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.content.res.Resources
+import android.view.View
+import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.RemoteInput
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.chat.ChatActivity
@@ -144,6 +146,15 @@ object ChatUtil {
     notificationManager.notify(Constant.NOTIF_CHAT_ID, notification)
   }
 
+  fun setSoundIcon(view: View, isMute: Boolean){
+    view.background = if(isMute) ResourcesCompat.getDrawable(view.resources, R.drawable.ic_sound, null)
+    else ResourcesCompat.getDrawable(view.resources, R.drawable.ic_sound_disable, null)
+  }
+
+  fun setSoundIconLabel(view: TextView, isMute: Boolean){
+    view.text = if(isMute)view.resources.getString(R.string.unmute_group)
+    else view.resources.getString(R.string.mute_group)
+  }
 
 }
 

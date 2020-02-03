@@ -6,13 +6,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
-import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.gdn.android.onestop.chat.R
+import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.data.GroupDao
 import com.gdn.android.onestop.chat.databinding.FragmentBsGroupSettingBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent
-import com.gdn.android.onestop.chat.util.GroupUtil
+import com.gdn.android.onestop.chat.util.ChatUtil
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -58,14 +58,14 @@ class GroupSettingFragment(
     }
 
 
-    GroupUtil.setSoundIcon(binding.ivMute, group.isMute)
-    GroupUtil.setSoundIconLabel(binding.tvMute, group.isMute)
+    ChatUtil.setSoundIcon(binding.ivMute, group.isMute)
+    ChatUtil.setSoundIconLabel(binding.tvMute, group.isMute)
 
     binding.llMute.setOnClickListener {
       group.isMute = !group.isMute
 
-      GroupUtil.setSoundIcon(binding.ivMute, group.isMute)
-      GroupUtil.setSoundIconLabel(binding.tvMute, group.isMute)
+      ChatUtil.setSoundIcon(binding.ivMute, group.isMute)
+      ChatUtil.setSoundIconLabel(binding.tvMute, group.isMute)
 
       CoroutineScope(Dispatchers.IO).launch {
         val groupInfo = groupDao.getGroupInfo(group.id)

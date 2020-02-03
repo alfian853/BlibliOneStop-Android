@@ -10,7 +10,7 @@ import dagger.Provides
 import retrofit2.Retrofit
 
 @Module
-class GroupProvideModule {
+class ChatProvideModule {
 
     @GroupScope
     @Provides
@@ -65,5 +65,22 @@ class GroupProvideModule {
     @Provides
     fun provideMeetingNoteRepository(groupDao: GroupDao, groupClient: GroupClient): MeetingNoteRepository {
         return MeetingNoteRepository(groupDao, groupClient)
+    }
+
+    @GroupScope
+    @Provides
+    fun providePersonalChatRepository(chatDao: ChatDao, chatClient: ChatClient): PersonalChatRepository {
+        return PersonalChatRepository(chatDao, chatClient)
+    }
+
+    @GroupScope
+    @Provides
+    fun provideGroupChatRepository(
+        chatDao: ChatDao,
+        groupDao: GroupDao,
+        groupClient: ChatClient,
+        sessionManager: SessionManager
+    ): GroupChatRepository {
+        return GroupChatRepository(chatDao, groupDao, groupClient, sessionManager)
     }
 }

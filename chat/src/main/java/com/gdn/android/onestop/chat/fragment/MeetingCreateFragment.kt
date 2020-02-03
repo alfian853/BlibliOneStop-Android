@@ -13,8 +13,8 @@ import com.gdn.android.onestop.base.util.FragmentActionCallback
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.base.util.toDateString
 import com.gdn.android.onestop.base.util.toTime24String
-import com.gdn.android.onestop.chat.databinding.DialogMeetingCreateBinding
 import com.gdn.android.onestop.chat.R
+import com.gdn.android.onestop.chat.databinding.DialogMeetingCreateBinding
 import java.util.*
 
 class MeetingCreateFragment(

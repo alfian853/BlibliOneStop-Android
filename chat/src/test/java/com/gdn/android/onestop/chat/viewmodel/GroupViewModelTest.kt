@@ -1,7 +1,8 @@
 package com.gdn.android.onestop.chat.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.gdn.android.onestop.chat.data.*
+import com.gdn.android.onestop.chat.data.Group
+import com.gdn.android.onestop.chat.data.GroupRepository
 import io.mockk.MockKAnnotations
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK

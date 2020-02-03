@@ -65,9 +65,10 @@ class IdeaCommentRepository @Inject constructor(
         val calender = Calendar.getInstance()
         calender.timeInMillis = ideaComment.date.toLong()
         ideaDao.insertComment(ideaComment)
-        ideaDao.getPostById(ideaId).apply {
+        val ideaPost = ideaDao.getPostById(ideaId).apply {
             this.commentCount++
         }
+        ideaDao.updateIdea(ideaPost)
         return true
     }
 }

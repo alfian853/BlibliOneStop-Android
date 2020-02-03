@@ -135,10 +135,9 @@ class FirebaseChatService : FirebaseMessagingService() {
 
     CoroutineScope(Dispatchers.IO).launch {
       val personalInfo = personalChatRepository.getPersonalInfo(chat.from)
+      personalChatRepository.addAndProcessPersonalChat(chat)
 
       if(personalInfo.isMute)return@launch
-
-      personalChatRepository.addAndProcessPersonalChat(chat)
       ChatUtil.notifyPersonalChat(context, chat.text, personalInfo)
     }
   }

@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.widget.doOnTextChanged
 import androidx.lifecycle.ViewModelProvider
-import com.gdn.android.onestop.chat.R
-import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.BaseFullScreenFragment
+import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.Util
 import com.gdn.android.onestop.chat.ChatActivityArgs
+import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.databinding.FragmentGroupCreateBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent

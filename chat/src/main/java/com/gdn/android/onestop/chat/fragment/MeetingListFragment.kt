@@ -11,9 +11,9 @@ import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.data.GroupDao
 import com.gdn.android.onestop.chat.data.GroupMeeting
+import com.gdn.android.onestop.chat.databinding.FragmentMeetingListBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.MeetingListAdapter
-import com.gdn.android.onestop.chat.databinding.FragmentMeetingListBinding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch

@@ -4,7 +4,6 @@ import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.data.GroupRepository
 import com.gdn.android.onestop.chat.data.PersonalChatRepository
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class ChatListViewModel

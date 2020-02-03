@@ -10,6 +10,8 @@ class PersonalInfo : ChatChannel(), Serializable {
     @PrimaryKey
     lateinit var id : String
 
+    var lastChat: Long = 0
+
     @delegate:Transient
     val alias : String by lazy{ name.toAliasName() }
 

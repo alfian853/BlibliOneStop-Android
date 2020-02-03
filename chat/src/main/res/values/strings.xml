@@ -49,7 +49,8 @@
     <string name="no_upcoming_meeting">Yay, No Upcoming Meeting</string>
     <string name="please_fill_this_field">Please fill this field</string>
     <string name="clear_chat">Clear chat</string>
-  <string name="personals">Personals</string>
+    <string name="personals">Personals</string>
     <string name="remove_chat">Remove chat</string>
     <string name="mute_chat">Mute chat</string>
+    <string name="unmute_chat">Unmute chat</string>
 </resources>

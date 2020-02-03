@@ -2,9 +2,9 @@ package com.gdn.android.onestop.chat.injection
 
 import com.gdn.android.onestop.base.AppComponent
 import com.gdn.android.onestop.chat.data.ChatDao
+import com.gdn.android.onestop.chat.fragment.*
 import com.gdn.android.onestop.chat.service.ChatReplyService
 import com.gdn.android.onestop.chat.service.FirebaseChatService
-import com.gdn.android.onestop.chat.fragment.*
 import dagger.Component
 import dagger.android.AndroidInjectionModule
 
@@ -12,8 +12,8 @@ import dagger.android.AndroidInjectionModule
 @Component(
     modules = [
         AndroidInjectionModule::class,
-        GroupBindModule::class,
-        GroupProvideModule::class
+        ChatBindModule::class,
+        ChatProvideModule::class
     ],
     dependencies = [AppComponent::class]
 )

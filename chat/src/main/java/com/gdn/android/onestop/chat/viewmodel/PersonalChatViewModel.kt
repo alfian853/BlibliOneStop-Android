@@ -9,7 +9,9 @@ import androidx.lifecycle.MutableLiveData
 import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.util.SessionManager
-import com.gdn.android.onestop.chat.data.*
+import com.gdn.android.onestop.chat.data.PersonalChat
+import com.gdn.android.onestop.chat.data.PersonalChatRepository
+import com.gdn.android.onestop.chat.data.PersonalChatSendRequest
 import java.util.*
 import javax.inject.Inject
 

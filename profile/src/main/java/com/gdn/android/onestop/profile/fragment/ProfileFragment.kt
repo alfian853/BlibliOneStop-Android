@@ -12,8 +12,8 @@ import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.chat.data.GroupChatRepository
-import com.gdn.android.onestop.chat.data.GroupRepository
 import com.gdn.android.onestop.chat.data.PersonalChatRepository
+import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.injection.ChatComponentProvider
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment
@@ -34,6 +34,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
   override fun doFragmentInjection() {
     ProfileComponent.getInstance().inject(this)
+    ChatComponent.getInstance().inject(chatComponentProvider)
     chatRepository = chatComponentProvider.personalChatRepository
     groupChatRepository = chatComponentProvider.groupChatRepository
   }
@@ -123,7 +124,7 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
       databinding.user.tvIdeationPosts.text = profile.ideationPosts.toString() + " posts"
       databinding.user.tvIdeationComments.text = profile.ideationComments.toString() + " comments"
       databinding.user.tvWritenNote.text = profile.writtenMeetingNotes.toString() + " notes"
-
+      databinding.ivChat.visibility = View.GONE
       val adapter = IdeaRecyclerAdapter(voteHelper).apply {
         voteClickCallback = object : VoteClickCallback {
           override fun onVote(

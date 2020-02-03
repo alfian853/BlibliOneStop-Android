@@ -1,13 +1,11 @@
 package com.gdn.android.onestop.chat.data
 
-import android.util.Log
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.chat.util.ChatUtil
-import javax.inject.Inject
+import java.util.*
 
-class PersonalChatRepository @Inject constructor(
-    val chatDao: ChatDao,
-    val chatClient: ChatClient
+class PersonalChatRepository(
+  val chatDao: ChatDao,
+  val chatClient: ChatClient
 ){
 
   fun getChatLiveData(username: String) = chatDao.getPersonalChatLiveData(username)
@@ -15,14 +13,19 @@ class PersonalChatRepository @Inject constructor(
   suspend fun addAndProcessPersonalChat(personalChat: PersonalChat){
     chatDao.insertPersonalChat(personalChat)
 
-    if(!personalChat.isMe){
-      val personalInfo = getPersonalInfo(personalChat.from)
-      personalInfo.apply{
-        unreadChat += 1
+    val personalInfo = if(personalChat.isMe){
+      getPersonalInfo(personalChat.to).apply {
+        lastChat = Date().time
       }
-      Log.d("saveing",ObjectMapper().writeValueAsString(personalInfo))
-      chatDao.insertPersonalInfo(personalInfo)
     }
+    else{
+      getPersonalInfo(personalChat.from).apply {
+        unreadChat += 1
+        lastChat = Date().time
+      }
+    }
+    chatDao.insertPersonalInfo(personalInfo)
+
   }
 
   val personalLiveData = chatDao.getAllPersonalInfo()

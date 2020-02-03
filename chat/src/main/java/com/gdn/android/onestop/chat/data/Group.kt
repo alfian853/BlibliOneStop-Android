@@ -4,7 +4,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import androidx.room.TypeConverters
 import com.gdn.android.onestop.chat.util.GroupTypeConverter
-import java.io.Serializable
 
 @Entity
 class Group : ChatChannel() {

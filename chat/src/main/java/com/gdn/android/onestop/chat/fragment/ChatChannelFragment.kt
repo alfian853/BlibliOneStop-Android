@@ -3,7 +3,6 @@ package com.gdn.android.onestop.chat.fragment
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
@@ -41,6 +40,9 @@ class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
     @Inject
     lateinit var chatRepository: PersonalChatRepository
 
+    @Inject
+    lateinit var chatDao: ChatDao
+
     private val groupClickCallback = object : ItemClickCallback<ChatChannel> {
         override fun onItemClick(item: ChatChannel, position: Int) {
             val arg = ChatActivityArgs(item as Group,null)
@@ -72,7 +74,7 @@ class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
 
     private val personalOptionClick: ItemClickCallback<ChatChannel> = object : ItemClickCallback<ChatChannel> {
         override fun onItemClick(item: ChatChannel, position: Int) {
-            PersonalOptionFragment(item as PersonalInfo, chatRepository)
+            PersonalOptionFragment(item as PersonalInfo, chatRepository, chatDao)
                 .show(this@ChatChannelFragment.fragmentManager!!, "personal setting fragment")
         }
     }

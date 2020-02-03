@@ -2,7 +2,6 @@ package com.gdn.android.onestop.chat.viewmodel
 
 import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.chat.data.MeetingNoteRepository
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class MeetingNoteListViewModel

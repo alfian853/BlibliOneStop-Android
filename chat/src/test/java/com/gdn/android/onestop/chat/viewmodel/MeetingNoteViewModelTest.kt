@@ -1,19 +1,19 @@
 package com.gdn.android.onestop.chat.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.gdn.android.onestop.base.BaseResponse
-import com.gdn.android.onestop.chat.data.*
-import io.mockk.*
-import io.mockk.impl.annotations.MockK
+import com.gdn.android.onestop.chat.data.GroupDao
+import com.gdn.android.onestop.chat.data.MeetingNote
+import com.gdn.android.onestop.chat.data.MeetingNoteRepository
+import com.gdn.android.onestop.chat.data.NotePostResponse
+import io.mockk.MockKAnnotations
+import io.mockk.coEvery
 import io.mockk.impl.annotations.RelaxedMockK
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.newSingleThreadContext
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.*
-import retrofit2.Response
 
 class MeetingNoteViewModelTest {
 

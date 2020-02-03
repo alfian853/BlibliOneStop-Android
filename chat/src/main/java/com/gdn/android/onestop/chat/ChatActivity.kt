@@ -6,9 +6,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import com.gdn.android.onestop.base.util.Navigator
-import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.fragment.GroupChatFragment
 import com.gdn.android.onestop.chat.databinding.ActivityGroupBinding
+import com.gdn.android.onestop.chat.fragment.GroupChatFragment
 import com.gdn.android.onestop.chat.fragment.GroupChatFragmentArgs
 import com.gdn.android.onestop.chat.fragment.PersonalChatFragment
 import com.gdn.android.onestop.chat.fragment.PersonalChatFragmentArgs

@@ -2,12 +2,11 @@ package com.gdn.android.onestop.chat.data
 
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.chat.util.ChatUtil
-import javax.inject.Inject
 import kotlin.math.max
 import kotlin.math.min
 
 
-class GroupChatRepository @Inject constructor(
+class GroupChatRepository(
     private val chatDao: ChatDao,
     private val groupDao: GroupDao,
     private val groupClient: ChatClient,

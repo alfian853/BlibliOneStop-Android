@@ -9,7 +9,7 @@ import dagger.multibindings.IntoMap
 
 
 @Module
-abstract class GroupBindModule {
+abstract class ChatBindModule {
 
     @GroupScope
     @Binds

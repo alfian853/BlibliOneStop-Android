@@ -35,21 +35,18 @@ import com.gdn.android.onestop.base.CopyTextFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.chat.ChatActivityArgs
-import com.gdn.android.onestop.chat.data.GroupChat
-import com.gdn.android.onestop.chat.data.GroupChatRepository
-import com.gdn.android.onestop.chat.service.MeetingAlarmPublisher
-import com.gdn.android.onestop.chat.util.GroupChatRecyclerAdapter
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.databinding.FragmentGroupChatBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent
+import com.gdn.android.onestop.chat.service.MeetingAlarmPublisher
 import com.gdn.android.onestop.chat.util.BaseChatRecyclerAdapter
-import com.gdn.android.onestop.chat.util.GroupUtil
+import com.gdn.android.onestop.chat.util.ChatUtil
+import com.gdn.android.onestop.chat.util.GroupChatRecyclerAdapter
 import com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -233,8 +230,8 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
       databinding.ivMute.visibility = if(group.isMute)View.VISIBLE
       else View.GONE
 
-      GroupUtil.setSoundIcon(databinding.ivNotification, group.isMute)
-      GroupUtil.setSoundIconLabel(databinding.tvNotification, group.isMute)
+      ChatUtil.setSoundIcon(databinding.ivNotification, group.isMute)
+      ChatUtil.setSoundIconLabel(databinding.tvNotification, group.isMute)
 
       CoroutineScope(Dispatchers.IO).launch {
         groupInfo.isMute = group.isMute

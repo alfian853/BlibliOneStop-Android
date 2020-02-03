@@ -1,6 +1,5 @@
 package com.gdn.android.onestop.chat.util
 
-import android.util.Log
 import androidx.room.TypeConverter
 import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.data.Group.Type.*

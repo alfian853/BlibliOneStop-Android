@@ -1,8 +1,6 @@
 package com.gdn.android.onestop.profile.data
 
 import com.gdn.android.onestop.ideation.data.IdeaPost
-import java.util.*
-import kotlin.collections.ArrayList
 
 class ProfileResponse {
   var ideationPosts = 0

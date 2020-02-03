@@ -27,16 +27,18 @@ import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.chat.R
-import com.gdn.android.onestop.chat.data.*
+import com.gdn.android.onestop.chat.data.ChatDao
+import com.gdn.android.onestop.chat.data.PersonalChat
+import com.gdn.android.onestop.chat.data.PersonalChatRepository
+import com.gdn.android.onestop.chat.data.PersonalInfo
 import com.gdn.android.onestop.chat.databinding.FragmentPersonalChatBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.BaseChatRecyclerAdapter
-import com.gdn.android.onestop.chat.util.GroupUtil
+import com.gdn.android.onestop.chat.util.ChatUtil
 import com.gdn.android.onestop.chat.viewmodel.PersonalChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -201,8 +203,8 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
       databinding.ivMute.visibility = if(personalInfo.isMute)View.VISIBLE
       else View.GONE
 
-      GroupUtil.setSoundIcon(databinding.ivNotification, personalInfo.isMute)
-      GroupUtil.setSoundIconLabel(databinding.tvNotification, personalInfo.isMute)
+      ChatUtil.setSoundIcon(databinding.ivNotification, personalInfo.isMute)
+      ChatUtil.setSoundIconLabel(databinding.tvNotification, personalInfo.isMute)
 
       CoroutineScope(Dispatchers.IO).launch {
         chatDao.insertPersonalInfo(personalInfo)

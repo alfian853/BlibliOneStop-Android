@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.gdn.android.onestop.chat.databinding.FragmentBsGroupOptionBinding
+import com.gdn.android.onestop.chat.viewmodel.ChatListViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
 class GroupOptionFragment(private val groupViewModel: ChatListViewModel) : BottomSheetDialogFragment() {

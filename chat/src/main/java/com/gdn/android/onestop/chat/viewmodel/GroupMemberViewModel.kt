@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.gdn.android.onestop.base.BaseViewModel
 import com.gdn.android.onestop.chat.data.GroupClient
-import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class GroupMemberViewModel @Inject constructor(private val groupClient: GroupClient) : BaseViewModel(){

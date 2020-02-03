@@ -1,8 +1,6 @@
 package com.gdn.android.onestop.chat.util
 
 import android.animation.ValueAnimator
-import android.opengl.Visibility
-import android.util.Log
 import android.util.SparseArray
 import android.view.LayoutInflater
 import android.view.View

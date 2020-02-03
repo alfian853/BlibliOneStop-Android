@@ -74,6 +74,7 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
   private fun hideLoad(){
     databinding.user.detail.visibility = View.VISIBLE
     databinding.pbLoad.visibility = View.GONE
+    databinding.ivChat.visibility = View.VISIBLE
   }
 
   private fun loadUsername(): String {
