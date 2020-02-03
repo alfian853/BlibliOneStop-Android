@@ -28,6 +28,7 @@
                 android:id="@+id/iv_user"
                 android:background="@color/colorPrimaryDark"
                 android:text="AL"
+                android:textColor="@color/white"
                 android:gravity="center"
                 android:textSize="@dimen/size_text_h4"
                 android:layout_width="@dimen/size_img_2"

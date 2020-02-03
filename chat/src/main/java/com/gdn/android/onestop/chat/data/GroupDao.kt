@@ -31,6 +31,18 @@ interface GroupDao {
     @Query("delete from `Group`")
     suspend fun deleteAllGroup()
 
+    @Query("delete from groupInfo")
+    suspend fun deleteAllGroupInfo()
+
+    @Query("delete from groupchat")
+    suspend fun deleteAllGroupChat()
+
+    @Query("delete from MeetingNote")
+    suspend fun deleteAllMeetingNote()
+
+    @Query("delete from GroupMeeting")
+    suspend fun deleteAllGroupMeeting()
+
     @Query("delete from `Group` where id = :groupId")
     fun deleteGroupById(groupId: String)
 

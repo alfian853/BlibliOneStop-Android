@@ -1,6 +1,7 @@
 package com.gdn.android.onestop.chat.injection
 
 import com.gdn.android.onestop.base.AppComponent
+import com.gdn.android.onestop.chat.data.ChatDao
 import com.gdn.android.onestop.chat.service.ChatReplyService
 import com.gdn.android.onestop.chat.service.FirebaseChatService
 import com.gdn.android.onestop.chat.fragment.*
@@ -18,6 +19,8 @@ import dagger.android.AndroidInjectionModule
 )
 interface ChatComponent {
 
+    val chatDao: ChatDao
+
     fun inject(groupCreateFragment: GroupCreateFragment)
     fun inject(groupChatFragment: GroupChatFragment)
     fun inject(personalChatFragment: PersonalChatFragment)
@@ -29,6 +32,8 @@ interface ChatComponent {
     fun inject(groupMemberFragment: GroupMemberFragment)
     fun inject(chatService: FirebaseChatService)
     fun inject(chatReplyService: ChatReplyService)
+
+    fun inject(chatComponentProvider: ChatComponentProvider)
 
     companion object {
         private var instance : ChatComponent? = null

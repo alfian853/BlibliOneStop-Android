@@ -1,13 +1,10 @@
 package com.gdn.android.onestop.profile.injection
 
-import androidx.lifecycle.ViewModel
-import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.ideation.injection.IdeaComponent
 import com.gdn.android.onestop.profile.fragment.ProfileDialogFragment
 import com.gdn.android.onestop.profile.fragment.ProfileFragment
 import dagger.Component
 import dagger.android.AndroidInjectionModule
-import javax.inject.Provider
 
 @ProfileScope
 @Component(

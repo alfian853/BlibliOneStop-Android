@@ -8,8 +8,8 @@ import com.gdn.android.onestop.chat.R
 object GroupUtil {
 
   fun setSoundIcon(view: View, isMute: Boolean){
-    view.background = if(isMute) ResourcesCompat.getDrawable(view.resources, R.drawable.ic_sound_disable, null)
-    else ResourcesCompat.getDrawable(view.resources, R.drawable.ic_sound, null)
+    view.background = if(isMute) ResourcesCompat.getDrawable(view.resources, R.drawable.ic_sound, null)
+    else ResourcesCompat.getDrawable(view.resources, R.drawable.ic_sound_disable, null)
   }
 
   fun setSoundIconLabel(view: TextView, isMute: Boolean){

@@ -3,6 +3,7 @@ package com.gdn.android.onestop.chat.fragment
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.LiveData
@@ -11,12 +12,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.ItemClickCallback
+import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.R
-import com.gdn.android.onestop.chat.data.ChatChannel
-import com.gdn.android.onestop.chat.data.Group
-import com.gdn.android.onestop.chat.data.GroupDao
-import com.gdn.android.onestop.chat.data.PersonalInfo
+import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.databinding.FragmentChatListBinding
 import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.ChatChannelRecyclerAdapter
@@ -39,11 +38,14 @@ class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
     @Inject
     lateinit var groupDao: GroupDao
 
+    @Inject
+    lateinit var chatRepository: PersonalChatRepository
+
     private val groupClickCallback = object : ItemClickCallback<ChatChannel> {
         override fun onItemClick(item: ChatChannel, position: Int) {
             val arg = ChatActivityArgs(item as Group,null)
 
-            val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
+            val intent = Intent(activity, ChatActivity::class.java)
             intent.putExtras(arg.toBundle())
             startActivity(intent)
         }
@@ -62,7 +64,7 @@ class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
         override fun onItemClick(item: ChatChannel, position: Int) {
             val arg = ChatActivityArgs(null, item as PersonalInfo)
 
-            val intent = Intent(activity, com.gdn.android.onestop.chat.ChatActivity::class.java)
+            val intent = Intent(activity, ChatActivity::class.java)
             intent.putExtras(arg.toBundle())
             startActivity(intent)
         }
@@ -70,7 +72,8 @@ class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
 
     private val personalOptionClick: ItemClickCallback<ChatChannel> = object : ItemClickCallback<ChatChannel> {
         override fun onItemClick(item: ChatChannel, position: Int) {
-
+            PersonalOptionFragment(item as PersonalInfo, chatRepository)
+                .show(this@ChatChannelFragment.fragmentManager!!, "personal setting fragment")
         }
     }
 
@@ -185,7 +188,7 @@ class ChatChannelFragment : BaseFragment<FragmentChatListBinding>() {
         }
 
         val personalOnClick = View.OnClickListener {
-            val isCollapse : Boolean = databinding.rvTribe.visibility == View.GONE
+            val isCollapse : Boolean = databinding.rvPersonal.visibility == View.GONE
             if(isCollapse){
                 databinding.rvPersonal.visibility = View.VISIBLE
                 databinding.tvTogglePersonal.background = icDown

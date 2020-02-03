@@ -25,7 +25,8 @@
     <string name="leave_caution">Are you sure want to leave from group?</string>
     <string name="view_members">View members</string>
     <string name="leave_group">Leave group</string>
-    <string name="send_message">Send message…</string>
+    <string name="send_message_">Send message…</string>
+    <string name="send_message">Send message</string>
     <string name="date_time">10:10 PM, 22–09–2019</string>
     <string name="username">username</string>
     <string name="group_name">anti group-group club</string>
@@ -49,4 +50,6 @@
     <string name="please_fill_this_field">Please fill this field</string>
     <string name="clear_chat">Clear chat</string>
   <string name="personals">Personals</string>
+    <string name="remove_chat">Remove chat</string>
+    <string name="mute_chat">Mute chat</string>
 </resources>

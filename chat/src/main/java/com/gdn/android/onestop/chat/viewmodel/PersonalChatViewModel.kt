@@ -7,17 +7,21 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import com.gdn.android.onestop.base.BaseViewModel
+import com.gdn.android.onestop.base.User
+import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.chat.data.*
 import java.util.*
 import javax.inject.Inject
 
 class PersonalChatViewModel @Inject constructor(
-  private val chatDao: ChatDao,
-  private val personalChatRepository: PersonalChatRepository
+  private val personalChatRepository: PersonalChatRepository,
+  private val sessionManager: SessionManager
 ) : BaseViewModel(){
 
   private var pendingMsgList: LinkedList<PersonalChat> = LinkedList()
   private var pendingMessage: MutableLiveData<List<PersonalChat>> = MutableLiveData()
+
+  val user: User by lazy {sessionManager.user!!}
 
   fun resetStateAndGetLiveData(username : String) : LiveData<List<PersonalChat>> {
     activeChatUsername = username
@@ -90,6 +94,7 @@ class PersonalChatViewModel @Inject constructor(
     return PersonalChat().apply {
       isMe = true
       to = activeChatUsername
+      from = user.username
       text = request.text
       isSending = true
       createdAt = Long.MAX_VALUE

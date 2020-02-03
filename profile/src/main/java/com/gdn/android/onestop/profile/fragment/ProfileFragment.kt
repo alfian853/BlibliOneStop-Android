@@ -11,6 +11,10 @@ import com.gdn.android.onestop.base.util.DefaultContextWrapper
 import com.gdn.android.onestop.base.util.ItemClickCallback
 import com.gdn.android.onestop.base.util.Navigator
 import com.gdn.android.onestop.base.util.SessionManager
+import com.gdn.android.onestop.chat.data.GroupChatRepository
+import com.gdn.android.onestop.chat.data.GroupRepository
+import com.gdn.android.onestop.chat.data.PersonalChatRepository
+import com.gdn.android.onestop.chat.injection.ChatComponentProvider
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragmentArgs
@@ -21,6 +25,8 @@ import com.gdn.android.onestop.profile.R
 import com.gdn.android.onestop.profile.databinding.FragmentProfileBinding
 import com.gdn.android.onestop.profile.injection.ProfileComponent
 import com.gdn.android.onestop.profile.viewmodel.ProfileViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -28,6 +34,8 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
   override fun doFragmentInjection() {
     ProfileComponent.getInstance().inject(this)
+    chatRepository = chatComponentProvider.personalChatRepository
+    groupChatRepository = chatComponentProvider.groupChatRepository
   }
 
   @Inject
@@ -38,6 +46,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
 
   @Inject
   lateinit var voteHelper: VoteHelper
+
+  val chatComponentProvider = ChatComponentProvider()
+
+  lateinit var chatRepository: PersonalChatRepository
+
+  lateinit var groupChatRepository: GroupChatRepository
 
   lateinit var profileViewModel: ProfileViewModel
 
@@ -149,6 +163,12 @@ class ProfileFragment : BaseFragment<FragmentProfileBinding>() {
         .setMessage(R.string.are_you_sure)
         .setPositiveButton(R.string.yes) { dialog, which ->
           sessionManager.logout()
+
+          CoroutineScope(Dispatchers.IO).launch {
+            chatRepository.nukePersonalDatabase()
+            groupChatRepository.nukeGroupDatabase()
+          }
+
           val loginIntent = Navigator.getIntent(Navigator.Destination.LOGIN_ACTIVITY)
           startActivity(loginIntent)
           activity!!.finish()

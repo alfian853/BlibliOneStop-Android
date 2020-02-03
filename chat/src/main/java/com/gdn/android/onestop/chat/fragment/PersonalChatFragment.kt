@@ -36,6 +36,7 @@ import com.gdn.android.onestop.chat.viewmodel.PersonalChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -92,7 +93,10 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
           databinding.rvChat.scrollToPosition(it.size-1)
         }
       }
-
+    }
+    else{
+      chatRvAdapter.chatList = it
+      chatRvAdapter.notifyDataSetChanged()
     }
   }
 
@@ -207,12 +211,11 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
 
     databinding.llRemoveChat.setOnClickListener {
       AlertDialog.Builder(this.context!!)
-        .setTitle(R.string.leave_group)
+        .setTitle(getString(R.string.remove_chat))
         .setMessage(R.string.are_you_sure)
         .setPositiveButton(R.string.yes) { dialog, which ->
           viewmodel.launch {
             chatDao.deletePersonalChat(personalInfo.name)
-            activity!!.finish()
           }
         }.setNegativeButton(R.string.no) { dialog, which -> }.show()
     }
@@ -297,8 +300,13 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
 
       override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        val item = chatRvAdapter.chatList[chatLayoutManager.findFirstVisibleItemPosition()]
-        databinding.tvDate.text = item.createdAt.toDateString()
+        try {
+          val item = chatRvAdapter.chatList[chatLayoutManager.findFirstVisibleItemPosition()]
+          databinding.tvDate.text = item.createdAt.toDateString()
+        }
+        catch (e: Exception){
+
+        }
       }
     })
 
@@ -328,7 +336,7 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
           myUser.username
         }
         else {
-          chat.from
+          personalInfo.name
         }
         viewmodel.setOnReplyChat(chat.id, previewText, repliedUsername)
 
@@ -337,8 +345,8 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
           databinding.tvReplyUserPict.text = myUser.alias
         }
         else{
-          databinding.tvReplyUsername.text = personalInfo.name
-          databinding.tvReplyUserPict.text = personalInfo.alias
+          databinding.tvReplyUsername.text = chat.getSenderName()
+          databinding.tvReplyUserPict.text = chat.alias
         }
 
         databinding.tvReplyUserPict.setBackgroundColor(chat.nameColor)

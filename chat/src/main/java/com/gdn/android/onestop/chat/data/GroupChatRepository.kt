@@ -19,7 +19,7 @@ class GroupChatRepository @Inject constructor(
     private const val PAGE_SIZE = 20
   }
 
-  private val sessionUsername = sessionManager.user!!.username
+  private val sessionUsername: String by lazy {sessionManager.user!!.username}
 
   fun getChatLiveData(groupId: String) = chatDao.getGroupChatLiveData(groupId)
 
@@ -131,6 +131,14 @@ class GroupChatRepository @Inject constructor(
     }
 
     return response.isSuccessful
+  }
+
+  suspend fun nukeGroupDatabase(){
+    groupDao.deleteAllGroup()
+    groupDao.deleteAllGroupChat()
+    groupDao.deleteAllGroupInfo()
+    groupDao.deleteAllGroupMeeting()
+    groupDao.deleteAllMeetingNote()
   }
 
 }

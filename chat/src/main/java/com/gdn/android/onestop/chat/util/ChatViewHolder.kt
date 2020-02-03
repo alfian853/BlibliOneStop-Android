@@ -37,7 +37,7 @@ abstract class BaseChatViewHolder<T: PersonalChat>(itemView: View) : RecyclerVie
         isDiffDay: Boolean
     ){
 
-        if(isDiffDay){
+        if(isDiffDay && !chat.isSending){
             dateContainer.visibility = View.VISIBLE
             dateText.text = chat.dayOfYear
         }
@@ -141,7 +141,7 @@ class ChatReplyViewHolder<T: PersonalChat>(
         tvNamePict.text = nameAlias
         tvNamePict.setBackgroundColor(chat.nameColor)
 
-        tvReplyName.text = chat.getSenderName()
+        tvReplyName.text = chat.repliedUsername
         tvReplyText.text = chat.repliedText
         tvReplyName.setTextColor(chat.repliedNameColor)
         llReplyContainer.setOnClickListener{

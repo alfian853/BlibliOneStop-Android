@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <LinearLayout
+        android:padding="20dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <ImageView
+                android:id="@+id/iv_chat"
+                android:gravity="end"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_feedback"
+                android:layout_width="@dimen/size_text_h2"
+                android:layout_height="@dimen/size_text_h2"/>
+
+            <TextView
+                android:id="@+id/tv_chat"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/send_message"
+                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="18dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_remove_chat"
+                android:layout_gravity="center"
+                android:background="@drawable/ic_bin"
+                android:gravity="end"
+                android:layout_width="@dimen/size_img_4"
+                android:layout_height="@dimen/size_img_4"/>
+
+            <TextView
+                android:id="@+id/tv_remove_chat"
+                android:layout_gravity="center"
+                android:layout_marginLeft="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/remove_chat"
+                android:textColor="@color/black"
+                android:textSize="@dimen/size_text_h4"
+                android:layout_marginStart="20dp" />
+        </LinearLayout>
+    </LinearLayout>
+</layout>

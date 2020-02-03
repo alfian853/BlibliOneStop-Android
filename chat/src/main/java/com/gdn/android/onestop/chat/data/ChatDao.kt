@@ -30,6 +30,15 @@ interface ChatDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertPersonalInfo(vararg personalInfo: PersonalInfo)
 
+    @Query("delete from PersonalInfo where name = :username")
+    suspend fun deletePersonalInfo(username: String)
+
+    @Query("delete from PersonalInfo")
+    suspend fun deleteAllPersonalInfo()
+
+    @Query("delete from PersonalChat")
+    suspend fun deleteAllPersonalChat()
+
     @Query("select * from PersonalInfo where name = :username")
     suspend fun getPersonalInfo(username: String): PersonalInfo?
 
@@ -38,4 +47,5 @@ interface ChatDao {
 
     @Query("update PersonalInfo set unreadChat = 0 where name = :username")
     suspend fun resetUnreadedPersonalChat(username: String)
+
 }

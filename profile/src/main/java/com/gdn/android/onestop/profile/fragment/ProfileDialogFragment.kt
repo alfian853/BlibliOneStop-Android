@@ -1,5 +1,6 @@
 package com.gdn.android.onestop.profile.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,6 +10,12 @@ import androidx.lifecycle.ViewModelProvider
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
+import com.gdn.android.onestop.chat.ChatActivity
+import com.gdn.android.onestop.chat.ChatActivityArgs
+import com.gdn.android.onestop.chat.data.ChatDao
+import com.gdn.android.onestop.chat.data.PersonalInfo
+import com.gdn.android.onestop.chat.injection.ChatComponent
+import com.gdn.android.onestop.chat.injection.ChatComponentProvider
 import com.gdn.android.onestop.ideation.data.IdeaPost
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragment
 import com.gdn.android.onestop.ideation.fragment.IdeaDetailFragmentArgs
@@ -25,6 +32,10 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
 
   override fun doFragmentInjection() {
     ProfileComponent.getInstance().inject(this)
+    val chatComProvider = ChatComponentProvider()
+    ChatComponent.getInstance().inject(chatComProvider)
+
+    chatDao = chatComProvider.chatDao
   }
 
   @Inject
@@ -36,7 +47,11 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
   @Inject
   lateinit var voteHelper: VoteHelper
 
+  lateinit var chatDao: ChatDao
+
   lateinit var profileViewModel: ProfileViewModel
+
+  lateinit var username: String
 
   private val contextWrapper : DefaultContextWrapper by lazy {
     DefaultContextWrapper(
@@ -62,8 +77,7 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
   }
 
   private fun loadUsername(): String {
-
-    var username = arguments!!.getString(Navigator.Argument.PROFILE_USERNAME.key, null)
+    username = arguments!!.getString(Navigator.Argument.PROFILE_USERNAME.key, null)
 
     databinding.tvUser.text = username.toAliasName()
     databinding.tvUser.setBackgroundColor(Util.getColorFromString(username))
@@ -84,6 +98,20 @@ class ProfileDialogFragment : BaseFullScreenFragment<FragmentProfileBinding>() {
 
     showLoad()
     loadProfile()
+
+    databinding.ivChat.setOnClickListener {
+      val personalInfo = PersonalInfo().apply {
+        id = username
+        this.name = username
+      }
+      profileViewModel.launch {
+        chatDao.insertPersonalInfo(personalInfo)
+
+        val intent = Intent(this@ProfileDialogFragment.context, ChatActivity::class.java)
+        intent.putExtras(ChatActivityArgs(null, personalInfo).toBundle())
+        startActivity(intent)
+      }
+    }
 
     return databinding.root
   }

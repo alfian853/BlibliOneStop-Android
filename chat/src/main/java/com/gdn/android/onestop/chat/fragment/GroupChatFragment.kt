@@ -49,6 +49,7 @@ import com.gdn.android.onestop.chat.viewmodel.GroupChatViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import javax.inject.Inject
 
 
@@ -383,8 +384,13 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
 
       override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
         super.onScrolled(recyclerView, dx, dy)
-        val item = chatRvAdapter.chatList[chatLayoutManager.findFirstVisibleItemPosition()]
-        databinding.tvDate.text = item.createdAt.toDateString()
+        try {
+          val item = chatRvAdapter.chatList[chatLayoutManager.findFirstVisibleItemPosition()]
+          databinding.tvDate.text = item.createdAt.toDateString()
+        }
+        catch (e: Exception){
+
+        }
       }
     })
 

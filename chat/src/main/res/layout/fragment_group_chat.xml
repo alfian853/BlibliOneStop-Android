@@ -331,7 +331,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_border_primary"
-                android:hint="@string/send_message"
+                android:hint="@string/send_message_"
                 android:inputType="textMultiLine" />
 
             <ImageView

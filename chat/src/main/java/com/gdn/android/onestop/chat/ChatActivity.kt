@@ -10,6 +10,7 @@ import com.gdn.android.onestop.chat.data.Group
 import com.gdn.android.onestop.chat.fragment.GroupChatFragment
 import com.gdn.android.onestop.chat.databinding.ActivityGroupBinding
 import com.gdn.android.onestop.chat.fragment.GroupChatFragmentArgs
+import com.gdn.android.onestop.chat.fragment.PersonalChatFragment
 import com.gdn.android.onestop.chat.fragment.PersonalChatFragmentArgs
 
 class ChatActivity : AppCompatActivity(){
@@ -42,7 +43,8 @@ class ChatActivity : AppCompatActivity(){
   }
 
   override fun onBackPressed() {
-    if(hostFragment.childFragmentManager.fragments[0] is GroupChatFragment){
+    val lastFragment = hostFragment.childFragmentManager.fragments[0]
+    if(lastFragment is GroupChatFragment || lastFragment is PersonalChatFragment){
       finish()
 
       if(isTaskRoot){

@@ -113,7 +113,7 @@
                 android:id="@+id/ll_mute"
                 android:gravity="center_horizontal"
                 android:orientation="horizontal"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -131,7 +131,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Mute group"
+                    android:text="@string/mute_chat"
                     android:textColor="@color/black"
                     android:textSize="@dimen/size_text_h4"
                     android:layout_marginStart="12dp" />
@@ -151,7 +151,7 @@
                     android:id="@+id/iv_remove_chat"
                     android:gravity="end"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_leave"
+                    android:background="@drawable/ic_bin"
                     android:layout_width="@dimen/size_text_h2"
                     android:layout_height="@dimen/size_text_h2"/>
 
@@ -160,7 +160,7 @@
                     android:layout_marginLeft="12dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/leave_group"
+                    android:text="@string/remove_chat"
                     android:textColor="@color/black"
                     android:layout_gravity="center"
                     android:textSize="@dimen/size_text_h4"
@@ -267,7 +267,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/round_border_primary"
-                android:hint="@string/send_message"
+                android:hint="@string/send_message_"
                 android:inputType="textMultiLine" />
 
             <ImageView

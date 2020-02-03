@@ -82,13 +82,13 @@ class FirebaseChatService : FirebaseMessagingService() {
   }
 
   private fun processGroupChat(data: Map<String,String>){
-    if(data["name"]!! == username)return
+    if(data["username"]!! == username)return
 
     val chat = GroupChat().apply {
       id = data["id"]!!
       groupId = data["groupId"]!!
       text = data["text"]!!
-      username = data["name"]!!
+      username = data["username"]!!
       createdAt = data["createdAt"]!!.toLong()
       isMeeting = data["isMeeting"]!!.toBoolean()
       meetingDate = data.getOrElse("meetingDate",{null})?.toLong()
@@ -112,7 +112,7 @@ class FirebaseChatService : FirebaseMessagingService() {
       val isNotInChatRoom = GroupChatFragment.instance == null || GroupChatFragment.instance!!.group.id != username.id
 
       if(isNotInChatRoom) {
-        ChatUtil.notifyChat(context, resources, chat.username, chat.text, username)
+        ChatUtil.notifyGroupChat(context, chat.username, chat.text, username)
       }
     }
 
@@ -122,12 +122,24 @@ class FirebaseChatService : FirebaseMessagingService() {
     val chat = PersonalChat().apply {
       id = data["id"]!!
       text = data["text"]!!
-      from = data["from"]!!
+      from = data["_from"]!!
+      to = data["_to"]!!
       createdAt = data["createdAt"]!!.toLong()
       isReply = data["isReply"]!!.toBoolean()
       repliedId = data.getOrElse("repliedId",{null})
       repliedText = data.getOrElse("repliedText",{null})
+      repliedUsername = data.getOrElse("repliedUsername", {null})
       isMe = false
+    }
+
+
+    CoroutineScope(Dispatchers.IO).launch {
+      val personalInfo = personalChatRepository.getPersonalInfo(chat.from)
+
+      if(personalInfo.isMute)return@launch
+
+      personalChatRepository.addAndProcessPersonalChat(chat)
+      ChatUtil.notifyPersonalChat(context, chat.text, personalInfo)
     }
   }
 

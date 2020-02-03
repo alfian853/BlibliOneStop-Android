@@ -4,7 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 class PersonalChatResponse {
     lateinit var id: String
+
+    @SerializedName("_from")
     var from: String = ""
+
+    @SerializedName("_to")
     var to: String = ""
     lateinit var text: String
     var createdAt: Long = 0
@@ -13,5 +17,6 @@ class PersonalChatResponse {
     var isReply : Boolean = false
     var repliedId: String? = null
     var repliedText: String? = null
+    var repliedUsername: String? = null
 
 }

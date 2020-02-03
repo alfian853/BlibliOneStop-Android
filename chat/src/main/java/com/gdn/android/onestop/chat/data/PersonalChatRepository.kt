@@ -1,5 +1,7 @@
 package com.gdn.android.onestop.chat.data
 
+import android.util.Log
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.chat.util.ChatUtil
 import javax.inject.Inject
 
@@ -14,14 +16,12 @@ class PersonalChatRepository @Inject constructor(
     chatDao.insertPersonalChat(personalChat)
 
     if(!personalChat.isMe){
-      val personalInfo = chatDao.getPersonalInfo(personalChat.from)
-
-      if(personalInfo == null){
-        chatDao.insertPersonalInfo(getPersonalInfo(personalChat.from).apply {
-          unreadChat = 1
-        })
+      val personalInfo = getPersonalInfo(personalChat.from)
+      personalInfo.apply{
+        unreadChat += 1
       }
-
+      Log.d("saveing",ObjectMapper().writeValueAsString(personalInfo))
+      chatDao.insertPersonalInfo(personalInfo)
     }
   }
 
@@ -42,10 +42,19 @@ class PersonalChatRepository @Inject constructor(
     if(response.isSuccessful){
       val responseBody = response.body()!!.data!!
       val personalChat = ChatUtil.mapPersonalChatResponse(responseBody, true)
-      chatDao.insertPersonalChat(personalChat)
+      addAndProcessPersonalChat(personalChat)
     }
 
     return response.isSuccessful
   }
 
+  suspend fun removeChat(username: String){
+    chatDao.deletePersonalChat(username)
+    chatDao.deletePersonalInfo(username)
+  }
+
+  suspend fun nukePersonalDatabase(){
+    chatDao.deleteAllPersonalChat()
+    chatDao.deleteAllPersonalInfo()
+  }
 }
