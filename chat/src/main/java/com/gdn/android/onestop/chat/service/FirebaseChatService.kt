@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.fragment.GroupChatFragment
+import com.gdn.android.onestop.chat.fragment.PersonalChatFragment
 import com.gdn.android.onestop.chat.injection.ChatComponent
 import com.gdn.android.onestop.chat.util.ChatUtil
 import com.google.android.gms.tasks.OnCompleteListener
@@ -138,7 +139,12 @@ class FirebaseChatService : FirebaseMessagingService() {
       personalChatRepository.addAndProcessPersonalChat(chat)
 
       if(personalInfo.isMute)return@launch
-      ChatUtil.notifyPersonalChat(context, chat.text, personalInfo)
+
+      val isNotInChatRoom = PersonalChatFragment.instance == null || PersonalChatFragment.instance!!.personalInfo.name != chat.from
+
+      if(isNotInChatRoom) {
+        ChatUtil.notifyPersonalChat(context, chat.text, personalInfo)
+      }
     }
   }
 

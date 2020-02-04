@@ -68,7 +68,7 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
 
   lateinit var chatRvAdapter: BaseChatRecyclerAdapter<PersonalChat>
 
-  private val personalInfo: PersonalInfo by lazy {
+  val personalInfo: PersonalInfo by lazy {
     val tmp: PersonalChatFragmentArgs by navArgs()
     tmp.personalInfo
   }

@@ -4,6 +4,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.view.View
+import android.widget.RemoteViews
 import android.widget.TextView
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
@@ -12,12 +13,14 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import com.gdn.android.onestop.base.Constant
 import com.gdn.android.onestop.base.util.Util
+import com.gdn.android.onestop.base.util.toAliasName
 import com.gdn.android.onestop.chat.ChatActivity
 import com.gdn.android.onestop.chat.ChatActivityArgs
 import com.gdn.android.onestop.chat.ChatConstant
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.*
 import com.gdn.android.onestop.chat.service.ChatReplyService
+
 
 object ChatUtil {
 
@@ -87,7 +90,9 @@ object ChatUtil {
 
   }
 
-  fun notifyGroupChat(context: Context, username: String, message: String, group: Group){
+  val backgroundColorMethod = "setBackgroundColor"
+
+  fun notifyGroupChat(context: Context, username: String, message: String, group: Group, isYou: Boolean = false){
 
     val mainPIntent: PendingIntent = buildPendingMainIntent(context, ChatActivityArgs(group, null))
 
@@ -99,20 +104,40 @@ object ChatUtil {
 
     val action: NotificationCompat.Action = buildActionNotification(replyPendingIntent, context)
 
+    val viewsmall = RemoteViews(context.packageName, R.layout.notification_chat_small)
+    val viewlarge = RemoteViews(context.packageName, R.layout.notification_chat_large)
+
+    val alias = username.toAliasName()
+
+    viewsmall.setTextViewText(R.id.tv_user_alias, alias)
+    viewlarge.setTextViewText(R.id.tv_user_alias, alias)
+
+    val color = Util.getColorFromString(username)
+    viewsmall.setInt(R.id.tv_user_alias, backgroundColorMethod, color)
+    viewlarge.setInt(R.id.tv_user_alias, backgroundColorMethod, color)
+
+    val title = if(isYou)"You · ${group.name}"
+    else "$username · ${group.name}"
+
+    viewsmall.setTextViewText(R.id.tv_title, title)
+    viewlarge.setTextViewText(R.id.tv_title, title)
+
+    viewlarge.setTextViewText(R.id.tv_message, message)
+    viewsmall.setTextViewText(R.id.tv_message, message)
+
     val notificationManager =  NotificationManagerCompat.from(context)
 
     val notification = NotificationCompat.Builder(context, Constant.NOTIF_CHAT_CHANNEL_ID)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
-      .setSmallIcon(R.drawable.ic_group_thin)
+      .setSmallIcon(R.drawable.ic_send)
       .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-      .setContentTitle(group.name)
-      .setContentText(username+": "+ Util.shrinkText(message))
+      .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+      .setCustomContentView(viewsmall)
+      .setCustomBigContentView(viewlarge)
       .setContentIntent(mainPIntent)
-      .setGroup(group.id)
       .setAutoCancel(true)
       .addAction(action)
       .build()
-
 
     notificationManager.notify(Constant.NOTIF_CHAT_ID, notification)
   }
@@ -130,14 +155,32 @@ object ChatUtil {
 
     val notificationManager =  NotificationManagerCompat.from(context)
 
+    val viewsmall = RemoteViews(context.packageName, R.layout.notification_chat_small)
+    val viewlarge = RemoteViews(context.packageName, R.layout.notification_chat_large)
+
+    val alias = personalInfo.name.toAliasName()
+
+    viewsmall.setTextViewText(R.id.tv_user_alias, alias)
+    viewlarge.setTextViewText(R.id.tv_user_alias, alias)
+
+    val color = Util.getColorFromString(personalInfo.name)
+    viewsmall.setInt(R.id.tv_user_alias, backgroundColorMethod, color)
+    viewlarge.setInt(R.id.tv_user_alias, backgroundColorMethod, color)
+
+    viewsmall.setTextViewText(R.id.tv_title, personalInfo.name)
+    viewlarge.setTextViewText(R.id.tv_title, personalInfo.name)
+
+    viewlarge.setTextViewText(R.id.tv_message, message)
+    viewsmall.setTextViewText(R.id.tv_message, message)
+
     val notification = NotificationCompat.Builder(context, Constant.NOTIF_CHAT_CHANNEL_ID)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
-      .setSmallIcon(R.drawable.ic_group_thin)
+      .setSmallIcon(R.drawable.ic_send)
+      .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+      .setCustomContentView(viewsmall)
+      .setCustomBigContentView(viewlarge)
       .setColor(ContextCompat.getColor(context, R.color.colorPrimary))
-      .setContentTitle(personalInfo.name)
-      .setContentText(Util.shrinkText(message))
       .setContentIntent(mainPIntent)
-      .setGroup(personalInfo.id)
       .setAutoCancel(true)
       .addAction(action)
       .build()

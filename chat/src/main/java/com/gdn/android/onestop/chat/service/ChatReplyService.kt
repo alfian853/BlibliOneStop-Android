@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.core.app.RemoteInput
+import com.gdn.android.onestop.base.util.SessionManager
 import com.gdn.android.onestop.chat.ChatConstant
 import com.gdn.android.onestop.chat.ChatConstant.GROUP
 import com.gdn.android.onestop.chat.ChatConstant.PERSONAL_INFO
@@ -23,6 +24,9 @@ class ChatReplyService : IntentService("ChatReplyService") {
 
   @Inject
   lateinit var personalChatRepository: PersonalChatRepository
+
+  @Inject
+  lateinit var sessionManager: SessionManager
 
   override fun onHandleIntent(intent: Intent?) {
     ChatComponent.getInstance().inject(this)
@@ -44,7 +48,7 @@ class ChatReplyService : IntentService("ChatReplyService") {
 
           CoroutineScope(Dispatchers.IO).launch {
             groupChatRepository.sendChat(group.id, chatRequest)
-            ChatUtil.notifyGroupChat(this@ChatReplyService, "You", replyText, group)
+            ChatUtil.notifyGroupChat(this@ChatReplyService, sessionManager.user!!.username, replyText, group, true)
           }
         }
         else if(personalInfo != null){
@@ -53,7 +57,8 @@ class ChatReplyService : IntentService("ChatReplyService") {
 
           CoroutineScope(Dispatchers.IO).launch {
             personalChatRepository.sendChat(personalInfo.name, chatRequest)
-            ChatUtil.notifyPersonalChat(this@ChatReplyService,  replyText, personalInfo)
+            ChatUtil.notifyPersonalChat(this@ChatReplyService,
+              "You replied: $replyText", personalInfo)
           }
         }
 
