@@ -13,7 +13,15 @@ class BaseResponse<T> {
         this.data = data
     }
 
+    fun isOk(): Boolean {
+        return status != null && status.equals(OK_STATUS)
+    }
+
     companion object {
+
+        val OK_STATUS = "OK"
+        val NOT_OK_STATUS = "NOT_OK"
+
         fun <T> success(data: T): BaseResponse<T> {
             return BaseResponse<T>().apply {
                 this.data = data

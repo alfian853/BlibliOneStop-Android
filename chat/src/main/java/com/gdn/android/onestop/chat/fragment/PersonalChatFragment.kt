@@ -11,6 +11,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.DialogFragment
@@ -26,6 +27,7 @@ import com.gdn.android.onestop.base.CopyTextFragment
 import com.gdn.android.onestop.base.User
 import com.gdn.android.onestop.base.ViewModelProviderFactory
 import com.gdn.android.onestop.base.util.*
+import com.gdn.android.onestop.chat.ChatConstant
 import com.gdn.android.onestop.chat.R
 import com.gdn.android.onestop.chat.data.ChatDao
 import com.gdn.android.onestop.chat.data.PersonalChat
@@ -227,7 +229,11 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
   private fun setupBottomLayout(){
     databinding.btnChatSend.setOnClickListener {
       viewmodel.launch(Dispatchers.IO) {
-        viewmodel.sendChat()
+        val isSuccess = viewmodel.sendChat()
+
+        if(!isSuccess){
+          Toast.makeText(context, ChatConstant.ERROR_SEND_FAILED,Toast.LENGTH_SHORT).show()
+        }
       }
     }
   }

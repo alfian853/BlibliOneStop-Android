@@ -42,7 +42,7 @@ class PersonalChatRepository(
 
     val response = chatClient.postPersonalChat(username, chatSendRequest)
 
-    if(response.isSuccessful){
+    if(response.isSuccessful && response.body()!!.isOk()){
       val responseBody = response.body()!!.data!!
       val personalChat = ChatUtil.mapPersonalChatResponse(responseBody, true)
       addAndProcessPersonalChat(personalChat)

@@ -122,7 +122,7 @@ class GroupChatRepository(
 
     val response = groupClient.postGroupChat(groupId, chatSendRequest)
 
-    if(response.isSuccessful){
+    if(response.isSuccessful && response.body()!!.isOk()){
       val groupChat = ChatUtil.mapGroupChatResponse(response.body()!!.data!!, sessionUsername).apply {
         this.groupId = groupId
       }
