@@ -6,7 +6,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navArgs
 import com.gdn.android.onestop.base.util.Navigator
-import com.gdn.android.onestop.chat.databinding.ActivityGroupBinding
+import com.gdn.android.onestop.chat.databinding.ActivityChatBinding
 import com.gdn.android.onestop.chat.fragment.GroupChatFragment
 import com.gdn.android.onestop.chat.fragment.GroupChatFragmentArgs
 import com.gdn.android.onestop.chat.fragment.PersonalChatFragment
@@ -21,8 +21,8 @@ class ChatActivity : AppCompatActivity(){
 
     val args: ChatActivityArgs by navArgs()
 
-    DataBindingUtil.setContentView<ActivityGroupBinding>(this,
-      R.layout.activity_group
+    DataBindingUtil.setContentView<ActivityChatBinding>(this,
+      R.layout.activity_chat
     )
 
     hostFragment = supportFragmentManager

@@ -34,7 +34,7 @@
         android:id="@+id/groupActivity"
         android:name="com.gdn.android.onestop.chat.ChatActivity"
         android:label="GroupActivity"
-        tools:layout="@layout/activity_group">
+        tools:layout="@layout/activity_chat">
     </activity>
     <fragment
         android:id="@+id/meetingListFragment"
