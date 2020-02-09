@@ -205,7 +205,7 @@
                     android:layout_width="@dimen/size_img_4"
                     android:layout_height="@dimen/size_img_4"
                     android:layout_gravity="center"
-                    android:background="@drawable/ic_default_user"
+                    android:background="@drawable/ic_user"
                     app:layout_constraintBottom_toBottomOf="@+id/tv_toggle_personal"
                     app:layout_constraintStart_toStartOf="@+id/imageView3"
                     app:layout_constraintTop_toTopOf="@+id/tv_toggle_personal" />
