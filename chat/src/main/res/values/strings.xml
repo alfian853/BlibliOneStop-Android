@@ -53,4 +53,6 @@
     <string name="remove_chat">Remove chat</string>
     <string name="mute_chat">Mute chat</string>
     <string name="unmute_chat">Unmute chat</string>
+    <string name="error_please_select_future_date">Please select future date</string>
+    <string name="error_please_select_future_time">Please select future time</string>
 </resources>

@@ -25,6 +25,8 @@ class MeetingCreateFragment(
   private val meetingCreateData = MeetingCreateData()
 
   private lateinit var errorEmptyText: String
+  private lateinit var errorPleaseSelectFutureDate: String
+  private lateinit var errorPleaseSelectFutureTime: String
 
   private var redColor: Int = 0
 
@@ -33,6 +35,8 @@ class MeetingCreateFragment(
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     errorEmptyText = resources.getString(R.string.please_fill_this_field)
+    errorPleaseSelectFutureDate = resources.getString(R.string.error_please_select_future_date)
+    errorPleaseSelectFutureTime = resources.getString(R.string.error_please_select_future_time)
   }
 
   override fun onCreateView(
@@ -47,14 +51,21 @@ class MeetingCreateFragment(
 
     databinding.meetingdata = meetingCreateData
     val calender = Calendar.getInstance()
+    val currentTime = Calendar.getInstance().time
 
     databinding.llDateBox.setOnClickListener {
       DatePickerDialog(
           this.context!!,
           DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
             calender.set(year, month, dayOfMonth)
-            databinding.tvDate.text = calender.timeInMillis.toDateString()
-            databinding.tvDate.setTextColor(blackColor)
+            if(calender.time.before(currentTime)){
+              databinding.tvDate.setTextColor(redColor)
+              databinding.tvDate.text = errorPleaseSelectFutureDate
+            }
+            else{
+              databinding.tvDate.text = calender.timeInMillis.toDateString()
+              databinding.tvDate.setTextColor(blackColor)
+            }
           },
           calender.get(Calendar.YEAR),
           calender.get(Calendar.MONTH),
@@ -68,8 +79,15 @@ class MeetingCreateFragment(
           TimePickerDialog.OnTimeSetListener{view, hourOfDay, minute ->
             calender.set(Calendar.HOUR_OF_DAY, hourOfDay)
             calender.set(Calendar.MINUTE, minute)
-            databinding.tvTime.text = calender.timeInMillis.toTime24String()
-            databinding.tvTime.setTextColor(blackColor)
+
+            if(calender.time.before(currentTime)){
+              databinding.tvTime.setTextColor(redColor)
+              databinding.tvTime.text = errorPleaseSelectFutureTime
+            }
+            else{
+              databinding.tvTime.text = calender.timeInMillis.toTime24String()
+              databinding.tvTime.setTextColor(blackColor)
+            }
           },
           calender.get(Calendar.HOUR_OF_DAY),
           calender.get(Calendar.MINUTE),
