@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:textColor="@color/black"
             android:textSize="@dimen/size_text_h3"
-            android:text="@string/join_a_group_with_a_code" />
+            android:text="@string/join_group" />
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/til_group_name"

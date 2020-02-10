@@ -53,7 +53,7 @@
                 android:layout_marginLeft="20dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/join_a_group_with_a_code"
+                android:text="@string/join_group"
                 android:textColor="@color/black"
                 android:layout_gravity="center"
                 android:textSize="@dimen/size_text_h4"

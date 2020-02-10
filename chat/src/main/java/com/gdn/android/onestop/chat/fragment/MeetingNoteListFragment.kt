@@ -52,7 +52,7 @@ class MeetingNoteListFragment : BaseFullScreenFragment<FragmentNoteListBinding>(
   private val notesItemEditClick = object : ItemClickCallback<MeetingNote>{
     override fun onItemClick(item: MeetingNote, position: Int) {
       findNavController().navigate(
-        MeetingNoteListFragmentDirections.actionMeetingNoteListFragmentToMeetingNoteFragment(item.id, group.name)
+        MeetingNoteListFragmentDirections.actionMeetingNoteListFragmentToMeetingNoteFragment(group.name, item)
       )
     }
 

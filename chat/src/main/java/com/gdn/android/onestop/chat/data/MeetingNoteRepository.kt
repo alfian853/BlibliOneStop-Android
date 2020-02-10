@@ -37,7 +37,7 @@ class MeetingNoteRepository constructor(
 
     if(response.isSuccessful){
       meetingNote.note = notePostRequest.note
-      meetingNote.lastUpdate = notePostRequest.lastUpdate
+      meetingNote.lastUpdate = noteResponse.currentLastUpdate
       groupDao.insertMeetingNote(meetingNote)
     }
 

@@ -2,7 +2,7 @@
     <string name="app_name">group</string>
     <string name="create_a_new_group">Create a new group</string>
     <string name="browse_groups">Browse groups</string>
-    <string name="join_a_group_with_a_code">Join a group with a code</string>
+    <string name="join_group">Join group</string>
     <string name="private_group">Private Group</string>
     <string name="create_group">Create group</string>
     <string name="public_group">Public Group</string>

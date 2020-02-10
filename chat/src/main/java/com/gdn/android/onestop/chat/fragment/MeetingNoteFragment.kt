@@ -33,7 +33,7 @@ class MeetingNoteFragment : BaseFragment<FragmentNoteBinding>(){
 
     viewmodel = ViewModelProvider(this, viewModelProvierFactory).get(MeetingNoteViewModel::class.java)
     viewmodel.launch {
-      viewmodel.setMeetingNoteId(args.meetingNoteId)
+      viewmodel.setMeetingNoteId(args.meetingNote.id)
     }
   }
 
@@ -58,7 +58,7 @@ class MeetingNoteFragment : BaseFragment<FragmentNoteBinding>(){
       }
     }
 
-    databinding.llToolbar.tvToolbarTitle.setText(args.groupName)
+    databinding.llToolbar.tvToolbarTitle.text = "Meeting #${args.meetingNote.meetingNumber}"
 
     databinding.llToolbar.ivToolbarBack.setOnClickListener {
       findNavController().navigateUp()

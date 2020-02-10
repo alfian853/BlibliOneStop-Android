@@ -52,11 +52,11 @@
         android:label="MeetingNoteFragment"
         tools:layout="@layout/fragment_note">
         <argument
-            android:name="meetingNoteId"
-            app:argType="string" />
-        <argument
             android:name="groupName"
             app:argType="string" />
+        <argument
+            android:name="meetingNote"
+            app:argType="com.gdn.android.onestop.chat.data.MeetingNote" />
     </fragment>
     <activity
         android:id="@+id/groupActivity"

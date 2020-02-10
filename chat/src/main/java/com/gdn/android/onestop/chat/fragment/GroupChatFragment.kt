@@ -317,9 +317,11 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
   }
 
   override fun onDestroy() {
+    if(::chatLiveData.isInitialized){
+      chatLiveData.removeObserver(chatObserver)
+    }
     instance = null
     super.onDestroy()
-    chatLiveData.removeObserver(chatObserver)
   }
 
 
