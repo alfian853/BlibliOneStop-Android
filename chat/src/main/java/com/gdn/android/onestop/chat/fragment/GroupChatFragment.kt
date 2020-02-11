@@ -12,6 +12,7 @@ import android.content.Intent
 import android.graphics.Point
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -95,7 +96,7 @@ class GroupChatFragment : BaseFragment<FragmentGroupChatBinding>(){
       }
       else{
         // if load old chat
-        if(chatRvAdapter.chatList[0].createdAt > it[0].createdAt){
+        if(chatRvAdapter.chatList[0].createdAt > it[0].createdAt && it.size > 1){
           val oldSize = chatRvAdapter.chatList.size
           val difSize = it.size-oldSize
           chatRvAdapter.chatList = it

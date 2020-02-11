@@ -85,7 +85,7 @@ class PersonalChatFragment : BaseFragment<FragmentPersonalChatBinding>(){
       }
       else{
         // if load old chat
-        if(chatRvAdapter.chatList[0].createdAt > it[0].createdAt){
+        if(chatRvAdapter.chatList[0].createdAt > it[0].createdAt && it.size > 1){
           val oldSize = chatRvAdapter.chatList.size
           val difSize = it.size-oldSize-1
           chatRvAdapter.chatList = it

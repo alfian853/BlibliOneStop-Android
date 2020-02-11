@@ -51,7 +51,7 @@ class GroupSettingFragment(
         .setPositiveButton(R.string.yes) { dialog, which ->
           groupViewModel.launch {
             groupViewModel.leaveGroup(group.id)
-            Toast.makeText(this@GroupSettingFragment.context, "You leave the name", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@GroupSettingFragment.context, "You leave ${group.name}", Toast.LENGTH_SHORT).show()
             fragmentManager!!.beginTransaction().remove(this@GroupSettingFragment).commit()
           }
         }.setNegativeButton(R.string.no) { dialog, which -> }.show()

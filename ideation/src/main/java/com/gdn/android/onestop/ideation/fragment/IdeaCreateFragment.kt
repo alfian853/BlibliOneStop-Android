@@ -42,9 +42,11 @@ class IdeaCreateFragment : BaseFullScreenFragment<FragmentIdeaCreateBinding>() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        this.databinding = FragmentIdeaCreateBinding.inflate(inflater, container, false)
+        databinding = FragmentIdeaCreateBinding.inflate(inflater, container, false)
         databinding.viewmodel = viewmodel
 
+        databinding.tvUser.text = sessionManager.user!!.alias
+        databinding.tvUser.setBackgroundColor(sessionManager.user!!.color)
 
         databinding.btnIdeaSubmit.setOnClickListener {
             viewmodel.launch {
