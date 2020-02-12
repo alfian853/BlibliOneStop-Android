@@ -15,10 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.bumptech.glide.Glide
 import com.gdn.android.onestop.base.BaseFullScreenFragment
 import com.gdn.android.onestop.base.ViewModelProviderFactory
-import com.gdn.android.onestop.base.util.DefaultContextWrapper
-import com.gdn.android.onestop.base.util.ItemClickCallback
-import com.gdn.android.onestop.base.util.Navigator
-import com.gdn.android.onestop.base.util.toDateTime24String
+import com.gdn.android.onestop.base.util.*
 import com.gdn.android.onestop.ideation.R
 import com.gdn.android.onestop.ideation.data.IdeaComment
 import com.gdn.android.onestop.ideation.data.IdeaPost
@@ -102,6 +99,9 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
             fragmentManager?.beginTransaction()?.remove(this@IdeaDetailFragment)?.commit()
         }
 
+        databinding.tvUser.text = ideaPost.username.toAliasName()
+        databinding.tvUser.setBackgroundColor(Util.getColorFromString(ideaPost.username))
+
         databinding.viewmodel = viewmodel
 
         viewmodel.setIdeaPostId(ideaPost.id)
@@ -138,11 +138,6 @@ class IdeaDetailFragment : BaseFullScreenFragment<FragmentIdeaDetailBinding>(){
                 databinding.scrollView.fullScroll(View.FOCUS_DOWN)
             }
         }
-
-        Glide.with(this@IdeaDetailFragment)
-            .load(R.drawable.ic_default_user)
-            .into(databinding.ivUser)
-
 
         this.databinding.tvUpVote.setOnClickListener {
             clickVote(ideaPost ,true)
